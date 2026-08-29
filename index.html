@@ -58,10 +58,11 @@
   .lm-row{ margin-bottom:16px; }
   .lm-row h4{ font-size:14px; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
   .lm-row h4 .n{ color:var(--dim); font-weight:400; font-size:12px; }
-  .lm-chips{ display:flex; flex-wrap:wrap; gap:6px; }
-  .lm-chip{ background:var(--unlearned); border:1px solid var(--unlearned-bd); color:#d9534f; border-radius:8px; padding:3px 9px; font-size:16px; }
+  .lm-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  #ltitle.lg{ font-size:26px; letter-spacing:1px; }
+  .lm-chip{ display:inline-flex; flex-direction:column; align-items:center; background:var(--unlearned); border:1px solid var(--unlearned-bd); color:#d9534f; border-radius:10px; padding:6px 12px; font-size:18px; line-height:1.15; }
   .lm-chip.review{ background:#fff4dd; border-color:#e6c069; color:#b8860b; }
-  .lm-chip b{ font-weight:800; margin-left:3px; color:inherit; }
+  .lm-chip b{ font-size:11px; font-weight:400; margin-top:3px; opacity:.85; color:inherit; }
   .lm-empty{ color:var(--dim); text-align:center; padding:34px 0; font-size:14px; }
   .pg-total{ font-size:13px; color:var(--dim); margin:2px 0 12px; }
   .pg-total b{ color:#333; }
@@ -96,6 +97,23 @@
   .codebox:focus{ outline:none; border-color:var(--accent); }
   textarea.codebox{ resize:vertical; }
   .mrow{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .col.star .bar{ outline:2px solid #ffd13b; outline-offset:-2px; }
+  .quizch{ font-size:92px; font-weight:800; text-align:center; padding:8px 0 2px; color:var(--accent); line-height:1.15; letter-spacing:2px; }
+  .quizinfo{ text-align:center; font-size:13px; color:var(--dim); margin:6px 0 2px; }
+  .quizans{ margin-top:12px; display:none; }
+  .quizans.show{ display:block; }
+  .quiz .phrase{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+  .quiz .phrase span{ background:var(--chip); border-radius:8px; padding:4px 10px; font-size:15px; }
+  .quiz .expl{ text-align:center; font-size:13px; color:#77705f; margin-top:8px; }
+  .quizbtns{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:14px; }
+  .syn2{ margin-top:8px; border:1px solid var(--line); background:var(--chip); color:#8a6d00; border-radius:999px; padding:4px 12px; font-size:12px; cursor:pointer; font-family:inherit; }
+  .syn2:hover{ border-color:#e0a800; }
+  .card .ops .star{ width:20px; height:20px; border-radius:50%; border:1px solid var(--line); background:#fff;
+                display:inline-flex; align-items:center; justify-content:center; font-size:14px; line-height:1;
+                cursor:pointer; color:var(--dim); opacity:.45; transition:.15s; }
+  .card .ops .star:hover{ opacity:1; color:var(--accent); border-color:var(--accent); }
+  .card .ops .star.on{ color:#e0a800; opacity:1; }
+  .card .ops .star:active{ transform:scale(.85); }
   .card.flash{ animation:flash 1.6s ease; }
   @keyframes flash{ 0%{ box-shadow:0 0 0 5px var(--accent); } 100%{ box-shadow:none; } }
   input[type=text]{ flex:1; min-width:180px; border:1px solid var(--line); border-radius:10px; padding:8px 14px; font-size:14px; font-family:inherit; outline:none; }
@@ -103,29 +121,33 @@
 
   #grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(76px,1fr)); gap:10px; }
   .card{ position:relative; background:#fff; border:2px solid var(--line); border-radius:14px; cursor:pointer;
-         display:flex; flex-direction:column; align-items:center; padding:12px 6px 8px; transition:transform .1s, box-shadow .15s; user-select:none; }
+         display:flex; flex-direction:column; align-items:center; padding:12px 4px 8px; transition:transform .1s, box-shadow .15s; user-select:none; }
   .card:hover{ transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.12); }
   .card .ch{ font-size:34px; line-height:1.2; font-weight:700; }
-  .card .no{ position:absolute; top:5px; right:8px; font-size:10px; color:var(--dim); }
   .card .x{ position:absolute; top:3px; left:8px; font-size:15px; color:#d9534f; font-weight:800; line-height:1; pointer-events:none; }
   .card.learned{ background:var(--learned); border-color:var(--learned-bd); }
   .card.unlearned{ background:var(--unlearned); border-color:var(--unlearned-bd); animation:pop .25s; }
   .card.review{ background:#fff4dd; border-color:#e6c069; }
   .card.unlearned .ch{ color:#d9534f; }
   .card.review .ch{ color:#b8860b; }
-  .card .st{ margin-top:6px; font-size:11px; color:#fff; border-radius:8px; padding:2px 8px; background:#ccc; }
+  .card .st{ margin-top:6px; font-size:11px; color:#fff; border-radius:8px; padding:2px 8px; background:#ccc;
+            display:flex; flex-direction:column; align-items:center; text-align:center; line-height:1.3; }
   .card .pg{ margin-top:3px; font-size:10px; font-weight:700; }
   .card.learned .pg{ color:#3ba55d; }
   .card.review .pg{ color:#b8860b; }
   .card.unlearned .pg{ color:#d9534f; }
   .card .pbar{ margin-top:4px; width:64px; height:3px; background:#e6dfd4; border-radius:3px; overflow:hidden; }
   .card .pbar i{ display:block; height:100%; width:0; background:var(--accent); }
-  .card .ops{ display:flex; gap:8px; margin-top:5px; }
-  .card .ops b{ width:22px; height:22px; border-radius:50%; border:1px solid var(--line); background:#fff; color:var(--dim);
+  .card .ops{ display:flex; gap:3px; margin-top:5px; }
+  .card .ops b{ width:20px; height:20px; border-radius:50%; border:1px solid var(--line); background:#fff; color:var(--dim);
                 display:flex; align-items:center; justify-content:center; font-size:13px; line-height:1; cursor:pointer; user-select:none; transition:.15s; }
   .card .ops b:hover{ color:var(--accent); border-color:var(--accent); }
   .card .ops .m:active{ background:#f6e4de; }
   .card .ops .p:active{ background:#e2f0e6; }
+  .card .go{ margin-top:6px; width:100%; border:1px solid var(--line); background:#fff; border-radius:8px; padding:3px 0;
+             font-size:12px; line-height:1.35; text-align:center; cursor:pointer; color:var(--ink); font-family:inherit; transition:.15s; }
+  .card .go:hover{ border-color:var(--accent); background:#fff6ee; }
+  .card .go:active{ transform:scale(.96); }
   .card.learned .st{ background:#3ba55d; }
   .card.review .st{ background:#e0a800; }
   .card.unlearned .st{ background:#d9534f; text-decoration:none; }
@@ -170,6 +192,7 @@
   </div>
   <div class="toolbar">
     <input type="text" id="q" placeholder="🔍 搜任意字（回车回到本册）…">
+    <button class="btn" id="btnQuiz">⭐ 重点字抽认</button>
     <button class="btn" id="btnLearned">📊 学习进度</button>
     <button class="btn" id="btnAll">本册已学会</button>
     <button class="btn danger" id="btnClr">重置本册</button>
@@ -177,7 +200,7 @@
   </div>
   <div id="grid"></div>
   <div class="empty" id="empty">没有找到匹配的字。</div>
-  <footer>点红色/黄色字 → 变绿开始间隔复习倒计时：第1次2天、第2次4天、第3次7天、第4次15天、第5次30天，每次倒计时结束变「需复习」；5 次全过 = 已掌握 ✓（绿色不再自动切换）。徽章显示 剩余/总天数，进度条随倒计时走。每张卡片下方：「＋」跳过本次学习直接进入复习、「−」退回上一个复习状态。点绿色字会先弹确认防止误碰。倒计时会连同截止时间一起保存在本机，关掉页面也不丢。状态保存在本机浏览器。</footer>
+  <footer>每个字的右上方 ☆ 点一下加为重点 ⭐（再点取消）；点字卡本身只看详情（词组/拆解）。认字用卡片下方按键：「点击开始认字」= 未学会或需复习时点它，变绿开始间隔复习倒计时（第1次2天、第2次4天、第3次7天、第4次15天、第5次30天）；已学会/已掌握时按键变「重置」，点它回到未学会（会先确认）。每次倒计时结束变「需复习」；5 次全过 = 已掌握 ✓。卡下「＋」跳过本次直接进入复习、「−」退回上一级（都要确认）。徽章显示 剩余/总天数。倒计时连同截止时间存在本机，关页不丢；导出/导入编码含状态、复习进度与重点字，iPad ↔ 电脑随时同步。</footer>
 </main>
 
 <div id="detail"><div class="grip" id="dgrip">⠿ 按住这行拖动到任意位置</div><div class="wrap">
@@ -185,6 +208,7 @@
   <div class="meta">
     <div class="phrase" id="dp"></div>
     <div class="explain" id="dx"></div>
+    <button class="syn2" id="dstar">⭐ 标为重点</button>
   </div>
   <div class="x" id="dclose">✕</div>
 </div></div>
@@ -229,10 +253,26 @@ const reps = loadReps() || {};
 function loadReps(){ try{ return JSON.parse(localStorage.getItem(REP_KEY)) || {}; }catch(e){ return {}; } }
 function saveReps(){ try{ localStorage.setItem(REP_KEY, JSON.stringify(reps)); }catch(e){} }
 function savePend(){ try{ localStorage.setItem(PEND_KEY, JSON.stringify(pending)); }catch(e){} }
+const STAR_KEY = 'renzi_star_v1';
+function loadStars(){ try{ return JSON.parse(localStorage.getItem(STAR_KEY)) || {}; }catch(e){ return {}; } }
+const stars = loadStars() || {};
+function saveStars(){ try{ localStorage.setItem(STAR_KEY, JSON.stringify(stars)); }catch(e){} }
 const SEQ_DAYS = [2, 4, 7, 15, 30];
 function seqFor(rep){ if (rep >= 5) return null; return { dur: SEQ_DAYS[rep] * 86400000, d: SEQ_DAYS[rep] }; }
 function stateOf(i){ const s = state[String(i)]; return s === 1 ? 'learned' : (s === 0 ? 'review' : 'unlearned'); }
 function getRep(i){ return reps[String(i)] || 0; }
+function lvOf(i){
+  const s = stateOf(i);
+  const rep = getRep(i);
+  if (s === 'unlearned') return 0;
+  if (s === 'learned' && rep >= 5) return 6;
+  return s === 'review' ? Math.max(1, rep) : Math.min(rep + 1, 5);
+}
+function toggleStar(i){
+  if (stars[String(i)]) delete stars[String(i)]; else stars[String(i)] = true;
+  saveStars();
+  setCardNode(i);
+}
 function startCountdown(i){
   const rep = getRep(i);
   const seq = seqFor(rep);
@@ -271,7 +311,7 @@ function iterInfo(i){
     if (pending[i]){
       const leftMs = pending[i].until - Date.now();
       const pct = Math.max(0, Math.min(100, Math.round((pending[i].seq.dur - leftMs) / pending[i].seq.dur * 100)));
-      return { cls:'learned', st: fmtDur(leftMs) + '/' + pending[i].seq.d + '天', pg: Math.min(rep + 1, 5) + '/5', bar:pct };
+      return { cls:'learned', st: fmtDur(leftMs) + '<br>/' + pending[i].seq.d + '天', pg: Math.min(rep + 1, 5) + '/5', bar:pct };
     }
     return { cls:'learned', st: rep >= 5 ? '✓ 掌握' : '已学会', pg: Math.min(rep + 1, 5) + '/5', bar:0 };
   }
@@ -289,12 +329,23 @@ function setCardNode(i){
   if (!card) return;
   const info = iterInfo(i);
   card.className = 'card ' + info.cls;
-  card.querySelector('.st').textContent = info.st;
+  card.querySelector('.st').innerHTML = info.st;
   setPg(card, info.pg);
   let x = card.querySelector('.x');
   if (info.cls === 'unlearned'){
     if (!x){ x = document.createElement('span'); x.className = 'x'; x.textContent = '×'; card.appendChild(x); }
   } else if (x){ x.remove(); }
+  let go = card.querySelector('.go');
+  if (!go){ go = document.createElement('button'); go.className = 'go'; card.appendChild(go); }
+  go.innerHTML = (info.cls === 'unlearned' || info.cls === 'review') ? '点击<br>开始认字' : '重置';
+  let sa = card.querySelector('.star');
+  if (!sa){
+    sa = document.createElement('span');
+    sa.className = 'star';
+    card.querySelector('.ops').appendChild(sa);
+  }
+  if (stars[String(i)]){ sa.classList.add('on'); sa.textContent = '⭐'; }
+  else { sa.classList.remove('on'); sa.textContent = '☆'; }
   let b = card.querySelector('.pbar');
   if (info.bar > 0){
     if (!b){ b = document.createElement('span'); b.className = 'pbar'; b.innerHTML = '<i></i>'; card.appendChild(b); }
@@ -306,10 +357,11 @@ function cardHtml(i){
   const info = iterInfo(i);
   return '<div class="card ' + info.cls + '" data-i="' + i + '" data-b="' + it.b + '">' +
          (info.cls === 'unlearned' ? '<span class="x">×</span>' : '') +
-         '<span class="no">' + it.b + '</span><span class="ch">' + it.c + '</span><span class="st">' + info.st + '</span>' +
+         '<span class="ch">' + it.c + '</span><span class="st">' + info.st + '</span>' +
          (info.pg ? '<span class="pg">' + info.pg + '</span>' : '') +
          (info.bar > 0 ? '<span class="pbar"><i style="width:' + info.bar + '%"></i></span>' : '') +
-         '<span class="ops"><b class="m">−</b><b class="p">＋</b></span></div>';
+         '<span class="ops"><b class="m">−</b><b class="p">＋</b><span class="star' + (stars[String(i)] ? ' on' : '') + '">' + (stars[String(i)] ? '⭐' : '☆') + '</span></span>' +
+         '<button class="go">' + (info.cls === 'unlearned' || info.cls === 'review' ? '点击<br>开始认字' : '重置') + '</button></div>';
 }
 function afterToggle(i){
   showDetail(i);
@@ -343,6 +395,8 @@ function cardStateSwitch(i){
   afterToggle(i);
 }
 function advance(i){
+  if (Math.min(getRep(i) + 1, 5) === getRep(i)) return;
+  if (!confirm('把「' + DATA.chars[i].c + '」推进到下一步（跳过本次等待，直接进入需复习）：确定吗？')) return;
   clearPending(i);
   const r = Math.min(getRep(i) + 1, 5);
   reps[String(i)] = r;
@@ -353,6 +407,7 @@ function advance(i){
 }
 function retreat(i){
   if (stateOf(i) === 'unlearned') return;
+  if (!confirm('把「' + DATA.chars[i].c + '」退回上一步（复习进度 -1）：确定吗？')) return;
   clearPending(i);
   if (getRep(i) === 0){
     delete state[String(i)];
@@ -426,7 +481,7 @@ function renderGrid(){
   });
   grid.innerHTML = html;
   grid.querySelectorAll('.card').forEach(c => c.onclick = () => {
-    cardStateSwitch(+c.dataset.i);
+    showDetail(+c.dataset.i);
   });
   grid.querySelectorAll('.card .m').forEach(b => b.onclick = e => {
     e.stopPropagation();
@@ -435,6 +490,14 @@ function renderGrid(){
   grid.querySelectorAll('.card .p').forEach(b => b.onclick = e => {
     e.stopPropagation();
     advance(+b.closest('.card').dataset.i);
+  });
+  grid.querySelectorAll('.card .go').forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    cardStateSwitch(+b.closest('.card').dataset.i);
+  });
+  grid.querySelectorAll('.card .star').forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    toggleStar(+b.closest('.card').dataset.i);
   });
   document.getElementById('empty').style.display = 'none';
   grid.style.display = '';
@@ -453,7 +516,7 @@ function renderSearch(q){
   });
   grid.innerHTML = html;
   grid.querySelectorAll('.card').forEach(c => c.onclick = () => {
-    cardStateSwitch(+c.dataset.i);
+    showDetail(+c.dataset.i);
   });
   grid.querySelectorAll('.card .m').forEach(b => b.onclick = e => {
     e.stopPropagation();
@@ -463,7 +526,16 @@ function renderSearch(q){
     e.stopPropagation();
     advance(+b.closest('.card').dataset.i);
   });
+  grid.querySelectorAll('.card .go').forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    cardStateSwitch(+b.closest('.card').dataset.i);
+  });
+  grid.querySelectorAll('.card .star').forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    toggleStar(+b.closest('.card').dataset.i);
+  });
   document.getElementById('empty').style.display = rows.length ? 'none' : '';
+  document.getElementById('empty').textContent = '没有找到匹配的字。';
   grid.style.display = rows.length ? '' : 'none';
 }
 
@@ -477,12 +549,17 @@ function showDetail(i){
   if (stateOf(i) === 'learned') prog = rep >= 5 ? '复习 5/5，已掌握 ✓' : '复习进度 ' + Math.min(rep + 1, 5) + '/5';
   else if (stateOf(i) === 'review') prog = '复习进度 ' + rep + '/5';
   document.getElementById('dx').textContent = (it.x || '出自分册 ' + it.b) + (prog ? ' · ' + prog : '');
+  document.getElementById('dstar').textContent = stars[String(i)] ? '☆ 取消重点' : '⭐ 标为重点';
   document.getElementById('detail').classList.add('show');
 }
 document.getElementById('dclose').onclick = () => document.getElementById('detail').classList.remove('show');
+document.getElementById('dstar').onclick = () => {
+  if (detailIdx < 0) return;
+  toggleStar(detailIdx);
+  document.getElementById('dstar').textContent = stars[String(detailIdx)] ? '☆ 取消重点' : '⭐ 标为重点';
+};
 document.getElementById('dch').onclick = () => {
   if (detailIdx < 0) return;
-  cardStateSwitch(detailIdx);
   const s = stateOf(detailIdx);
   document.getElementById('dch').style.color = s === 'learned' ? 'var(--accent)' : (s === 'review' ? '#b8860b' : '#d9534f');
 };
@@ -525,9 +602,10 @@ document.getElementById('btnClr').onclick = () => {
 document.getElementById('btnReset').onclick = () => {
   if (!confirm('重置全部：清除所有字的学会/复习标记？')) return;
   if (!confirm('再次确认：全部 ' + DATA.chars.length + ' 个字将回到「未学会」，所有学习进度丢失，无法撤销。确定吗？')) return;
-  Object.keys(state).forEach(k => delete state[k]); Object.keys(reps).forEach(k => delete reps[k]); Object.keys(pending).forEach(k => delete pending[k]); save(); saveReps(); savePend(); render();
+  Object.keys(state).forEach(k => delete state[k]); Object.keys(reps).forEach(k => delete reps[k]); Object.keys(pending).forEach(k => delete pending[k]); Object.keys(stars).forEach(k => delete stars[k]); save(); saveReps(); savePend(); saveStars(); render();
 };
 function showProgress(){
+  setLTitle('学习进度', false);
   const cats = [
     { label:'未学会',   color:'#d9534f' },
     { label:'复习第1次', color:'#e0751f' },
@@ -538,16 +616,11 @@ function showProgress(){
     { label:'已掌握',   color:'#2e8f50' }
   ];
   const cnt = [0, 0, 0, 0, 0, 0, 0];
-  const lvOf = i => {
-    const s = stateOf(i);
-    const rep = getRep(i);
-    if (s === 'unlearned') return 0;
-    if (s === 'learned' && rep >= 5) return 6;
-    return s === 'review' ? Math.max(1, rep) : Math.min(rep + 1, 5);
-  };
   order.forEach(i => cnt[lvOf(i)]++);
   const total = order.length;
-  const legend = cats.map((c, k) => '<span class="lg-i"><i style="background:' + c.color + '"></i>' + c.label + ' ' + cnt[k] + '</span>').join('');
+  let legend = cats.map((c, k) => '<span class="lg-i"><i style="background:' + c.color + '"></i>' + c.label + ' ' + cnt[k] + '</span>').join('');
+  const starList = order.filter(i => stars[String(i)]);
+  if (starList.length) legend = legend + '<span class="lg-i">⭐ 重点字：' + starList.length + ' 个（未学会 ' + starList.filter(i => lvOf(i) === 0).length + ' · 已掌握 ' + starList.filter(i => lvOf(i) === 6).length + '）</span>';
   let yaxisHtml = '';
   for (let i = 6; i >= 0; i--) yaxisHtml += '<span style="top:' + (126 - i * 21) + 'px">' + cats[i].label + '</span>';
   let booksHtml = '';
@@ -558,7 +631,8 @@ function showProgress(){
       const lv = lvOf(i);
       if (lv === 0) un++;
       const h = Math.max(3, lv * 21);
-      cols += '<div class="col" data-i="' + i + '" title="' + DATA.chars[i].c + ' · ' + cats[lv].label + '"><div class="bar c' + lv + '" style="height:' + h + 'px"></div></div>';
+      const starCls = stars[String(i)] ? ' star' : '';
+      cols += '<div class="col' + starCls + '" data-i="' + i + '" title="' + (stars[String(i)] ? '⭐ ' : '') + DATA.chars[i].c + ' · ' + cats[lv].label + '"><div class="bar c' + lv + '" style="height:' + h + 'px"></div></div>';
       xl += '<span class="xla">' + DATA.chars[i].c + '</span>';
     });
     booksHtml += '<div class="tx-row"><h4>分册 ' + rec.b + ' <span class="n">' + un + ' 未学 / ' + rec.list.length + '</span></h4>' +
@@ -582,6 +656,95 @@ function jumpTo(i){
   if (c){ c.scrollIntoView({ behavior:'smooth', block:'center' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1600); }
 }
 document.getElementById('btnLearned').onclick = showProgress;
+let quizIdx = -1;
+function quizPool(){
+  return order.filter(i => stars[String(i)] && lvOf(i) < 6);
+}
+function quizProg(i){
+  const lv = lvOf(i);
+  if (lv === 0) return '未学会';
+  if (lv === 6) return '已掌握 ✓';
+  let p = '复习进度 ' + lv + '/5';
+  if (stateOf(i) === 'learned' && pending[i]) p += ' · 倒计时 ' + fmtDur(pending[i].until - Date.now()) + '/' + pending[i].seq.d + '天';
+  return p;
+}
+function setLTitle(t, lg){
+  const el = document.getElementById('ltitle');
+  el.textContent = t;
+  el.classList.toggle('lg', !!lg);
+}
+function showQuiz(){
+  const pool = quizPool();
+  if (!pool.length){
+    alert('还没有可抽的重点字 ⭐。\n点字卡上方 ☆ 即可添加，再回来抽。');
+    return;
+  }
+  if (pool.indexOf(quizIdx) < 0) quizIdx = pool[Math.floor(Math.random() * pool.length)];
+  const it = DATA.chars[quizIdx];
+  const bq = it.b.split('-');
+  setLTitle('⭐重点字抽认　当前字：' + it.c + '　第' + bq[0] + '本　分册' + it.b, false);
+  document.getElementById('lbody').innerHTML =
+    '<div class="quiz">' +
+      '<div class="quizch">' + it.c + '</div>' +
+      '<div class="quizinfo">' + quizProg(quizIdx) + '　·　读出来，再对照下面的词句</div>' +
+      '<div class="phrase">' + (it.p ? it.p.split(/\s+/).filter(Boolean).map(x => '<span>' + x + '</span>').join('') : '<span>（暂无词组）</span>') + '</div>' +
+      '<div class="expl">' + (it.x || ('出自分册 ' + it.b)) + '</div>' +
+      '<div class="quizbtns">' +
+        '<button class="btn" id="qList">📋 所有重点字</button>' +
+        '<button class="btn" id="qUnStar">☆ 取消 ⭐</button>' +
+        '<button class="btn" id="qAgain">🎲 再抽一个</button>' +
+        '<button class="btn" id="qBye">关闭</button>' +
+      '</div>' +
+    '</div>';
+  document.getElementById('qBye').onclick = () => document.getElementById('lmodal').classList.remove('show');
+  document.getElementById('qAgain').onclick = () => { quizIdx = -1; showQuiz(); };
+  document.getElementById('qList').onclick = showStarList;
+  document.getElementById('qUnStar').onclick = () => {
+    if (!confirm('确认取消「' + it.c + '」的重点标记 ⭐？')) return;
+    delete stars[String(quizIdx)];
+    saveStars();
+    setCardNode(quizIdx);
+    quizIdx = -1; showQuiz();
+  };
+  document.getElementById('lmodal').classList.add('show');
+}
+function showStarList(){
+  const list = order.filter(i => stars[String(i)]);
+  setLTitle('⭐ 重点字', true);
+  if (!list.length){
+    document.getElementById('lbody').innerHTML = '<div class="lm-empty">还没有重点字 ⭐　（共 0 个）\n点字卡上方 ☆ 即可添加。</div>' +
+      '<div class="mrow"><button class="btn" id="qBackToQuiz">← 返回抽认</button><button class="btn" id="qClose2">关闭</button></div>';
+    document.getElementById('qBackToQuiz').onclick = () => { quizIdx = -1; showQuiz(); };
+    document.getElementById('qClose2').onclick = () => document.getElementById('lmodal').classList.remove('show');
+    document.getElementById('lmodal').classList.add('show');
+    return;
+  }
+  let sects = '';
+  byBook.forEach(rec => {
+    const its = rec.list.filter(i => stars[String(i)]);
+    if (!its.length) return;
+    let un = 0, master = 0;
+    let chips = '';
+    its.forEach(i => {
+      const lv = lvOf(i);
+      if (lv === 0) un++; else if (lv === 6) master++;
+      const tag = lv === 0 ? '未学会' : (lv === 6 ? '已掌握' : '复习' + lv + '/5');
+      chips += '<span class="lm-chip' + (lv >= 1 ? ' review' : '') + '" data-i="' + i + '">' + DATA.chars[i].c +
+               '<b>' + tag + '</b></span>';
+    });
+    sects += '<div class="tx-row"><h4>分册 ' + rec.b + ' <span class="n">重点 ' + its.length + ' 个 · 未学 ' + un + ' · 已掌握 ' + master + '</span></h4>' +
+             '<div class="lm-chips">' + chips + '</div></div>';
+  });
+  document.getElementById('lbody').innerHTML =
+    '<div class="hint">共 ' + list.length + ' 个重点字（按分册排列），点一下跳到对应字。字卡上方 ☆/⭐ 可随时加/删。</div>' +
+    sects +
+    '<div class="mrow"><button class="btn" id="qBackToQuiz">← 返回抽认</button><button class="btn" id="qClose2">关闭</button></div>';
+  document.getElementById('lbody').querySelectorAll('.lm-chip').forEach(ch => ch.onclick = () => jumpTo(+ch.dataset.i));
+  document.getElementById('qBackToQuiz').onclick = () => { quizIdx = -1; showQuiz(); };
+  document.getElementById('qClose2').onclick = () => document.getElementById('lmodal').classList.remove('show');
+  document.getElementById('lmodal').classList.add('show');
+}
+document.getElementById('btnQuiz').onclick = () => { quizIdx = -1; showQuiz(); };
 const SYMB = '0123456789ABCDE';
 function exportCode(){
   let c = 'RZ1:';
@@ -590,19 +753,33 @@ function exportCode(){
     const learned = stateOf(i) === 'learned';
     c += SYMB[rep + (learned ? 8 : 0)];
   });
+  const starIdx = order.filter(i => stars[String(i)]).sort((a, b) => a - b);
+  if (starIdx.length) c += '|' + starIdx.join(',');
   return c;
 }
 function parseCode(code){
-  const s0 = String(code || '').trim();
+  const all = String(code || '').trim();
+  const pipe = all.indexOf('|');
+  const s0 = pipe >= 0 ? all.slice(0, pipe) : all;
+  const starPart = pipe >= 0 ? all.slice(pipe + 1) : '';
   if (s0.indexOf('RZ1:') !== 0) return { ok:false, msg:'格式不对：请复制完整的进度编码（应以 RZ1: 开头）。' };
   const body = s0.slice(4);
   if (body.length !== order.length) return { ok:false, msg:'编码位数不对（应为 ' + order.length + ' 位，实际 ' + body.length + ' 位，可能没复制完整）。' };
   for (let k = 0; k < body.length; k++){
     if (SYMB.indexOf(body[k]) < 0) return { ok:false, msg:'编码里出现无法识别的字符「' + body[k] + '」，请重新完整复制。' };
   }
-  return { ok:true, body:body };
+  const starList = [];
+  if (starPart){
+    const arr = starPart.split(',');
+    for (let x = 0; x < arr.length; x++){
+      const n = parseInt(arr[x], 10);
+      if (isNaN(n) || n < 0 || n >= DATA.chars.length) return { ok:false, msg:'重点字编码解析失败，请重新导出完整复制。' };
+      if (starList.indexOf(n) < 0) starList.push(n);
+    }
+  }
+  return { ok:true, body:body, starList:starList };
 }
-function applyCode(body){
+function applyCode(body, starList){
   order.forEach((i, k) => {
     const v = SYMB.indexOf(body[k]);
     delete pending[i];
@@ -614,13 +791,15 @@ function applyCode(body){
   order.forEach(i => valid[String(i)] = true);
   Object.keys(state).forEach(k => { if (!valid[k]) delete state[k]; });
   Object.keys(reps).forEach(k => { if (!valid[k]) delete reps[k]; });
-  save(); saveReps(); savePend(); render(); renderStat(); renderTabs();
+  Object.keys(stars).forEach(k => delete stars[k]);
+  (starList || []).forEach(i => stars[String(i)] = true);
+  save(); saveReps(); savePend(); saveStars(); render(); renderStat(); renderTabs();
 }
 function openExport(){
   const code = exportCode();
-  document.getElementById('ltitle').textContent = '导出进度';
+  setLTitle('导出进度', false);
   document.getElementById('lbody').innerHTML =
-    '<div class="hint">1. 点「复制编码」；2. 用微信把编码发给另一台设备；3. 到那边打开「导入进度」粘贴即可。该编码包含全部 ' + order.length + ' 个字的状态与复习进度。</div>' +
+    '<div class="hint">1. 点「复制编码」；2. 用微信把编码发给另一台设备；3. 到那边打开「导入进度」粘贴即可。该编码包含全部 ' + order.length + ' 个字的状态、复习进度与重点字标记。</div>' +
     '<input class="codebox" id="codeOut" readonly value="' + code + '">' +
     '<div class="mrow"><button class="btn" id="expCopy">复制编码</button></div>';
   document.getElementById('expCopy').onclick = () => {
@@ -632,7 +811,7 @@ function openExport(){
   document.getElementById('lmodal').classList.add('show');
 }
 function openImport(){
-  document.getElementById('ltitle').textContent = '导入进度';
+  setLTitle('导入进度', false);
   document.getElementById('lbody').innerHTML =
     '<div class="hint">把另一台设备「导出进度」得到的编码完整粘贴到下面，点「导入」。导入会用编码覆盖本机全部学习进度（可防止误操作，会二次确认）。</div>' +
     '<textarea class="codebox" id="impIn" rows="4" placeholder="RZ1:0A9B…"></textarea>' +
@@ -641,7 +820,7 @@ function openImport(){
     const p = parseCode(document.getElementById('impIn').value);
     if (!p.ok){ alert(p.msg); return; }
     if (!confirm('导入将覆盖本机当前全部 ' + order.length + ' 个字的学习进度，确定继续？')) return;
-    applyCode(p.body);
+    applyCode(p.body, p.starList);
     document.getElementById('lmodal').classList.remove('show');
     alert('导入成功 ✓');
   };
