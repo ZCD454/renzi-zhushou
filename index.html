@@ -177,7 +177,7 @@
   </div>
   <div id="grid"></div>
   <div class="empty" id="empty">没有找到匹配的字。</div>
-  <footer>点红色/黄色字 → 变绿开始复习倒计时：第1次10秒、第2次15秒、第3次20秒、第4次25秒、第5次30秒，每次倒计时结束变「需复习」；5 次全过 = 已掌握 ✓（绿色不再自动切换）。倒计时徽章显示 剩余/总时长，进度条随倒计时走。每张卡片下方：「＋」跳过本次学习直接进入复习、「−」退回上一个复习状态。点绿色字会先弹确认防止误碰。状态保存在本机浏览器。</footer>
+  <footer>点红色/黄色字 → 变绿开始间隔复习倒计时：第1次2天、第2次4天、第3次7天、第4次15天、第5次30天，每次倒计时结束变「需复习」；5 次全过 = 已掌握 ✓（绿色不再自动切换）。徽章显示 剩余/总天数，进度条随倒计时走。每张卡片下方：「＋」跳过本次学习直接进入复习、「−」退回上一个复习状态。点绿色字会先弹确认防止误碰。倒计时会连同截止时间一起保存在本机，关掉页面也不丢。状态保存在本机浏览器。</footer>
 </main>
 
 <div id="detail"><div class="grip" id="dgrip">⠿ 按住这行拖动到任意位置</div><div class="wrap">
@@ -221,21 +221,48 @@ DATA.chars.forEach((it, i) => {
 function isLearned(i){ return state[String(i)] === 1; }
 function setState(i, v){ if (v) state[String(i)] = 1; else delete state[String(i)]; save(); renderStat(); }
 
-const pending = {};
+const PEND_KEY = 'renzi_pending_v1';
+function loadPend(){ try{ return JSON.parse(localStorage.getItem(PEND_KEY)) || {}; }catch(e){ return {}; } }
+const pending = loadPend() || {};
 const REP_KEY = 'renzi_reps_v1';
 const reps = loadReps() || {};
 function loadReps(){ try{ return JSON.parse(localStorage.getItem(REP_KEY)) || {}; }catch(e){ return {}; } }
 function saveReps(){ try{ localStorage.setItem(REP_KEY, JSON.stringify(reps)); }catch(e){} }
-function seqFor(rep){ if (rep >= 5) return null; return { dur: (rep + 2) * 5000, label: (rep + 1) + '/5' }; }
+function savePend(){ try{ localStorage.setItem(PEND_KEY, JSON.stringify(pending)); }catch(e){} }
+const SEQ_DAYS = [2, 4, 7, 15, 30];
+function seqFor(rep){ if (rep >= 5) return null; return { dur: SEQ_DAYS[rep] * 86400000, d: SEQ_DAYS[rep] }; }
 function stateOf(i){ const s = state[String(i)]; return s === 1 ? 'learned' : (s === 0 ? 'review' : 'unlearned'); }
 function getRep(i){ return reps[String(i)] || 0; }
 function startCountdown(i){
   const rep = getRep(i);
   const seq = seqFor(rep);
   if (seq) pending[i] = { until: Date.now() + seq.dur, seq: seq };
+  savePend();
   setCardNode(i);
 }
-function clearPending(i){ delete pending[i]; }
+function clearPending(i){ if (pending[i]){ delete pending[i]; savePend(); } }
+function fmtDur(ms){
+  if (ms <= 0) return '0分';
+  const s = Math.floor(ms / 1000);
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  if (d >= 1) return d + '天' + (h > 0 ? h + '时' : '');
+  if (h >= 1) return h + '时' + (m > 0 ? m + '分' : '');
+  return (m > 0 ? m + '分' : Math.max(1, s) + '秒');
+}
+function settlePending(){
+  const now = Date.now();
+  Object.keys(pending).forEach(i => {
+    if (state[String(i)] !== 1){ delete pending[i]; return; }
+    if (pending[i].until <= now){
+      delete pending[i];
+      reps[String(i)] = Math.min(getRep(i) + 1, 5);
+      state[String(i)] = 0;
+    }
+  });
+  save(); saveReps(); savePend();
+}
 function iterInfo(i){
   const s = stateOf(i);
   const rep = getRep(i);
@@ -243,10 +270,8 @@ function iterInfo(i){
   if (s === 'learned'){
     if (pending[i]){
       const leftMs = pending[i].until - Date.now();
-      const left = Math.max(0, Math.ceil(leftMs / 1000));
-      const total = Math.round(pending[i].seq.dur / 1000);
       const pct = Math.max(0, Math.min(100, Math.round((pending[i].seq.dur - leftMs) / pending[i].seq.dur * 100)));
-      return { cls:'learned', st: left + '/' + total + '″', pg: Math.min(rep + 1, 5) + '/5', bar:pct };
+      return { cls:'learned', st: fmtDur(leftMs) + '/' + pending[i].seq.d + '天', pg: Math.min(rep + 1, 5) + '/5', bar:pct };
     }
     return { cls:'learned', st: rep >= 5 ? '✓ 掌握' : '已学会', pg: Math.min(rep + 1, 5) + '/5', bar:0 };
   }
@@ -361,8 +386,8 @@ setInterval(function(){
       changed = true;
     }
   });
-  if (changed) render();
-}, 200);
+  if (changed){ savePend(); render(); }
+}, 1000);
 
 function bookStats(bi){
   const list = byBook[bi].list;
@@ -488,19 +513,19 @@ document.getElementById('btnAll').onclick = () => {
   if (!confirm('将本册「' + byBook[cur].b + '」全部标记为「已掌握」（5/5）？')) return;
   if (!confirm('再次确认：本册共 ' + n + ' 个字将全部变为「已掌握」，无法撤销。确定吗？')) return;
   byBook[cur].list.forEach(i => { state[String(i)] = 1; reps[String(i)] = 5; delete pending[i]; });
-  save(); saveReps(); render();
+  save(); saveReps(); savePend(); render();
 };
 document.getElementById('btnClr').onclick = () => {
   const n = byBook[cur].list.length;
   if (!confirm('重置本册「' + byBook[cur].b + '」：清除本册所有字的学会/复习标记？')) return;
   if (!confirm('再次确认：本册共 ' + n + ' 个字将全部回到「未学会」，无法撤销。确定吗？')) return;
   byBook[cur].list.forEach(i => { delete state[String(i)]; delete reps[String(i)]; delete pending[i]; });
-  save(); saveReps(); render();
+  save(); saveReps(); savePend(); render();
 };
 document.getElementById('btnReset').onclick = () => {
   if (!confirm('重置全部：清除所有字的学会/复习标记？')) return;
   if (!confirm('再次确认：全部 ' + DATA.chars.length + ' 个字将回到「未学会」，所有学习进度丢失，无法撤销。确定吗？')) return;
-  Object.keys(state).forEach(k => delete state[k]); Object.keys(reps).forEach(k => delete reps[k]); Object.keys(pending).forEach(k => delete pending[k]); save(); saveReps(); render();
+  Object.keys(state).forEach(k => delete state[k]); Object.keys(reps).forEach(k => delete reps[k]); Object.keys(pending).forEach(k => delete pending[k]); save(); saveReps(); savePend(); render();
 };
 function showProgress(){
   const cats = [
@@ -589,7 +614,7 @@ function applyCode(body){
   order.forEach(i => valid[String(i)] = true);
   Object.keys(state).forEach(k => { if (!valid[k]) delete state[k]; });
   Object.keys(reps).forEach(k => { if (!valid[k]) delete reps[k]; });
-  save(); saveReps(); render(); renderStat(); renderTabs();
+  save(); saveReps(); savePend(); render(); renderStat(); renderTabs();
 }
 function openExport(){
   const code = exportCode();
@@ -666,6 +691,7 @@ window.addEventListener('keydown', e => {
   window.addEventListener('touchend', () => dragging = false);
 })();
 
+settlePending();
 render();
 </script>
 </body>
