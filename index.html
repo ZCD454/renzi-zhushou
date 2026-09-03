@@ -166,7 +166,18 @@
   textarea.codebox{ resize:vertical; }
   .mrow{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
   .col.star .bar{ outline:2px solid #ffd13b; outline-offset:-2px; }
-  .quizch{ font-size:92px; font-weight:800; text-align:center; padding:8px 0 2px; color:var(--accent); line-height:1.15; letter-spacing:2px; }
+  .quizch{ font-size:150px; font-weight:800; text-align:center; padding:16px 26px; color:#000; line-height:1.15; letter-spacing:2px;
+            border:2px solid #000; border-radius:18px; width:fit-content; margin:8px auto 2px; }
+  .qsel-chip{ position:relative; display:inline-flex; flex-direction:column; align-items:center; background:var(--unlearned);
+              border:1px solid var(--unlearned-bd); color:#d9534f; border-radius:10px; padding:6px 12px; font-size:18px;
+              line-height:1.15; cursor:pointer; user-select:none; transition:.12s; }
+  .qsel-chip.sel::after{ content:"✔"; position:absolute; inset:2px; display:flex; align-items:center; justify-content:center;
+              font-size:30px; color:#2e9e44; background:rgba(255,255,255,.85); border:3px solid #2e9e44; border-radius:8px;
+              line-height:1; z-index:2; }
+  .btn-mini{ border:1px solid var(--line); background:#fff; color:var(--dim); border-radius:999px; padding:2px 10px;
+             font-size:12px; cursor:pointer; font-family:inherit; line-height:1.5; }
+  .btn-mini:hover{ border-color:var(--accent); color:var(--accent); }
+  .ll-levels{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:12px; }
   .quizinfo{ text-align:center; font-size:13px; color:var(--dim); margin:6px 0 2px; }
   .quizans{ margin-top:12px; display:none; }
   .quizans.show{ display:block; }
@@ -265,7 +276,7 @@
     <span class="s" id="bs"></span>
   </div>
   <div class="toolbar">
-    <button class="btn" id="btnQuiz">⭐ 重点字抽认</button>
+    <button class="btn" id="btnQuiz">⭐ 重点字抽查</button>
     <button class="btn" id="btnLearned">📊 学习进度</button>
     <button class="btn" id="btnReset">重置全部</button>
     <button class="btn" id="btnLianlian">🧩 词组连连看</button>
@@ -277,7 +288,7 @@
   </div>
   <div id="grid"></div>
   <div class="empty" id="empty">请点击上方分册标签开始学习</div>
-  <footer>每个字的右上方 ☆ 点一下加为重点 ⭐（再点取消）；点字卡本身只看详情（词组/拆解）。认字用卡片下方按键：「点击开始认字」= 未学会或需复习时点它，变绿开始间隔复习倒计时（第1次2天、第2次4天、第3次7天、第4次15天、第5次30天）；已学会/已掌握时按键变「重置」，点它回到未学会（会先确认）。每次倒计时结束变「需复习」；5 次全过 = 已掌握 ✓。卡下「＋」跳过本次直接进入复习、「−」退回上一级（都要确认）。徽章显示 剩余/总天数。倒计时连同截止时间存在本机，关页不丢；导出/导入编码含状态、复习进度与重点字，iPad ↔ 电脑随时同步。</footer>
+  <footer>每个字的右上方 ☆ 点一下加为重点 ⭐（再点取消）；点字卡本身只看详情（词组/拆解）。认字用卡片下方按键：「学过后点击确认」= 未学会或需复习时点它，变绿开始间隔复习倒计时（第1次2天、第2次4天、第3次7天、第4次15天、第5次30天）；已学会/已掌握时按键变「重置」，点它回到未学会（会先确认）。每次倒计时结束变「需复习」；5 次全过 = 已掌握 ✓。卡下「＋」跳过本次直接进入复习、「−」退回上一级（都要确认）。徽章显示 剩余/总天数。倒计时连同截止时间存在本机，关页不丢；导出/导入编码含状态、复习进度与重点字，iPad ↔ 电脑随时同步。</footer>
 </main>
 
 <div id="detail"><div class="grip" id="dgrip">⠿ 按住这行拖动到任意位置</div><div class="wrap">
@@ -293,7 +304,7 @@
 <div class="lmodal" id="lmodal"><div class="box">
   <div class="head">
     <b id="ltitle">学习进度</b>
-    <div class="ops">
+    <div class="ops" id="lheadops">
       <button class="btn danger" id="lclose">关闭</button>
     </div>
   </div>
@@ -335,7 +346,14 @@
     <button class="btn" id="llClose">关闭</button>
   </div>
   <div class="body" id="llBody">
-    <div class="dz-hint">功能建设中……</div>
+    <div class="ll-levels">
+      <button class="btn ll-level" data-l="1">复习第1级</button>
+      <button class="btn ll-level" data-l="2">复习第2级</button>
+      <button class="btn ll-level" data-l="3">复习第3级</button>
+      <button class="btn ll-level" data-l="4">复习第4级</button>
+      <button class="btn ll-level" data-l="5">复习第5级</button>
+    </div>
+    <div class="dz-hint" id="llTip">请选择一个复习等级（功能建设中……）</div>
   </div>
 </div></div>
 
@@ -498,7 +516,7 @@ function setCardNode(i){
   } else if (x){ x.remove(); }
   let go = card.querySelector('.go');
   if (!go){ go = document.createElement('button'); go.className = 'go'; card.appendChild(go); }
-  go.innerHTML = (info.cls === 'unlearned' || info.cls === 'review') ? '点击<br>开始认字' : '重置';
+  go.innerHTML = (info.cls === 'unlearned' || info.cls === 'review') ? '学过后<br>点击确认' : '重置';
   let sa = card.querySelector('.star');
   if (!sa){
     sa = document.createElement('span');
@@ -522,7 +540,7 @@ function cardHtml(i){
          (info.pg ? '<span class="pg">' + info.pg + '</span>' : '') +
          (info.bar >= 0 ? '<span class="pbar"><i style="width:' + info.bar + '%"></i></span>' : '') +
          '<span class="ops"><b class="m">−</b><b class="p">＋</b><span class="star' + (stars[String(i)] ? ' on' : '') + '">' + (stars[String(i)] ? '⭐' : '☆') + '</span></span>' +
-         '<button class="go">' + (info.cls === 'unlearned' || info.cls === 'review' ? '点击<br>开始认字' : '重置') + '</button></div>';
+         '<button class="go">' + (info.cls === 'unlearned' || info.cls === 'review' ? '学过后<br>点击确认' : '重置') + '</button></div>';
 }
 function afterToggle(i){
   showDetail(i);
@@ -759,6 +777,7 @@ document.getElementById('gmBtnAll').onclick = () => {
 };
 let drawDrawn = [];
 let drawCurIdx = -1;
+let flipSelPrev = [];
 function beginStudyQuiet(i){
   const s = stateOf(i);
   if (s !== 'unlearned' && s !== 'review') return;
@@ -796,7 +815,7 @@ function drawSingle(i){
     '<div class="dz-hint">出自分册 ' + it.b + (it.p ? '　词组：' + it.p : '') + '</div>';
   document.getElementById('drawModal').classList.add('show');
   const next = document.getElementById('dzNext');
-  if (next) next.onclick = () => randomDraw();
+  if (next) next.onclick = () => { beginStudyQuiet(drawCurIdx); randomDraw(); };
   const ret = document.getElementById('dzRet');
   if (ret) ret.onclick = () => {
     drawDrawn = drawDrawn.filter(x => x !== drawCurIdx);
@@ -858,7 +877,6 @@ function randomDraw(){
   document.getElementById('drawTitle').textContent = '随机抽字';
   document.getElementById('drawReset').style.display = 'none';
   document.getElementById('drawAgain').style.display = 'none';
-  beginStudyQuiet(i);
   drawSingle(i);
 }
 let lgCtx = null;
@@ -899,8 +917,8 @@ function bindFlipCells(){
       if (cell.classList.contains('disabled')) return;
       const i = +cell.getAttribute('data-i');
       cell.classList.add('flip', 'disabled');
-      beginStudyQuiet(i);
       showLg(cell.querySelector('.dz-ch').textContent, () => {
+        beginStudyQuiet(i);
         cell.classList.add('done');
         document.getElementById('faceDone').appendChild(cell);
       }, { i: i, cell: cell, mode: 'flip' });
@@ -926,9 +944,10 @@ function flipDraw(){
              '<div class="draw-select-grid" id="flipSelect">';
   list.forEach(i => {
     const it = DATA.chars[i];
-    html += '<div class="dz-cell" data-i="' + i + '"><span class="dz-ch">' + it.c + '</span></div>';
+    const on = flipSelPrev.indexOf(i) >= 0;
+    html += '<div class="dz-cell' + (on ? ' sel' : '') + '" data-i="' + i + '"><span class="dz-ch">' + it.c + '</span></div>';
   });
-  html += '</div><div class="dz-prog" id="flipSelCount">已选 0 / ' + list.length + '</div>' +
+  html += '</div><div class="dz-prog" id="flipSelCount">已选 ' + flipSelPrev.length + ' / ' + list.length + '</div>' +
           '<div class="dz-reset">' +
             '<button class="btn" id="flipSelAll">全部选取</button>' +
             '<button class="btn" id="flipSelNone">全部取消</button>' +
@@ -953,6 +972,7 @@ function flipDraw(){
   };
 }
 function flipStart(sel){
+  flipSelPrev = sel.slice();
   const all = byBook[cur].list;
   const selSet = {};
   sel.forEach(i => selSet[i] = true);
@@ -966,7 +986,8 @@ function flipStart(sel){
     const it = DATA.chars[i];
     html += '<div class="dz-cell draw-back" data-i="' + i + '"><span class="dz-ch">' + it.c + '</span><span class="dz-mark">❓</span></div>';
   });
-  html += '</div><button class="btn flip-reset-btn" id="flipResetCards">打乱顺序<br>未抽卡牌</button></div>' +
+  html += '</div><button class="btn flip-reset-btn" id="flipResetCards">打乱顺序<br>未抽卡牌</button>' +
+          '<button class="btn flip-reset-btn" id="flipRangeGo">选择范围</button></div>' +
           '<div class="draw-done"><div class="dz-sep">已点</div><div class="draw-grid" id="faceDone">';
   unsel.forEach(i => {
     const it = DATA.chars[i];
@@ -976,6 +997,7 @@ function flipStart(sel){
   document.getElementById('drawBody').innerHTML = html;
   document.getElementById('drawModal').classList.add('show');
   bindFlipCells();
+  document.getElementById('flipRangeGo').onclick = () => flipDraw();
 }
 function faceDraw(){
   const list = byBook[cur].list;
@@ -1067,6 +1089,7 @@ document.getElementById('drawReset').onclick = drawResetCurrent;
 document.getElementById('drawBack').onclick = backToGrid;
 document.getElementById('btnLianlian').onclick = () => { document.getElementById('lianlianModal').classList.add('show'); };
 document.getElementById('llClose').onclick = () => { document.getElementById('lianlianModal').classList.remove('show'); };
+document.querySelectorAll('.ll-level').forEach(bt => bt.onclick = () => { document.getElementById('llTip').textContent = '复习第' + bt.getAttribute('data-l') + '级　（功能建设中……）'; });
 document.getElementById('gmClose').onclick = () => { closeDetail(); document.getElementById('gridModal').classList.remove('show'); };
 document.getElementById('btnReset').onclick = () => {
   if (!confirm('重置全部：清除所有字的学会/复习标记？')) return;
@@ -1142,16 +1165,115 @@ function setLTitle(t, lg){
   el.textContent = t;
   el.classList.toggle('lg', !!lg);
 }
+function headOpsReset(){
+  const ops = document.getElementById('lheadops');
+  ['qList','qUnStar','qBackToQuiz'].forEach(id => { const el = ops.querySelector('#' + id); if (el) el.remove(); });
+}
+let quizLock = false;
+let quizSel = [];
 function showQuiz(){
   const pool = quizPool();
   if (!pool.length){
     alert('还没有可抽的重点字 ⭐。\n点字卡上方 ☆ 即可添加，再回来抽。');
     return;
   }
-  if (pool.indexOf(quizIdx) < 0) quizIdx = pool[Math.floor(Math.random() * pool.length)];
+  quizSel = pool.slice();
+  showQuizSelect();
+}
+function showQuizSelect(){
+  const list = order.filter(i => stars[String(i)]);
+  if (!list.length){
+    alert('还没有可抽的重点字 ⭐。\n点字卡上方 ☆ 即可添加，再回来抽。');
+    return;
+  }
+  quizLock = true;
+  headOpsReset();
+  document.getElementById('lheadops').insertAdjacentHTML('afterbegin', '<button class="btn" id="qList">📋 所有重点字</button>');
+  setLTitle('⭐重点字抽查　先选择要抽查的字', false);
+  let sects = '';
+  byBook.forEach(rec => {
+    const its = rec.list.filter(i => stars[String(i)]);
+    if (!its.length) return;
+    let chips = '';
+    its.forEach(i => {
+      const on = quizSel.indexOf(i) >= 0;
+      chips += '<span class="qsel-chip' + (on ? ' sel' : '') + '" data-i="' + i + '">' + DATA.chars[i].c + '</span>';
+    });
+    const bSel = its.filter(i => quizSel.indexOf(i) >= 0).length;
+    sects += '<div class="tx-row"><h4 data-b="' + rec.b + '">分册 ' + rec.b +
+             ' <span class="n">已选 ' + bSel + ' / ' + its.length + '</span>' +
+             ' <button class="btn-mini">' + (bSel === its.length ? '取消本册' : '全选本册') + '</button></h4>' +
+             '<div class="lm-chips" data-rows="' + rec.b + '">' + chips + '</div></div>';
+  });
+  document.getElementById('lbody').innerHTML =
+    '<div class="hint">可点单个字选择/取消，也可按分册点「全选本册/取消本册」一次选取；被选上的字会盖上一个绿色大勾。选好后点「开始抽查」。</div>' +
+    sects +
+    '<div class="dz-prog" id="qselCount">已选 ' + quizSel.length + ' / ' + list.length + '</div>' +
+    '<div class="mrow">' +
+      '<button class="btn" id="qSelAll">全部选取</button>' +
+      '<button class="btn" id="qSelNone">全部取消</button>' +
+      '<button class="btn" id="qSelGo">开始抽查</button>' +
+    '</div>';
+  const upd = () => {
+    document.getElementById('qselCount').textContent = '已选 ' + quizSel.length + ' / ' + list.length;
+  };
+  function bookCount(b){
+    const h4 = document.querySelector('.tx-row h4[data-b="' + b + '"]');
+    if (!h4) return;
+    const chips = document.querySelectorAll('.lm-chips[data-rows="' + b + '"] .qsel-chip');
+    const n = chips.length;
+    const s = document.querySelectorAll('.lm-chips[data-rows="' + b + '"] .qsel-chip.sel').length;
+    h4.querySelector('.n').textContent = '已选 ' + s + ' / ' + n;
+    h4.querySelector('.btn-mini').textContent = s === n ? '取消本册' : '全选本册';
+  }
+  function renderAll(){
+    upd();
+    byBook.forEach(rec => bookCount(rec.b));
+  }
+  document.querySelectorAll('.qsel-chip').forEach(ch => {
+    ch.onclick = () => {
+      const i = +ch.getAttribute('data-i');
+      const ix = quizSel.indexOf(i);
+      if (ix >= 0){ quizSel.splice(ix, 1); ch.classList.remove('sel'); }
+      else { quizSel.push(i); ch.classList.add('sel'); }
+      const b = ch.closest('[data-rows]').getAttribute('data-rows');
+      bookCount(b); upd();
+    };
+  });
+  document.querySelectorAll('.btn-mini').forEach(bt => {
+    bt.onclick = () => {
+      const b = bt.closest('h4').getAttribute('data-b');
+      const chips = document.querySelectorAll('.lm-chips[data-rows="' + b + '"] .qsel-chip');
+      const its = [];
+      chips.forEach(ch => its.push(+ch.getAttribute('data-i')));
+      const allSel = its.every(i => quizSel.indexOf(i) >= 0);
+      if (allSel){ its.forEach(i => { const ix = quizSel.indexOf(i); if (ix >= 0) quizSel.splice(ix, 1); }); }
+      else { its.forEach(i => { if (quizSel.indexOf(i) < 0) quizSel.push(i); }); }
+      chips.forEach(ch => ch.classList.toggle('sel', quizSel.indexOf(+ch.getAttribute('data-i')) >= 0));
+      bookCount(b); upd();
+    };
+  });
+  document.getElementById('qSelAll').onclick = () => { list.forEach(i => { if (quizSel.indexOf(i) < 0) quizSel.push(i); }); document.querySelectorAll('.qsel-chip').forEach(ch => ch.classList.add('sel')); renderAll(); };
+  document.getElementById('qSelNone').onclick = () => { quizSel = []; document.querySelectorAll('.qsel-chip').forEach(ch => ch.classList.remove('sel')); renderAll(); };
+  document.getElementById('qSelGo').onclick = () => {
+    if (!quizSel.length){ alert('请至少选择 1 个字'); return; }
+    quizIdx = -1;
+    quizDraw();
+  };
+  document.getElementById('qList').onclick = showStarList;
+  document.getElementById('lmodal').classList.add('show');
+}
+function quizDraw(){
+  if (!quizSel.length){ showQuizSelect(); return; }
+  if (quizSel.indexOf(quizIdx) < 0) quizIdx = quizSel[Math.floor(Math.random() * quizSel.length)];
   const it = DATA.chars[quizIdx];
   const bq = it.b.split('-');
-  setLTitle('⭐重点字抽认　当前字：' + it.c + '　第' + bq[0] + '本　分册' + it.b, false);
+  quizLock = true;
+  headOpsReset();
+  document.getElementById('lheadops').insertAdjacentHTML('afterbegin',
+    '<button class="btn" id="qList">📋 所有重点字</button>' +
+    '<button class="btn" id="qUnStar">☆ 取消 ⭐</button>');
+  setLTitle('⭐重点字抽查　当前字：' + it.c + '　第' + bq[0] + '本　分册' + it.b, false);
   document.getElementById('lbody').innerHTML =
     '<div class="quiz">' +
       '<div class="quizch">' + it.c + '</div>' +
@@ -1159,32 +1281,35 @@ function showQuiz(){
       '<div class="phrase">' + (it.p ? it.p.split(/\s+/).filter(Boolean).map(x => '<span>' + x + '</span>').join('') : '<span>（暂无词组）</span>') + '</div>' +
       '<div class="expl">' + (it.x || ('出自分册 ' + it.b)) + '</div>' +
       '<div class="quizbtns">' +
-        '<button class="btn" id="qList">📋 所有重点字</button>' +
-        '<button class="btn" id="qUnStar">☆ 取消 ⭐</button>' +
         '<button class="btn" id="qAgain">🎲 再抽一个</button>' +
+        '<button class="btn" id="qSelBack">选择范围</button>' +
         '<button class="btn" id="qBye">关闭</button>' +
       '</div>' +
     '</div>';
-  document.getElementById('qBye').onclick = () => document.getElementById('lmodal').classList.remove('show');
-  document.getElementById('qAgain').onclick = () => { quizIdx = -1; showQuiz(); };
+  document.getElementById('qBye').onclick = () => { headOpsReset(); quizLock = false; document.getElementById('lmodal').classList.remove('show'); };
+  document.getElementById('qAgain').onclick = () => { quizIdx = -1; quizDraw(); };
+  document.getElementById('qSelBack').onclick = showQuizSelect;
   document.getElementById('qList').onclick = showStarList;
   document.getElementById('qUnStar').onclick = () => {
     if (!confirm('确认取消「' + it.c + '」的重点标记 ⭐？')) return;
     delete stars[String(quizIdx)];
     saveStars();
     setCardNode(quizIdx);
-    quizIdx = -1; showQuiz();
+    quizSel = quizSel.filter(x => x !== quizIdx);
+    quizIdx = -1;
+    showQuizSelect();
   };
   document.getElementById('lmodal').classList.add('show');
 }
 function showStarList(){
   const list = order.filter(i => stars[String(i)]);
+  quizLock = false;
+  headOpsReset();
+  document.getElementById('lheadops').insertAdjacentHTML('afterbegin', '<button class="btn" id="qBackToQuiz">← 返回抽字</button>');
   setLTitle('⭐ 重点字', true);
   if (!list.length){
-    document.getElementById('lbody').innerHTML = '<div class="lm-empty">还没有重点字 ⭐　（共 0 个）\n点字卡上方 ☆ 即可添加。</div>' +
-      '<div class="mrow"><button class="btn" id="qBackToQuiz">← 返回抽认</button><button class="btn" id="qClose2">关闭</button></div>';
-    document.getElementById('qBackToQuiz').onclick = () => { quizIdx = -1; showQuiz(); };
-    document.getElementById('qClose2').onclick = () => document.getElementById('lmodal').classList.remove('show');
+    document.getElementById('lbody').innerHTML = '<div class="lm-empty">还没有重点字 ⭐　（共 0 个）\n点字卡上方 ☆ 即可添加。</div>';
+document.getElementById('qBackToQuiz').onclick = () => { quizIdx = -1; showQuizSelect(); };
     document.getElementById('lmodal').classList.add('show');
     return;
   }
@@ -1206,11 +1331,9 @@ function showStarList(){
   });
   document.getElementById('lbody').innerHTML =
     '<div class="hint">共 ' + list.length + ' 个重点字（按分册排列），点一下跳到对应字。字卡上方 ☆/⭐ 可随时加/删。</div>' +
-    sects +
-    '<div class="mrow"><button class="btn" id="qBackToQuiz">← 返回抽认</button><button class="btn" id="qClose2">关闭</button></div>';
+    sects;
   document.getElementById('lbody').querySelectorAll('.lm-chip').forEach(ch => ch.onclick = () => jumpTo(+ch.dataset.i));
-  document.getElementById('qBackToQuiz').onclick = () => { quizIdx = -1; showQuiz(); };
-  document.getElementById('qClose2').onclick = () => document.getElementById('lmodal').classList.remove('show');
+  document.getElementById('qBackToQuiz').onclick = () => { quizIdx = -1; showQuizSelect(); };
   document.getElementById('lmodal').classList.add('show');
 }
 document.getElementById('btnQuiz').onclick = () => { quizIdx = -1; showQuiz(); };
@@ -1335,8 +1458,8 @@ function fallbackCopy2(txt, done){
 }
 document.getElementById('btnExp').onclick = openExport;
 document.getElementById('btnImp').onclick = openImport;
-document.getElementById('lclose').onclick = () => document.getElementById('lmodal').classList.remove('show');
-document.getElementById('lmodal').addEventListener('click', e => { if (e.target.id === 'lmodal') e.target.classList.remove('show'); });
+document.getElementById('lclose').onclick = () => { headOpsReset(); quizLock = false; document.getElementById('lmodal').classList.remove('show'); };
+document.getElementById('lmodal').addEventListener('click', e => { if (e.target.id === 'lmodal' && !quizLock) e.target.classList.remove('show'); });
 window.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' && !searching && cur < books.length-1) { cur++; render(); }
   if (e.key === 'ArrowLeft'  && !searching && cur > 0) { cur--; render(); }
