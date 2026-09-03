@@ -37,6 +37,7 @@
   .tab.on{ background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600; }
   .tab .cnt{ opacity:.65; font-size:11px; margin-left:4px; }
   .tab.done::after{ content:"✓"; margin-left:5px; color:#3ba55d; font-weight:800; }
+  .tab.todo::after{ content:"●"; margin-left:5px; color:#e74c3c; font-weight:700; }
   .tab.on.done::after{ color:#fff; }
 
   main{ padding:10px 12px 80px; width:min(1680px,96vw); margin:0 auto; }
@@ -53,8 +54,75 @@
   .lmodal .box{ background:#fff; border-radius:18px; max-width:860px; width:94vw; max-height:86vh; display:flex; flex-direction:column; box-shadow:0 10px 40px rgba(0,0,0,.28); }
   .lmodal .head{ display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:6px; }
   .lmodal .head b{ font-size:16px; }
+  .lmodal .head b small{ font-size:12px; color:#9a9a9a; font-weight:400; }
   .lmodal .head .ops{ display:flex; gap:8px; }
   .lmodal .body{ overflow:auto; padding:14px 18px 20px; }
+  #gridModal .box{ max-width:960px; max-height:92vh; }
+  #gridModal .gm-head{ display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:8px; }
+  #gridModal .gm-head h2{ margin:0; font-size:16px; }
+  #gridModal .gm-head .gm-stats{ font-size:13px; color:var(--dim); }
+  #gridModal .gm-toolbar{ display:flex; flex-wrap:wrap; gap:8px; padding:12px 18px; border-bottom:1px solid var(--line); }
+  #gridModal .gm-toolbar .gm-draw{ color:#000; background:#fff6c9; border-color:#e6d576; }
+  #gridModal .gm-toolbar-right{ display:flex; gap:8px; flex-wrap:wrap; margin-left:auto; }
+  #gridModal .gm-body{ overflow:auto; padding:14px 18px 20px; }
+  #gridModal #gmGrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(76px,1fr)); gap:10px; }
+  .draw-box{ max-width:900px; max-height:92vh; }
+  .draw-single{ display:flex; justify-content:center; align-items:center; padding:20px 0 10px; }
+  .draw-single .dz-cell{ width:220px; height:220px; }
+  .dz-cell{ position:relative; background:#fff; border:1px solid rgba(128,128,128,.5);
+            background-image:linear-gradient(rgba(128,128,128,.5),rgba(128,128,128,.5)) 50% 50%/1px 100% no-repeat,
+                             linear-gradient(rgba(128,128,128,.5),rgba(128,128,128,.5)) 50% 50%/100% 1px no-repeat;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; user-select:none; box-sizing:border-box; overflow:hidden; }
+  .dz-cell .dz-ch{ font-size:70px; font-weight:700; color:#000; line-height:1; }
+  .draw-single .dz-cell .dz-ch{ font-size:150px; }
+  .draw-grid{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .draw-select-grid{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .draw-select-grid .dz-cell{ width:86px; height:86px; border-color:#8ab8d6; }
+  .dz-cell.sel{ border-color:#2e9e44; }
+  .dz-cell.sel::after{ content:"✔"; position:absolute; inset:6px; display:flex; align-items:center; justify-content:center;
+              font-size:54px; color:#2e9e44; background:rgba(255,255,255,.8); border:3px solid #2e9e44; border-radius:10px;
+              line-height:1; z-index:2; }
+  .draw-grid .dz-cell{ width:86px; height:86px; }
+  .draw-grid .dz-cell .dz-ch{ font-size:40px; }
+  .draw-lg{ position:fixed; inset:0; background:rgba(0,0,0,.35); display:none;
+            align-items:center; justify-content:center; z-index:70; cursor:pointer; }
+  .draw-lg.show{ display:flex; }
+  .draw-lg .lg-cell{ width:300px; height:300px; }
+  .draw-lg .lg-cell .dz-ch{ font-size:210px; }
+  .draw-all-panel{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+            width:min(560px,85vw); max-width:90vw; background:#fff; border:1px solid #ddd;
+            border-radius:12px; box-shadow:0 12px 44px rgba(0,0,0,.32); z-index:75;
+            display:flex; flex-direction:column; padding:12px 16px 16px; box-sizing:border-box; }
+  .draw-all-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .draw-all-head b{ font-size:16px; }
+  .draw-all-body{ flex:1; overflow:auto; max-height:62vh; }
+  .dz-next{ margin-left:24px; font-size:15px; padding:14px 20px; box-sizing:border-box; }
+  .draw-single{ flex-wrap:wrap; gap:8px; }
+  .draw-single .dz-cell{ width:220px; height:220px; flex:none; }
+  .lg-inner{ display:flex; flex-direction:column; align-items:center; gap:18px; }
+  .lg-actions{ display:flex; gap:12px; }
+  .lg-actions .btn{ cursor:pointer; }
+  .draw-back{ border-color:#000; }
+  .draw-back .dz-ch{ color:transparent; }
+  .draw-back .dz-mark{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:34px; color:#999; }
+  .draw-back.flip .dz-ch{ color:#000; }
+  .draw-back.flip .dz-mark{ display:none; }
+  .dz-cell.done::after{ content:"✔"; position:absolute; right:2px; bottom:2px; font-size:18px; color:#2e9e44; font-weight:700; line-height:1; }
+  .dz-cell.finish{ cursor:pointer; border-color:var(--accent); }
+  .dz-cell.finish:hover{ border-color:#e0683e; box-shadow:0 0 0 2px rgba(224,104,62,.25); }
+  .dz-cell.finish .dz-ch{ font-size:30px; line-height:1.5; text-align:center; color:#666; font-weight:600; }
+  .dz-cell.disabled{ cursor:default; }
+  .dz-cell.disabled .dz-ch{ opacity:1; }
+  .dz-hint{ text-align:center; color:var(--dim); font-size:13px; margin:6px 0 12px; }
+  .dz-prog{ text-align:center; color:var(--accent); font-weight:700; font-size:14px; margin:2px 0 8px; }
+  .dz-reset{ text-align:center; margin:2px 0 10px; }
+  .draw-done{ margin-top:14px; border-top:2px dashed rgba(128,128,128,.4); padding-top:8px; }
+  .draw-flip-row{ display:flex; gap:16px; align-items:flex-start; justify-content:center; flex-wrap:wrap; }
+  .draw-flip-row .draw-grid{ flex:1 1 0; }
+  .flip-reset-btn{ align-self:center; margin-top:26px; }
+  .dz-sep{ font-size:12px; color:var(--dim); margin-bottom:6px; }
+  .dz-hint{ text-align:center; color:var(--dim); font-size:13px; margin:6px 0 12px; }
   .lm-row{ margin-bottom:16px; }
   .lm-row h4{ font-size:14px; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
   .lm-row h4 .n{ color:var(--dim); font-weight:400; font-size:12px; }
@@ -119,6 +187,10 @@
   input[type=text]{ flex:1; min-width:180px; border:1px solid var(--line); border-radius:10px; padding:8px 14px; font-size:14px; font-family:inherit; outline:none; }
   input[type=text]:focus{ border-color:var(--accent); }
 
+  .locline{ display:flex; align-items:center; gap:10px; margin:4px 0 10px; }
+  .locline input{ flex:1; max-width:320px; }
+  .locresult{ font-size:14px; color:var(--accent); font-weight:600; white-space:nowrap; }
+
   #grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(76px,1fr)); gap:10px; }
   .card{ position:relative; background:#fff; border:2px solid var(--line); border-radius:14px; cursor:pointer;
          display:flex; flex-direction:column; align-items:center; padding:12px 4px 8px; transition:transform .1s, box-shadow .15s; user-select:none; }
@@ -153,7 +225,7 @@
   .card.unlearned .st{ background:#d9534f; text-decoration:none; }
   @keyframes pop{ 0%{ transform:scale(.9);} 100%{ transform:scale(1);} }
 
-  #detail{ position:fixed; top:90px; right:20px; z-index:30; width:330px; max-width:94vw; background:#fff; border:2px solid var(--accent);
+  #detail{ position:fixed; top:90px; right:20px; z-index:80; width:330px; max-width:94vw; background:#fff; border:2px solid var(--accent);
            border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.22); display:none; }
   #detail.show{ display:block; }
   #detail .grip{ cursor:move; user-select:none; touch-action:none; padding:6px 12px; font-size:11px; color:var(--accent);
@@ -166,6 +238,8 @@
   #detail .explain{ font-size:13px; color:#77705f; margin-top:6px; }
   #detail .x{ flex:none; color:var(--dim); font-size:20px; cursor:pointer; padding:4px; }
   .empty{ color:var(--dim); text-align:center; padding:40px 0; font-size:15px; }
+  .ll-entry{ text-align:center; margin:18px 0 6px; }
+  .ll-entry .btn{ font-size:15px; padding:12px 26px; }
   footer{ text-align:center; color:var(--dim); font-size:12px; padding:6px 0 70px; }
 </style>
 </head>
@@ -191,15 +265,18 @@
     <span class="s" id="bs"></span>
   </div>
   <div class="toolbar">
-    <input type="text" id="q" placeholder="🔍 搜任意字（回车回到本册）…">
     <button class="btn" id="btnQuiz">⭐ 重点字抽认</button>
     <button class="btn" id="btnLearned">📊 学习进度</button>
-    <button class="btn" id="btnAll">本册已学会</button>
-    <button class="btn danger" id="btnClr">重置本册</button>
-    <button class="btn danger" id="btnReset">重置全部</button>
+    <button class="btn" id="btnReset">重置全部</button>
+    <button class="btn" id="btnLianlian">🧩 词组连连看</button>
+  </div>
+  <div class="locline">
+    <input type="text" id="locQ" placeholder="🔍 输字查位置…">
+    <span class="locresult" id="locR"></span>
+    <button class="btn" id="locBtn" style="display:none">▶ 打开字卡</button>
   </div>
   <div id="grid"></div>
-  <div class="empty" id="empty">没有找到匹配的字。</div>
+  <div class="empty" id="empty">请点击上方分册标签开始学习</div>
   <footer>每个字的右上方 ☆ 点一下加为重点 ⭐（再点取消）；点字卡本身只看详情（词组/拆解）。认字用卡片下方按键：「点击开始认字」= 未学会或需复习时点它，变绿开始间隔复习倒计时（第1次2天、第2次4天、第3次7天、第4次15天、第5次30天）；已学会/已掌握时按键变「重置」，点它回到未学会（会先确认）。每次倒计时结束变「需复习」；5 次全过 = 已掌握 ✓。卡下「＋」跳过本次直接进入复习、「−」退回上一级（都要确认）。徽章显示 剩余/总天数。倒计时连同截止时间存在本机，关页不丢；导出/导入编码含状态、复习进度与重点字，iPad ↔ 电脑随时同步。</footer>
 </main>
 
@@ -221,6 +298,67 @@
     </div>
   </div>
   <div class="body" id="lbody"></div>
+</div></div>
+
+<div class="lmodal" id="drawModal"><div class="box draw-box">
+  <div class="head">
+    <b id="drawTitle">随机抽字</b>
+    <div class="ops">
+      <button class="btn" id="drawAll">显示本册所有的字</button>
+      <button class="btn" id="drawBack">← 返回</button>
+      <button class="btn" id="drawReset" style="display:none">重置</button>
+      <button class="btn" id="drawAgain">随机抽字</button>
+    </div>
+  </div>
+  <div class="body" id="drawBody"></div>
+  <div class="draw-lg" id="drawLg">
+    <div class="lg-inner">
+      <div class="dz-cell lg-cell"><span class="dz-ch"></span></div>
+      <div class="lg-actions">
+        <button class="btn" id="lgBack">翻回去</button>
+        <button class="btn" id="lgStar">加入重点字</button>
+      </div>
+    </div>
+  </div>
+  <div class="draw-all-panel" id="drawAllPanel" style="display:none">
+    <div class="draw-all-head">
+      <b>本册所有字</b>
+      <button class="btn" id="drawBackDraw">返回抽字</button>
+    </div>
+    <div class="draw-all-body" id="drawAllBody"></div>
+  </div>
+</div></div>
+
+<div class="lmodal" id="lianlianModal"><div class="box">
+  <div class="head">
+    <b>词组连连看</b>
+    <button class="btn" id="llClose">关闭</button>
+  </div>
+  <div class="body" id="llBody">
+    <div class="dz-hint">功能建设中……</div>
+  </div>
+</div></div>
+
+<div class="lmodal" id="gridModal"><div class="box">
+  <div class="gm-head">
+    <h2 id="gmTitle">第 1 本 · 分册 1-1</h2>
+    <span class="gm-stats" id="gmStats">共 9 字 · 已学会 0</span>
+    <button class="btn danger" id="gmClose">关闭</button>
+  </div>
+  <div class="gm-toolbar">
+    <button class="btn gm-draw" id="gmBtnFace">明牌抽字</button>
+    <button class="btn gm-draw" id="gmBtnDrawLearn">随机抽字</button>
+    <button class="btn gm-draw" id="gmBtnFlip">翻转抽字</button>
+    <span class="gm-toolbar-right">
+      <button class="btn" id="gmBtnStageComplete">现阶段-本册已完成</button>
+      <button class="btn" id="gmBtnAll">全阶段-本册已学会</button>
+      <button class="btn danger" id="gmBtnClr">重置本册</button>
+    </span>
+  </div>
+  <div class="gm-body">
+    <div id="gmGrid"></div>
+    <div class="empty" id="gmEmpty">没有找到匹配的字。</div>
+  </div>
 </div></div>
 
 <script>
@@ -261,6 +399,24 @@ const SEQ_DAYS = [2, 4, 7, 15, 30];
 function seqFor(rep){ if (rep >= 5) return null; return { dur: SEQ_DAYS[rep] * 86400000, d: SEQ_DAYS[rep] }; }
 function stateOf(i){ const s = state[String(i)]; return s === 1 ? 'learned' : (s === 0 ? 'review' : 'unlearned'); }
 function getRep(i){ return reps[String(i)] || 0; }
+function stageCompleteAll(){
+  const inCount = byBook[cur].list.filter(i => stateOf(i) === 'learned' && pending[i]).length;
+  if (!confirm('将本册所有字都「点击开始认字」进入倒计时；已在倒计时的字，则推进到下一阶段的倒计时？\n（本册共 ' + byBook[cur].list.length + ' 字，其中 ' + (byBook[cur].list.length - inCount) + ' 个将新进入倒计时，' + inCount + ' 个将推进到下一阶段）\n确定吗？')) return;
+  byBook[cur].list.forEach(i => {
+    if (stateOf(i) === 'learned' && pending[i]){
+      const r = Math.min(getRep(i) + 1, 5);
+      reps[String(i)] = r;
+      clearPending(i);
+      state[String(i)] = 1;
+      startCountdown(i);
+    } else {
+      state[String(i)] = 1;
+      clearPending(i);
+      startCountdown(i);
+    }
+  });
+  save(); saveReps(); savePend(); renderGrid(); renderTabs();
+}
 function lvOf(i){
   const s = stateOf(i);
   const rep = getRep(i);
@@ -269,7 +425,12 @@ function lvOf(i){
   return s === 'review' ? Math.max(1, rep) : Math.min(rep + 1, 5);
 }
 function toggleStar(i){
-  if (stars[String(i)]) delete stars[String(i)]; else stars[String(i)] = true;
+  if (stars[String(i)]){
+    if (!confirm('确定要把这个字从「重点字」中取消吗？')) return;
+    delete stars[String(i)];
+  } else {
+    stars[String(i)] = true;
+  }
   saveStars();
   setCardNode(i);
 }
@@ -306,16 +467,16 @@ function settlePending(){
 function iterInfo(i){
   const s = stateOf(i);
   const rep = getRep(i);
-  if (s === 'review'){ return { cls:'review', st:'需复习', pg: rep + '/5', bar:0 }; }
+  if (s === 'review'){ return { cls:'review', st:'需复习', pg: rep + '/5', bar:-1 }; }
   if (s === 'learned'){
     if (pending[i]){
       const leftMs = pending[i].until - Date.now();
       const pct = Math.max(0, Math.min(100, Math.round((pending[i].seq.dur - leftMs) / pending[i].seq.dur * 100)));
       return { cls:'learned', st: fmtDur(leftMs) + '<br>/' + pending[i].seq.d + '天', pg: Math.min(rep + 1, 5) + '/5', bar:pct };
     }
-    return { cls:'learned', st: rep >= 5 ? '✓ 掌握' : '已学会', pg: Math.min(rep + 1, 5) + '/5', bar:0 };
+    return { cls:'learned', st: rep >= 5 ? '✓ 掌握' : '已学会', pg: Math.min(rep + 1, 5) + '/5', bar:-1 };
   }
-  return { cls:'unlearned', st:'未学会', pg:'', bar:0 };
+  return { cls:'unlearned', st:'未学会', pg:'', bar:-1 };
 }
 function setPg(card, pg){
   let el = card.querySelector('.pg');
@@ -347,7 +508,7 @@ function setCardNode(i){
   if (stars[String(i)]){ sa.classList.add('on'); sa.textContent = '⭐'; }
   else { sa.classList.remove('on'); sa.textContent = '☆'; }
   let b = card.querySelector('.pbar');
-  if (info.bar > 0){
+  if (info.bar >= 0){
     if (!b){ b = document.createElement('span'); b.className = 'pbar'; b.innerHTML = '<i></i>'; card.appendChild(b); }
     b.querySelector('i').style.width = info.bar + '%';
   } else if (b){ b.remove(); }
@@ -359,7 +520,7 @@ function cardHtml(i){
          (info.cls === 'unlearned' ? '<span class="x">×</span>' : '') +
          '<span class="ch">' + it.c + '</span><span class="st">' + info.st + '</span>' +
          (info.pg ? '<span class="pg">' + info.pg + '</span>' : '') +
-         (info.bar > 0 ? '<span class="pbar"><i style="width:' + info.bar + '%"></i></span>' : '') +
+         (info.bar >= 0 ? '<span class="pbar"><i style="width:' + info.bar + '%"></i></span>' : '') +
          '<span class="ops"><b class="m">−</b><b class="p">＋</b><span class="star' + (stars[String(i)] ? ' on' : '') + '">' + (stars[String(i)] ? '⭐' : '☆') + '</span></span>' +
          '<button class="go">' + (info.cls === 'unlearned' || info.cls === 'review' ? '点击<br>开始认字' : '重置') + '</button></div>';
 }
@@ -367,10 +528,6 @@ function afterToggle(i){
   showDetail(i);
   renderTabs();
   renderStat();
-  if (!searching){
-    const st = bookStats(cur);
-    document.getElementById('bs').textContent = '共 ' + st.total + ' 字 · 已学会 ' + bookStats(cur).learned;
-  }
 }
 function cardStateSwitch(i){
   const s = stateOf(i);
@@ -459,22 +616,20 @@ function renderTabs(){
     const l = parseInt(b.split('-')[0]);
     if (l !== lvl) { lvl = l; html += '<div class="lvl"><span class="lvl-tag">第' + l + '级</span><div class="lvl-btns">'; }
     const st = bookStats(i);
-    const done = st.learned === st.total ? 'done' : '';
+    const done = st.learned === st.total ? 'done' : 'todo';
     html += '<button class="tab ' + (i === cur ? 'on ' : '') + done + '" data-i="' + i + '">' + b +
             '<span class="cnt">' + st.learned + '/' + st.total + '</span></button>';
     if (i + 1 >= books.length || parseInt(books[i+1].split('-')[0]) !== l) html += '</div></div>';
   });
   el.innerHTML = html;
-  el.querySelectorAll('.tab').forEach(t => t.onclick = () => { cur = +t.dataset.i; render(); });
+  el.querySelectorAll('.tab').forEach(t => t.onclick = () => { cur = +t.dataset.i; showBookModal(cur); });
 }
 
 function renderGrid(){
-  const grid = document.getElementById('grid');
+  const grid = document.getElementById('gmGrid');
   const st = bookStats(cur);
-  document.getElementById('bt').textContent = '第 ' + books[cur].replace('-', ' 本 · 分册 ') + ' · ' + books[cur];
-  document.getElementById('bs').textContent = '共 ' + st.total + ' 字 · 已学会 ' + st.learned;
-  document.getElementById('q').value = '';
-  searching = false;
+  document.getElementById('gmTitle').textContent = '第 ' + books[cur].replace('-', ' 本 · 分册 ') + ' · ' + books[cur];
+  document.getElementById('gmStats').textContent = '共 ' + st.total + ' 字 · 已学会 ' + st.learned;
   let html = '';
   byBook[cur].list.forEach(i => {
     html += cardHtml(i);
@@ -499,44 +654,15 @@ function renderGrid(){
     e.stopPropagation();
     toggleStar(+b.closest('.card').dataset.i);
   });
-  document.getElementById('empty').style.display = 'none';
+  document.getElementById('gmEmpty').style.display = 'none';
   grid.style.display = '';
 }
 
-function renderSearch(q){
-  const grid = document.getElementById('grid');
-  searching = true;
-  document.getElementById('bt').textContent = '全部书目 · 搜索结果';
-  document.getElementById('bs').textContent = '输入：' + q;
-  const rows = [];
-  order.forEach(i => { if (DATA.chars[i].c.includes(q)) rows.push(i); });
-  let html = '';
-  rows.forEach(i => {
-    html += cardHtml(i);
-  });
-  grid.innerHTML = html;
-  grid.querySelectorAll('.card').forEach(c => c.onclick = () => {
-    showDetail(+c.dataset.i);
-  });
-  grid.querySelectorAll('.card .m').forEach(b => b.onclick = e => {
-    e.stopPropagation();
-    retreat(+b.closest('.card').dataset.i);
-  });
-  grid.querySelectorAll('.card .p').forEach(b => b.onclick = e => {
-    e.stopPropagation();
-    advance(+b.closest('.card').dataset.i);
-  });
-  grid.querySelectorAll('.card .go').forEach(b => b.onclick = e => {
-    e.stopPropagation();
-    cardStateSwitch(+b.closest('.card').dataset.i);
-  });
-  grid.querySelectorAll('.card .star').forEach(b => b.onclick = e => {
-    e.stopPropagation();
-    toggleStar(+b.closest('.card').dataset.i);
-  });
-  document.getElementById('empty').style.display = rows.length ? 'none' : '';
-  document.getElementById('empty').textContent = '没有找到匹配的字。';
-  grid.style.display = rows.length ? '' : 'none';
+function showBookModal(bookIdx){
+  cur = bookIdx;
+  renderGrid();
+  renderTabs();
+  document.getElementById('gridModal').classList.add('show');
 }
 
 function showDetail(i){
@@ -552,7 +678,8 @@ function showDetail(i){
   document.getElementById('dstar').textContent = stars[String(i)] ? '☆ 取消重点' : '⭐ 标为重点';
   document.getElementById('detail').classList.add('show');
 }
-document.getElementById('dclose').onclick = () => document.getElementById('detail').classList.remove('show');
+function closeDetail(){ document.getElementById('detail').classList.remove('show'); }
+document.getElementById('dclose').onclick = closeDetail;
 document.getElementById('dstar').onclick = () => {
   if (detailIdx < 0) return;
   toggleStar(detailIdx);
@@ -573,32 +700,374 @@ function renderStat(){
 
 function render(){
   renderTabs();
-  if (searching && document.getElementById('q').value) renderSearch(document.getElementById('q').value);
-  else renderGrid();
   renderStat();
+  document.getElementById('bt').textContent = '请点击上方分册标签开始学习';
+  document.getElementById('bs').textContent = '';
+  document.getElementById('empty').style.display = '';
 }
 
-document.getElementById('q').addEventListener('input', function(e){
+let drawMode = 'single';
+let locTarget = -1;
+document.getElementById('locQ').addEventListener('input', function(e){
   const v = this.value.trim();
-  if (v) renderSearch(v); else render();
+  const out = document.getElementById('locR');
+  const btn = document.getElementById('locBtn');
+  if (!v){ out.textContent = ''; btn.style.display = 'none'; locTarget = -1; return; }
+  const found = [];
+  order.forEach(i => { if (DATA.chars[i].c === v) found.push(i); });
+  if (!found.length){ out.textContent = '未找到「' + v + '」'; btn.style.display = 'none'; locTarget = -1; return; }
+  locTarget = found[0];
+  const locs = [];
+  found.forEach(i => {
+    const b = DATA.chars[i].b;
+    const lv = b.split('-')[0];
+    locs.push('第' + lv + '级 ' + b);
+  });
+  out.textContent = locs.join('　');
+  btn.style.display = '';
 });
-document.getElementById('q').addEventListener('keydown', function(e){
-  if (e.key === 'Enter') { if (this.value.trim()) this.value = ''; render(); }
-});
-document.getElementById('btnAll').onclick = () => {
+document.getElementById('locBtn').onclick = () => {
+  if (locTarget < 0) return;
+  const bi = byBook.findIndex(x => x.list.indexOf(locTarget) >= 0);
+  if (bi < 0) return;
+  showBookModal(bi);
+};
+(function(){
+  const f = document.querySelector('footer');
+  if (f) f.innerHTML = f.textContent.replace(/。/g, '。<br>');
+})();
+document.getElementById('gmBtnAll').onclick = () => {
   const n = byBook[cur].list.length;
   if (!confirm('将本册「' + byBook[cur].b + '」全部标记为「已掌握」（5/5）？')) return;
   if (!confirm('再次确认：本册共 ' + n + ' 个字将全部变为「已掌握」，无法撤销。确定吗？')) return;
   byBook[cur].list.forEach(i => { state[String(i)] = 1; reps[String(i)] = 5; delete pending[i]; });
-  save(); saveReps(); savePend(); render();
+  save(); saveReps(); savePend(); renderGrid(); renderTabs();
 };
-document.getElementById('btnClr').onclick = () => {
+document.getElementById('gmBtnClr').onclick = () => {
   const n = byBook[cur].list.length;
   if (!confirm('重置本册「' + byBook[cur].b + '」：清除本册所有字的学会/复习标记？')) return;
   if (!confirm('再次确认：本册共 ' + n + ' 个字将全部回到「未学会」，无法撤销。确定吗？')) return;
   byBook[cur].list.forEach(i => { delete state[String(i)]; delete reps[String(i)]; delete pending[i]; });
-  save(); saveReps(); savePend(); render();
+  save(); saveReps(); savePend(); renderGrid(); renderTabs();
 };
+document.getElementById('gmBtnStageComplete').onclick = stageCompleteAll;
+document.getElementById('gmBtnAll').onclick = () => {
+  if (!confirm('将本册全部标记为「已掌握」（5/5）？')) return;
+  if (!confirm('再次确认：本册共 ' + byBook[cur].list.length + ' 个字将全部变为「已掌握」，无法撤销。确定吗？')) return;
+  byBook[cur].list.forEach(i => { state[String(i)] = 1; reps[String(i)] = 5; delete pending[i]; });
+  save(); saveReps(); savePend(); renderGrid(); renderTabs();
+};
+let drawDrawn = [];
+let drawCurIdx = -1;
+function beginStudyQuiet(i){
+  const s = stateOf(i);
+  if (s !== 'unlearned' && s !== 'review') return;
+  state[String(i)] = 1;
+  clearPending(i);
+  startCountdown(i);
+  save(); saveReps();
+  setCardNode(i);
+  renderTabs();
+  renderStat();
+}
+function drawSingle(i){
+  const total = byBook[cur].list.length;
+  if (drawDrawn.length >= total){
+    drawCurIdx = -1;
+    showRandomFinished(total);
+    return;
+  }
+  drawCurIdx = i;
+  const it = DATA.chars[i];
+  const starTxt = stars[String(i)] ? '☆ 取消重点' : '⭐ 标为重点';
+  document.getElementById('drawTitle').textContent = '随机抽字';
+  document.getElementById('drawReset').style.display = 'none';
+  document.getElementById('drawAgain').style.display = 'none';
+  document.getElementById('drawBody').innerHTML =
+    '<div class="dz-prog">已抽 ' + drawDrawn.length + ' / ' + total + '</div>' +
+    '<div class="draw-single">' +
+      '<div class="dz-cell"><span class="dz-ch">' + it.c + '</span></div>' +
+      '<button class="btn dz-next" id="dzNext">随机抽字</button>' +
+    '</div>' +
+    '<div class="dz-actions">' +
+      '<button class="btn" id="dzRet">放回未抽卡牌中</button>' +
+      '<button class="btn" id="dzStar">' + starTxt + '</button>' +
+    '</div>' +
+    '<div class="dz-hint">出自分册 ' + it.b + (it.p ? '　词组：' + it.p : '') + '</div>';
+  document.getElementById('drawModal').classList.add('show');
+  const next = document.getElementById('dzNext');
+  if (next) next.onclick = () => randomDraw();
+  const ret = document.getElementById('dzRet');
+  if (ret) ret.onclick = () => {
+    drawDrawn = drawDrawn.filter(x => x !== drawCurIdx);
+    drawCurIdx = -1;
+    showRandomStart();
+  };
+  const st = document.getElementById('dzStar');
+  if (st) st.onclick = () => {
+    toggleStar(drawCurIdx);
+    st.textContent = stars[String(drawCurIdx)] ? '☆ 取消重点' : '⭐ 标为重点';
+    setCardNode(drawCurIdx);
+  };
+}
+function showRandomStart(){
+  document.getElementById('drawTitle').textContent = '随机抽字';
+  document.getElementById('drawReset').style.display = 'none';
+  document.getElementById('drawAgain').style.display = 'none';
+  document.getElementById('drawBody').innerHTML =
+    '<div class="dz-prog">已抽 ' + drawDrawn.length + ' / ' + byBook[cur].list.length + '</div>' +
+    '<div class="draw-single">' +
+      '<div class="dz-cell"><span class="dz-ch">&nbsp;</span></div>' +
+      '<button class="btn dz-next" id="dzNext">随机抽字</button>' +
+    '</div>' +
+    '<div class="dz-hint dz-start">点击「随机抽字」按钮开始抽字</div>';
+  document.getElementById('drawModal').classList.add('show');
+  const next = document.getElementById('dzNext');
+  if (next) next.onclick = () => randomDraw();
+}
+function openRandomDraw(){
+  drawMode = 'single';
+  drawDrawn = [];
+  drawCurIdx = -1;
+  showRandomStart();
+}
+function showRandomFinished(total){
+  document.getElementById('drawTitle').textContent = '随机抽字';
+  document.getElementById('drawReset').style.display = 'none';
+  document.getElementById('drawAgain').style.display = 'none';
+  document.getElementById('drawBody').innerHTML =
+    '<div class="dz-prog">已抽 ' + total + ' / ' + total + '</div>' +
+    '<div class="draw-single">' +
+      '<div class="dz-cell finish" id="drawFinish"><span class="dz-ch">已经抽完了<br>点击重置</span></div>' +
+    '</div>';
+  document.getElementById('drawModal').classList.add('show');
+  document.getElementById('drawFinish').onclick = () => openRandomDraw();
+}
+function randomDraw(){
+  const list = byBook[cur].list;
+  if (!list.length) return;
+  drawMode = 'single';
+  if (drawDrawn.length >= list.length){
+    drawCurIdx = -1;
+    showRandomFinished(list.length);
+    return;
+  }
+  let candidates = list.filter(x => drawDrawn.indexOf(x) < 0);
+  const i = candidates[Math.floor(Math.random() * candidates.length)];
+  drawDrawn.push(i);
+  document.getElementById('drawTitle').textContent = '随机抽字';
+  document.getElementById('drawReset').style.display = 'none';
+  document.getElementById('drawAgain').style.display = 'none';
+  beginStudyQuiet(i);
+  drawSingle(i);
+}
+let lgCtx = null;
+function showLg(ch, done, ctx){
+  const lg = document.getElementById('drawLg');
+  lg.querySelector('.dz-ch').textContent = ch;
+  lg._done = done || null;
+  lgCtx = ctx || null;
+  if (lgCtx) drawCurIdx = lgCtx.i;
+  const star = document.getElementById('lgStar');
+  star.textContent = stars[String(drawCurIdx)] ? '☆ 取消重点' : '⭐ 标为重点';
+  document.getElementById('lgBack').style.display = lgCtx ? '' : 'none';
+  document.getElementById('lgBack').textContent = lgCtx && lgCtx.mode === 'face' ? '退回去' : '翻回去';
+  lg.classList.add('show');
+}
+function hideLg(){
+  const lg = document.getElementById('drawLg');
+  lg.classList.remove('show');
+  if (lg._done){ lg._done(); lg._done = null; }
+  lgCtx = null;
+}
+document.getElementById('drawLg').onclick = hideLg;
+document.getElementById('lgStar').onclick = e => { e.stopPropagation(); toggleStar(drawCurIdx); setCardNode(drawCurIdx); document.getElementById('lgStar').textContent = stars[String(drawCurIdx)] ? '☆ 取消重点' : '⭐ 标为重点'; };
+document.getElementById('lgBack').onclick = e => { e.stopPropagation(); if (!lgCtx) return; document.getElementById('drawLg')._done = null; putBackLg(); hideLg(); }; 
+function putBackLg(){
+  if (!lgCtx) return;
+  const c = lgCtx.cell, mode = lgCtx.mode;
+  if (mode === 'flip'){
+    c.classList.remove('flip', 'done', 'disabled');
+  } else if (mode === 'face'){
+    c.classList.remove('done', 'disabled');
+    document.getElementById('faceBase').appendChild(c);
+  }
+}
+function bindFlipCells(){
+  document.querySelectorAll('#faceBase .dz-cell').forEach(cell => {
+    cell.onclick = () => {
+      if (cell.classList.contains('disabled')) return;
+      const i = +cell.getAttribute('data-i');
+      cell.classList.add('flip', 'disabled');
+      beginStudyQuiet(i);
+      showLg(cell.querySelector('.dz-ch').textContent, () => {
+        cell.classList.add('done');
+        document.getElementById('faceDone').appendChild(cell);
+      }, { i: i, cell: cell, mode: 'flip' });
+    };
+  });
+  const rr = document.getElementById('flipResetCards');
+  if (rr) rr.onclick = () => {
+    const base = document.getElementById('faceBase');
+    const cells = [];
+    for (let k = base.children.length - 1; k >= 0; k--) cells.push(base.children[k]);
+    shuffle(cells).forEach(c => base.appendChild(c));
+    bindFlipCells();
+  };
+}
+function flipDraw(){
+  const list = byBook[cur].list;
+  drawMode = 'flip';
+  
+  document.getElementById('drawTitle').innerHTML = '翻转抽字 <small>（先点选要翻转的字，选中盖绿勾，点「确认开始」）</small>';
+  document.getElementById('drawReset').style.display = '';
+  document.getElementById('drawAgain').style.display = 'none';
+  let html = '<div class="dz-hint">所有字正面显示，点卡片纳入翻转（盖上绿勾）；未选择的字将直接排到下方「已点」区</div>' +
+             '<div class="draw-select-grid" id="flipSelect">';
+  list.forEach(i => {
+    const it = DATA.chars[i];
+    html += '<div class="dz-cell" data-i="' + i + '"><span class="dz-ch">' + it.c + '</span></div>';
+  });
+  html += '</div><div class="dz-prog" id="flipSelCount">已选 0 / ' + list.length + '</div>' +
+          '<div class="dz-reset">' +
+            '<button class="btn" id="flipSelAll">全部选取</button>' +
+            '<button class="btn" id="flipSelNone">全部取消</button>' +
+            '<button class="btn" id="flipStartBtn">确认开始翻转抽字</button>' +
+          '</div>';
+  document.getElementById('drawBody').innerHTML = html;
+  document.getElementById('drawModal').classList.add('show');
+  const grid = document.getElementById('flipSelect');
+  const upd = () => {
+    document.getElementById('flipSelCount').textContent = '已选 ' + grid.querySelectorAll('.sel').length + ' / ' + list.length;
+  };
+  grid.querySelectorAll('.dz-cell').forEach(cell => {
+    cell.onclick = () => { cell.classList.toggle('sel'); upd(); };
+  });
+  document.getElementById('flipSelAll').onclick = () => { grid.querySelectorAll('.dz-cell').forEach(c => c.classList.add('sel')); upd(); };
+  document.getElementById('flipSelNone').onclick = () => { grid.querySelectorAll('.dz-cell').forEach(c => c.classList.remove('sel')); upd(); };
+  document.getElementById('flipStartBtn').onclick = () => {
+    const selected = [];
+    grid.querySelectorAll('.dz-cell.sel').forEach(c => selected.push(+c.getAttribute('data-i')));
+    if (!selected.length){ alert('请至少选择 1 个字'); return; }
+    flipStart(selected);
+  };
+}
+function flipStart(sel){
+  const all = byBook[cur].list;
+  const selSet = {};
+  sel.forEach(i => selSet[i] = true);
+  const unsel = all.filter(i => !selSet[i]);
+  document.getElementById('drawTitle').innerHTML = '翻转抽字 <small>（点背面卡片翻面，点弹窗空白处收起，已点字卡排到下方）</small>';
+  document.getElementById('drawReset').style.display = '';
+  document.getElementById('drawAgain').style.display = 'none';
+  let html = '<div class="dz-hint">点背面卡片 → 翻面弹出放大显示字；点弹窗空白处收起，已点字卡排到下方新行打绿勾</div>' +
+             '<div class="draw-flip-row"><div class="draw-grid" id="faceBase">';
+  shuffle(sel).forEach(i => {
+    const it = DATA.chars[i];
+    html += '<div class="dz-cell draw-back" data-i="' + i + '"><span class="dz-ch">' + it.c + '</span><span class="dz-mark">❓</span></div>';
+  });
+  html += '</div><button class="btn flip-reset-btn" id="flipResetCards">打乱顺序<br>未抽卡牌</button></div>' +
+          '<div class="draw-done"><div class="dz-sep">已点</div><div class="draw-grid" id="faceDone">';
+  unsel.forEach(i => {
+    const it = DATA.chars[i];
+    html += '<div class="dz-cell done disabled" data-i="' + i + '"><span class="dz-ch">' + it.c + '</span></div>';
+  });
+  html += '</div></div>';
+  document.getElementById('drawBody').innerHTML = html;
+  document.getElementById('drawModal').classList.add('show');
+  bindFlipCells();
+}
+function faceDraw(){
+  const list = byBook[cur].list;
+  drawMode = 'face';
+  
+  document.getElementById('drawTitle').innerHTML = '明牌抽字 <small>（右小角绿勾=已点过）</small>';
+  document.getElementById('drawReset').style.display = '';
+  document.getElementById('drawAgain').style.display = 'none';
+  let html = '<div class="dz-hint">点任意一张卡片 → 弹出放大显示该字；点弹窗空白处收起，已点字卡自动排到下方新行</div>' +
+             '<div class="draw-flip-row"><div class="draw-grid" id="faceBase">';
+  shuffle(list).forEach(i => {
+    const it = DATA.chars[i];
+    html += '<div class="dz-cell" data-i="' + i + '"><span class="dz-ch">' + it.c + '</span></div>';
+  });
+  html += '</div><button class="btn flip-reset-btn" id="faceResetCards">打乱顺序<br>未抽卡牌</button></div>' +
+          '<div class="draw-done"><div class="dz-sep">已点</div><div class="draw-grid" id="faceDone"></div></div>';
+  document.getElementById('drawBody').innerHTML = html;
+  document.getElementById('drawModal').classList.add('show');
+  const bindFace = () => {
+    document.querySelectorAll('#faceBase .dz-cell').forEach(cell => {
+      cell.onclick = () => {
+        if (cell.classList.contains('disabled')) return;
+        const i = +cell.getAttribute('data-i');
+        showLg(cell.querySelector('.dz-ch').textContent, () => {
+          beginStudyQuiet(i);
+          cell.classList.add('done', 'disabled');
+          document.getElementById('faceDone').appendChild(cell);
+        }, { i: i, cell: cell, mode: 'face' });
+      };
+    });
+  };
+  bindFace();
+  document.getElementById('faceResetCards').onclick = () => {
+    const base = document.getElementById('faceBase');
+    const cells = [];
+    for (let k = base.children.length - 1; k >= 0; k--) cells.push(base.children[k]);
+    shuffle(cells).forEach(c => base.appendChild(c));
+    bindFace();
+  };
+}
+function shuffle(a){
+  const arr = a.slice();
+  for (let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function drawResetCurrent(){
+  hideLg();
+  if (drawMode === 'single'){
+    openRandomDraw();
+  } else if (drawMode === 'flip'){
+    flipDraw();
+  } else if (drawMode === 'face'){
+    faceDraw();
+  }
+}
+function showAllBookChars(){
+  let html = '<div class="dz-hint">本册共 ' + byBook[cur].list.length + ' 字</div><div class="draw-grid">';
+  byBook[cur].list.forEach(i => {
+    const it = DATA.chars[i];
+    html += '<div class="dz-cell"><span class="dz-ch">' + it.c + '</span></div>';
+  });
+  html += '</div>';
+  document.getElementById('drawAllBody').innerHTML = html;
+  document.getElementById('drawAllPanel').style.display = 'flex';
+  document.getElementById('drawAll').style.display = 'none';
+}
+function closeAllPanel(){
+  document.getElementById('drawAllPanel').style.display = 'none';
+  document.getElementById('drawAll').style.display = '';
+}
+function backToDraw(){
+  closeAllPanel();
+}
+function backToGrid(){
+  hideLg();
+  document.getElementById('drawModal').classList.remove('show');
+  document.getElementById('gridModal').classList.add('show');
+}
+document.getElementById('drawAll').onclick = showAllBookChars;
+document.getElementById('drawBackDraw').onclick = backToDraw;
+document.getElementById('gmBtnDrawLearn').onclick = () => { openRandomDraw(); document.getElementById('gridModal').classList.remove('show'); };
+document.getElementById('gmBtnFlip').onclick = () => { flipDraw(); document.getElementById('gridModal').classList.remove('show'); };
+document.getElementById('gmBtnFace').onclick = () => { faceDraw(); document.getElementById('gridModal').classList.remove('show'); };
+document.getElementById('drawAgain').onclick = () => { if (drawMode === 'single') randomDraw(); };
+document.getElementById('drawReset').onclick = drawResetCurrent;
+document.getElementById('drawBack').onclick = backToGrid;
+document.getElementById('btnLianlian').onclick = () => { document.getElementById('lianlianModal').classList.add('show'); };
+document.getElementById('llClose').onclick = () => { document.getElementById('lianlianModal').classList.remove('show'); };
+document.getElementById('gmClose').onclick = () => { closeDetail(); document.getElementById('gridModal').classList.remove('show'); };
 document.getElementById('btnReset').onclick = () => {
   if (!confirm('重置全部：清除所有字的学会/复习标记？')) return;
   if (!confirm('再次确认：全部 ' + DATA.chars.length + ' 个字将回到「未学会」，所有学习进度丢失，无法撤销。确定吗？')) return;
@@ -647,13 +1116,13 @@ function showProgress(){
 }
 function jumpTo(i){
   document.getElementById('lmodal').classList.remove('show');
-  searching = false;
-  document.getElementById('q').value = '';
   cur = byBook.findIndex(x => x.list.indexOf(i) >= 0);
   if (cur < 0) cur = 0;
-  render();
-  const c = document.querySelector('.card[data-i="' + i + '"]');
-  if (c){ c.scrollIntoView({ behavior:'smooth', block:'center' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1600); }
+  showBookModal(cur);
+  setTimeout(() => {
+    const c = document.querySelector('#gmGrid .card[data-i="' + i + '"]');
+    if (c){ c.scrollIntoView({ behavior:'smooth', block:'center' }); c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1600); }
+  }, 100);
 }
 document.getElementById('btnLearned').onclick = showProgress;
 let quizIdx = -1;
@@ -753,6 +1222,14 @@ function exportCode(){
     const learned = stateOf(i) === 'learned';
     c += SYMB[rep + (learned ? 8 : 0)];
   });
+  const pendParts = [];
+  order.forEach(i => {
+    if (stateOf(i) === 'learned' && pending[i]){
+      const left = Math.max(0, pending[i].until - Date.now());
+      pendParts.push(i + ':' + Math.round(left));
+    }
+  });
+  if (pendParts.length) c += ';P:' + pendParts.join(',');
   const starIdx = order.filter(i => stars[String(i)]).sort((a, b) => a - b);
   if (starIdx.length) c += '|' + starIdx.join(',');
   return c;
@@ -760,8 +1237,11 @@ function exportCode(){
 function parseCode(code){
   const all = String(code || '').trim();
   const pipe = all.indexOf('|');
-  const s0 = pipe >= 0 ? all.slice(0, pipe) : all;
+  let s0 = pipe >= 0 ? all.slice(0, pipe) : all;
   const starPart = pipe >= 0 ? all.slice(pipe + 1) : '';
+  let pendPart = '';
+  const pm = s0.indexOf(';P:');
+  if (pm >= 0){ pendPart = s0.slice(pm + 3); s0 = s0.slice(0, pm); }
   if (s0.indexOf('RZ1:') !== 0) return { ok:false, msg:'格式不对：请复制完整的进度编码（应以 RZ1: 开头）。' };
   const body = s0.slice(4);
   if (body.length !== order.length) return { ok:false, msg:'编码位数不对（应为 ' + order.length + ' 位，实际 ' + body.length + ' 位，可能没复制完整）。' };
@@ -777,9 +1257,21 @@ function parseCode(code){
       if (starList.indexOf(n) < 0) starList.push(n);
     }
   }
-  return { ok:true, body:body, starList:starList };
+  const pendList = [];
+  if (pendPart){
+    const items = pendPart.split(',');
+    for (let x = 0; x < items.length; x++){
+      const seg = items[x].split(':');
+      if (seg.length !== 2) continue;
+      const n = parseInt(seg[0], 10);
+      const ms = parseInt(seg[1], 10);
+      if (isNaN(n) || n < 0 || n >= DATA.chars.length || isNaN(ms) || ms < 0) return { ok:false, msg:'倒计时编码解析失败，请重新导出完整复制。' };
+      pendList.push({ i: n, ms: ms });
+    }
+  }
+  return { ok:true, body:body, starList:starList, pendList:pendList };
 }
-function applyCode(body, starList){
+function applyCode(body, starList, pendList){
   order.forEach((i, k) => {
     const v = SYMB.indexOf(body[k]);
     delete pending[i];
@@ -791,6 +1283,14 @@ function applyCode(body, starList){
   order.forEach(i => valid[String(i)] = true);
   Object.keys(state).forEach(k => { if (!valid[k]) delete state[k]; });
   Object.keys(reps).forEach(k => { if (!valid[k]) delete reps[k]; });
+  Object.keys(pending).forEach(k => { if (!valid[k]) delete pending[k]; });
+  (pendList || []).forEach(p => {
+    if (state[String(p.i)] !== 1) return;
+    const rep = getRep(p.i);
+    const seq = seqFor(rep);
+    if (!seq) return;
+    pending[p.i] = { until: Date.now() + p.ms, seq: seq };
+  });
   Object.keys(stars).forEach(k => delete stars[k]);
   (starList || []).forEach(i => stars[String(i)] = true);
   save(); saveReps(); savePend(); saveStars(); render(); renderStat(); renderTabs();
@@ -820,7 +1320,7 @@ function openImport(){
     const p = parseCode(document.getElementById('impIn').value);
     if (!p.ok){ alert(p.msg); return; }
     if (!confirm('导入将覆盖本机当前全部 ' + order.length + ' 个字的学习进度，确定继续？')) return;
-    applyCode(p.body, p.starList);
+    applyCode(p.body, p.starList, p.pendList);
     document.getElementById('lmodal').classList.remove('show');
     alert('导入成功 ✓');
   };
