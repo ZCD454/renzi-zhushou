@@ -50,12 +50,13 @@
   .btn:hover{ border-color:var(--accent); color:var(--accent); }
   .btn.danger:hover{ border-color:#d9534f; color:#d9534f; }
   .lmodal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.42); z-index:40; align-items:center; justify-content:center; }
+  #lmodal{ z-index:60; }
   .lmodal.show{ display:flex; }
   .lmodal .box{ background:#fff; border-radius:18px; max-width:860px; width:94vw; max-height:86vh; display:flex; flex-direction:column; box-shadow:0 10px 40px rgba(0,0,0,.28); }
   .lmodal .head{ display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:6px; }
   .lmodal .head b{ font-size:16px; }
   .lmodal .head b small{ font-size:12px; color:#9a9a9a; font-weight:400; }
-  .lmodal .head .ops{ display:flex; gap:8px; }
+  .lmodal .head .ops{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
   .lmodal .body{ overflow:auto; padding:14px 18px 20px; }
   #gridModal .box{ max-width:960px; max-height:92vh; }
   #gridModal .gm-head{ display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--line); flex-wrap:wrap; gap:8px; }
@@ -178,6 +179,38 @@
              font-size:12px; cursor:pointer; font-family:inherit; line-height:1.5; }
   .btn-mini:hover{ border-color:var(--accent); color:var(--accent); }
   .ll-levels{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:12px; }
+  .ll-showall{ position:relative; z-index:6; border:1px solid var(--line); background:#fff; color:var(--dim); border-radius:999px; padding:3px 10px;
+               font-size:12px; cursor:pointer; font-family:inherit; line-height:1.5; }
+  .ll-showall:hover{ border-color:var(--accent); color:var(--accent); }
+  .ll-all-words{ display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start; align-items:flex-start; }
+  .ll-all-word{ display:inline-flex; align-items:center; justify-content:flex-start; background:#fff; border:2px solid #000;
+                border-radius:10px; padding:5px 11px; font-size:16px; line-height:1.4; }
+  .ll-ch{ font-size:inherit; }
+  .ll-ch.lv{ color:#d9534f; }
+  .ll-ch.no{ color:#000; }
+  .ll-side{ flex:0 0 auto; display:flex; flex-direction:column; gap:12px; align-items:flex-start; }
+  .ll-prog{ width:120px; height:8px; background:#eee; border-radius:6px; overflow:hidden; border:1px solid #ddd; }
+  #llProgBar{ height:100%; width:0; background:#4caf50; transition:width .3s; }
+  #llProgText{ font-size:13px; color:#444; }
+  #llBody{ overflow:visible; }
+  #lianlianModal .box{ max-height:96vh; align-self:flex-start; margin:1vh 0 0; }
+  .ll-main{ display:flex; gap:20px; align-items:stretch; justify-content:center; margin-top:10px; }
+  #llGame{ position:relative; display:flex; justify-content:center; align-items:stretch; gap:24px; flex:0 0 auto; user-select:none; }
+  .ll-col{ display:flex; flex-direction:column; gap:8px; width:auto; min-width:170px; align-items:flex-start; }
+  .ll-item{ position:relative; display:inline-flex; align-items:center; justify-content:center; min-height:44px;
+            background:#fff; border:2px solid #000; color:#000; border-radius:12px;
+            padding:6px 12px; font-size:22px; line-height:1.3; cursor:pointer; touch-action:none;
+            width:max-content; max-width:100%; }
+  .ll-item.hit{ background:#e6f6e6; border-color:#3f9d5a; }
+  .ll-item.fail{ animation:llshake .25s; }
+  @keyframes llshake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+  #llLineSvg{ position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; }
+  .ll-line{ stroke:#c03; stroke-width:3; fill:none; }
+  .ll-line.ok{ stroke:#3f9d5a; stroke-width:4; }
+  .ll-again-row{ display:flex; align-items:center; justify-content:center; gap:14px; margin-top:14px; }
+  #llDone{ font-size:16px; color:#3f9d5a; font-weight:700; }
+  .ll-ans-grid{ display:flex; flex-direction:column; gap:6px; align-items:center; }
+  .ll-ans-item{ display:inline-flex; align-items:center; gap:10px; background:#fff; border:2px solid #000; border-radius:10px; padding:6px 12px; font-size:18px; line-height:1.4; }
   .quizinfo{ text-align:center; font-size:13px; color:var(--dim); margin:6px 0 2px; }
   .quizans{ margin-top:12px; display:none; }
   .quizans.show{ display:block; }
@@ -343,6 +376,13 @@
 <div class="lmodal" id="lianlianModal"><div class="box">
   <div class="head">
     <b>词组连连看</b>
+    <div class="ops" id="llshowops">
+      <button class="ll-showall" data-l="1">显示第1级所有字</button>
+      <button class="ll-showall" data-l="2">显示第2级所有字</button>
+      <button class="ll-showall" data-l="3">显示第3级所有字</button>
+      <button class="ll-showall" data-l="4">显示第4级所有字</button>
+      <button class="ll-showall" data-l="5">显示第5级所有字</button>
+    </div>
     <button class="btn" id="llClose">关闭</button>
   </div>
   <div class="body" id="llBody">
@@ -354,6 +394,27 @@
       <button class="btn ll-level" data-l="5">复习第5级</button>
     </div>
     <div class="dz-hint" id="llTip">请选择一个复习等级（功能建设中……）</div>
+    <div class="ll-main">
+      <div id="llGame">
+        <div class="ll-col" id="llColL"></div>
+        <svg id="llLineSvg"></svg>
+        <div class="ll-col" id="llColR"></div>
+      </div>
+      <div class="ll-side">
+        <span id="llProgText">未开始</span>
+        <div class="ll-prog"><div id="llProgBar"></div></div>
+        <button class="btn" id="llNext">点击抽下一组</button>
+        <button class="btn" id="llUndo">返回（上一次）连线</button>
+        <button class="btn" id="llPrev">返回（上一组）连线</button>
+        <button class="btn" id="llAns">答案</button>
+        <button class="btn" id="llResetSet">重置这组连线</button>
+        <button class="btn" id="llReset1">重置1级所有进度</button>
+        <button class="btn" id="llReset2" style="display:none">重置2级所有进度</button>
+      </div>
+    </div>
+    <div class="ll-again-row">
+      <span id="llDone"></span>
+    </div>
   </div>
 </div></div>
 
@@ -1089,7 +1150,181 @@ document.getElementById('drawReset').onclick = drawResetCurrent;
 document.getElementById('drawBack').onclick = backToGrid;
 document.getElementById('btnLianlian').onclick = () => { document.getElementById('lianlianModal').classList.add('show'); };
 document.getElementById('llClose').onclick = () => { document.getElementById('lianlianModal').classList.remove('show'); };
-document.querySelectorAll('.ll-level').forEach(bt => bt.onclick = () => { document.getElementById('llTip').textContent = '复习第' + bt.getAttribute('data-l') + '级　（功能建设中……）'; });
+const LL_WORDS = ["一个人","二十","三条鱼","四栋楼","六个","七个","十个","人们","大山","大海","大人","儿子","小人","多少","少数","上山","下山","对手","围着","蹦跳","肚子","手心","好的","头发","走路","国王","耳朵","好的哦","不好","好人","吃了","在森林里","起来","云朵","只有","有人","玉米","森林","他们","我们","看书","好呀","一片","尺子","用手","掉了","天上","不会","好了","东西","向南飞","向北跑","妈妈","追着","长大","上升","飞上天","向着","土豆","豆子","月亮","日月","书本","本来","心里","牙掉了","好啦","好啊","看见","手足","耳目","怪物","人物","广东","自我","一条鱼","小鱼","数目","忘了","两个","哈哈","太平","太平洋","自己","出发","头发","生日","生长","快乐","快跑","李子","岁数","老人","一栋楼","关心","村子","种子","五颗豆","盖楼","大楼","养狗","小狗","也来了","到了","国宝","吹泡泡","没有","气泡","大哭","抱着","摔倒","倒下来"];
+const LL_WORDS2 = ["爸爸","妹妹","姐姐","爷爷","奶奶","弟弟","哥哥","叔叔","来去","哪里","找到","和气","人丁","住下","一定","拿起","被子","定住神","蚊子","被蚊叮","盯着看","住在家里","订了一个鼎","钉子","山顶","回来","回家","八百","大风","下雨","石头","田地","再见","一百","好吧","听见","说好","听说","还有","在牛背上","小岛","一遍","大水","水牛","大火","车门","车子","门口","它们","围巾","正好","今天","是吧","下巴","大象","走路","花蛇","初一","戴上","新年","散步","送给","拉弓","所有","耍酷","读书","小猫","都是","酷爱","跳舞","甲虫","问题","喜欢","洗手","洗澡","放下","放屁","弹弓","弹珠","冰山","冰激凌","大地","地面","就是","高大","把手","得到","时间","真好","做好","举起","起床","站着","早上","早餐","干净","小鸡","鸡蛋","父亲","节日","又来了","大树","那边","从哪里来","到处","长短","伸手","捉鱼","中午","什么","声音","这里","踪迹","知道","遇到","小鹿","人群","小鸟","兔子","一匹马","小鸭","山羊","狮子","砰咚一声","白马","蚂蚁","打伞","灰狼","开心","开始","好坏","开口","爱好","进来","点火","水井","老师","怎么办","咕咚","青蛙","绿草","一些","许多","扔下","香气","动手","乱动","吓人","花园","禾苗","折断","当下","照相","最好","最美","选好","选用"];
+const LL_SPLIT = {"在森林里":["在","森林里"],"牙掉了":["牙","掉了"],"也来了":["也","来了"],"一栋楼":["一栋","楼"],"一条鱼":["一条","鱼"],"太平洋":["太","平洋"],"吹泡泡":["吹","泡泡"],"倒下来":["倒","下来"],"一个人":["一个","人"],"冰激凌":["冰","激凌"],"向南飞":["向","南飞"],"向北跑":["向","北跑"],"飞上天":["飞","上天"],"五颗豆":["五","颗豆"],"订了一个鼎":["订了","一个鼎"],"从哪里来":["从哪里","来"]};
+let llCurWords = LL_WORDS;
+const L1CHARS = "一二三四五个人山海大子小多少上下对跑围着蹦跳肚手的头走儿七国王耳朵哦不好吃在里来云起只有玉米森林他们看呀片尺用掉天会了东南西北妈追长升飞向土豆月亮书本心牙啦啊见足目怪物广我条鱼数忘两哈太平洋自己出发生日快乐六李十岁老栋关村种颗盖楼养狗也到宝吹没气泡哭抱摔倒";
+const L2CHARS = "爸妹姐爷奶弟哥叔去哪找和丁住定拿被神蚊叮盯订钉顶鼎回家八风雨石田再百吧听说还背岛遍水牛火车门它巾正今是巴象路蛇初戴新年散步送给弓拉所耍读猫都酷舞甲虫问题喜欢洗澡放屁弹珠冰激凌地面就高把得时间真做举床站早餐干净鸡蛋父亲节又树那从处短伸捉中午什么声音这边踪迹知道遇鹿群鸟兔匹鸭羊狮砰白马蚂蚁打伞灰狼开始坏口爱进点办井师怎咕咚青蛙绿草些许扔香动乱吓花园禾苗折断当照相最美选";
+function llCharsOf(lv){ return lv === 2 ? L2CHARS : L1CHARS; }
+function llColorize(str, lv){ const cs = llCharsOf(lv); return Array.from(str).map(c => '<span class="ll-ch ' + (cs.indexOf(c) >= 0 ? 'lv' : 'no') + '">' + c + '</span>').join(''); }
+let llState = {};
+let llCurLv = 1;
+function llInit(lv){ const pool = (lv === 2 ? LL_WORDS2 : LL_WORDS).slice(); for (let k = pool.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [pool[k], pool[j]] = [pool[j], pool[k]]; } llState[lv] = { order: pool, cursor: 0, show: -1 }; }
+function llRender(lv, start){
+  llCurLv = lv; llCurWords = (lv === 2 ? LL_WORDS2 : LL_WORDS);
+  document.getElementById('llReset1').style.display = (lv === 1 ? '' : 'none');
+  document.getElementById('llReset2').style.display = (lv === 2 ? '' : 'none');
+  const st = llState[lv]; const total = llCurWords.length;
+  const pick = st.order.slice(start, start + 10);
+  if (pick.length === 0) { llPairs = []; llMatch = {}; llOrder = [];
+    document.getElementById('llColL').innerHTML = ''; document.getElementById('llColR').innerHTML = ''; document.getElementById('llLineSvg').innerHTML = '';
+    document.getElementById('llTip').textContent = '第' + lv + '级词表已全部抽完，点"重置' + lv + '级所有进度"重新开始';
+    document.getElementById('llProgText').textContent = '已抽 ' + total + ' / ' + total;
+    document.getElementById('llProgBar').style.width = '100%'; document.getElementById('llDone').textContent = ''; st.show = -1; return; }
+  st.show = start;
+  llPairs = pick.map((w, i) => ({ id: i, w: w, L: splitLL(w)[0], R: splitLL(w)[1] }));
+  llMatch = {}; llOrder = [];
+  const colL = document.getElementById('llColL'); const colR = document.getElementById('llColR');
+  const orderL = llPairs.slice(); const orderR = llPairs.slice();
+  for (let k = orderL.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [orderL[k], orderL[j]] = [orderL[j], orderL[k]]; }
+  for (let k = orderR.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [orderR[k], orderR[j]] = [orderR[j], orderR[k]]; }
+  colL.innerHTML = orderL.map(p => '<div class="ll-item" data-pair="' + p.id + '" data-side="L">' + llColorize(p.L, lv) + '</div>').join('');
+  colR.innerHTML = orderR.map(p => '<div class="ll-item" data-pair="' + p.id + '" data-side="R">' + llColorize(p.R, lv) + '</div>').join('');
+  const svg = document.getElementById('llLineSvg');
+  svg.setAttribute('viewBox', '0 0 ' + svg.getBoundingClientRect().width + ' ' + svg.getBoundingClientRect().height);
+  svg.innerHTML = '<line id="llTmp" class="ll-line" x1="0" y1="0" x2="0" y2="0" style="display:none"></line>';
+  document.getElementById('llDone').textContent = '';
+  document.getElementById('llTip').textContent = '复习第' + lv + '级：拖拽左边，连到右边，连对' + pick.length + '个词';
+  document.getElementById('llProgText').textContent = '已抽 ' + st.cursor + ' / ' + total;
+  document.getElementById('llProgBar').style.width = (st.cursor / total * 100) + '%';
+}
+function llDrawBatch(lv){ if (!llState[lv]) llInit(lv); const st = llState[lv]; const total = (lv===2?LL_WORDS2:LL_WORDS).length; if (st.cursor >= total) { document.getElementById('llTip').textContent = '第'+lv+'级词表已全部抽完，点"重置'+lv+'级所有进度"重新开始'; return; } llRender(lv, st.cursor); st.cursor += 10; }
+function llShow(lv, start){ llRender(lv, start); }
+function splitLL(w){ if(LL_SPLIT[w]) return LL_SPLIT[w]; if(w.length===2) return [w[0], w[1]]; const m = Math.ceil(w.length/2); return [w.slice(0,m), w.slice(m)]; }
+let llPairs = []; let llMatch = {}; let llOrder = [];
+function llDrawLine(x1,y1,x2,y2,el){ el.setAttribute('x1',x1); el.setAttribute('y1',y1); el.setAttribute('x2',x2); el.setAttribute('y2',y2); }
+function llCenter(el){ const s = document.getElementById('llLineSvg').getBoundingClientRect(); const r = el.getBoundingClientRect(); return { x: r.left + r.width/2 - s.left, y: r.top + r.height/2 - s.top }; }
+function llEdge(el){ const s = document.getElementById('llLineSvg').getBoundingClientRect(); const r = el.getBoundingClientRect(); const y = r.top + r.height/2 - s.top; const x = (el.getAttribute('data-side') === 'R') ? (r.left - s.left) : (r.right - s.left); return { x: x, y: y }; }
+function buildLLGame(lv){
+  llCurLv = lv; llCurWords = (lv === 2 ? LL_WORDS2 : LL_WORDS);
+  document.getElementById('llReset1').style.display = (lv === 1 ? '' : 'none');
+  document.getElementById('llReset2').style.display = (lv === 2 ? '' : 'none');
+  if (!llState[lv]) llInit(lv);
+  const st = llState[lv];
+  if (st.show === -1) {
+    llPairs = []; llMatch = {}; llOrder = [];
+    document.getElementById('llColL').innerHTML = '';
+    document.getElementById('llColR').innerHTML = '';
+    document.getElementById('llLineSvg').innerHTML = '';
+    document.getElementById('llDone').textContent = '';
+    document.getElementById('llTip').textContent = '复习第' + lv + '级：点击"点击抽下一组"开始';
+    document.getElementById('llProgText').textContent = '已抽 0 / ' + llCurWords.length;
+    document.getElementById('llProgBar').style.width = '0';
+  } else { llShow(lv, st.show); }
+}
+let llDrag = null;
+function llSetup(){
+  const svg = document.getElementById('llLineSvg');
+  const game = document.getElementById('llGame');
+  game.addEventListener('contextmenu', e => e.preventDefault());
+  game.addEventListener('pointerdown', e => {
+    const it = e.target.closest('.ll-item');
+    if (!it || it.dataset.side !== 'L') return;
+    llDrag = { id: +it.dataset.pair, c: llEdge(it) };
+    const t = document.getElementById('llTmp');
+    llDrawLine(llDrag.c.x, llDrag.c.y, llDrag.c.x, llDrag.c.y, t);
+    t.style.display = '';
+    it.setPointerCapture && it.setPointerCapture(e.pointerId);
+  });
+  game.addEventListener('pointermove', e => {
+    if (!llDrag) return;
+    const s = svg.getBoundingClientRect();
+    llDrawLine(llDrag.c.x, llDrag.c.y, e.clientX - s.left, e.clientY - s.top, document.getElementById('llTmp'));
+  });
+  game.addEventListener('pointerup', e => {
+    if (!llDrag) return;
+    const t = document.getElementById('llTmp');
+    t.style.display = 'none';
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    const target = el && el.closest('.ll-item');
+    const fromId = llDrag.id;
+    llDrag = null;
+    const cur = llPairs.find(p => p.id === fromId);
+    if (!cur) return;
+    if (target && target.dataset.side === 'R') {
+      const toId = +target.dataset.pair;
+      if (fromId === toId) {
+        llMatch[fromId] = true;
+        const li = document.querySelector('.ll-item[data-pair="' + fromId + '"][data-side="L"]');
+        const ri = document.querySelector('.ll-item[data-pair="' + fromId + '"][data-side="R"]');
+        li.classList.add('hit'); ri.classList.add('hit');
+        li.style.pointerEvents = 'none'; ri.style.pointerEvents = 'none';
+        const a = llEdge(li), b = llEdge(ri);
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('class', 'll-line ok');
+        llDrawLine(a.x, a.y, b.x, b.y, line);
+        svg.appendChild(line);
+        llOrder.push({ id: fromId, li: li, ri: ri, line: line });
+        if (Object.keys(llMatch).length === llPairs.length) {
+          document.getElementById('llDone').textContent = '全对！太棒了！';
+        }
+      } else {
+        target.classList.add('fail');
+        setTimeout(() => target.classList.remove('fail'), 300);
+      }
+    }
+  });
+  document.getElementById('llReset1').onclick = () => { if (!confirm('确定要重置第1级的所有抽取进度吗？')) return; llInit(1); llState[1].show = -1; llDrawBatch(1); };
+  document.getElementById('llReset2').onclick = () => { if (!confirm('确定要重置第2级的所有抽取进度吗？')) return; llInit(2); llState[2].show = -1; llDrawBatch(2); };
+  document.getElementById('llResetSet').onclick = () => { if (llState[llCurLv] && llState[llCurLv].show >= 0) llShow(llCurLv, llState[llCurLv].show); };
+  document.getElementById('llUndo').onclick = () => {
+    if (llOrder.length === 0) return;
+    const last = llOrder.pop();
+    delete llMatch[last.id];
+    last.li.classList.remove('hit'); last.ri.classList.remove('hit');
+    last.li.style.pointerEvents = ''; last.ri.style.pointerEvents = '';
+    last.line.remove();
+    document.getElementById('llDone').textContent = '';
+  };
+  document.getElementById('llPrev').onclick = () => {
+    const st = llState[llCurLv];
+    if (!st || st.show <= 0) { document.getElementById('llTip').textContent = '已经是第一组了，没有上一组了。'; return; }
+    if (!confirm('确定要返回上一组连线吗？当前这组的连线会清空。')) return;
+    llShow(llCurLv, st.show - 10);
+  };
+  document.getElementById('llNext').onclick = () => { llDrawBatch(llCurLv); };
+  document.getElementById('llAns').onclick = () => {
+    document.getElementById('ltitle').textContent = '答案　第' + llCurLv + '级';
+    const body = document.getElementById('lbody');
+    if (!llPairs || llPairs.length === 0) {
+      body.innerHTML = '<div class="dz-hint">当前没有已抽取的词，请先抽一批。</div>';
+    } else {
+      body.innerHTML = '<div class="ll-ans-grid">' + llPairs.map(p => '<span class="ll-ans-item">' + llColorize(p.w, llCurLv) + '</span>').join('') + '</div>';
+    }
+    document.getElementById('lclose').style.display = '';
+    document.getElementById('lmodal').classList.add('show');
+  };
+  const llWordsFor = function(lv){ return lv === 2 ? LL_WORDS2 : LL_WORDS; };
+  document.querySelectorAll('.ll-showall').forEach(bt => bt.onclick = () => {
+    const lv = +bt.getAttribute('data-l');
+    document.getElementById('ltitle').textContent = '第' + lv + '级所有字';
+    const body = document.getElementById('lbody');
+    if (lv === 1 || lv === 2) {
+      body.innerHTML = '<div class="ll-all-words">' + llWordsFor(lv).map(w => '<span class="ll-all-word">' + llColorize(w, lv) + '</span>').join('') + '</div>';
+    } else {
+      body.innerHTML = '<div class="dz-hint">第' + lv + '级词表建设中……</div>';
+    }
+    document.getElementById('lclose').style.display = '';
+    document.getElementById('lmodal').classList.add('show');
+  });
+  document.querySelectorAll('.ll-level').forEach(bt => bt.onclick = () => {
+    const lv = +bt.getAttribute('data-l');
+    if (lv >= 1 && lv <= 2) { buildLLGame(lv); }
+    else {
+      document.getElementById('llTip').textContent = '复习第' + lv + '级　（功能建设中……）';
+      document.getElementById('llColL').innerHTML = '';
+      document.getElementById('llColR').innerHTML = '';
+      document.getElementById('llLineSvg').innerHTML = '';
+      document.getElementById('llDone').textContent = '';
+      document.getElementById('llProgText').textContent = '未开始';
+      document.getElementById('llProgBar').style.width = '0';
+      document.getElementById('llReset1').style.display = 'none';
+      document.getElementById('llReset2').style.display = 'none';
+    }
+  });
+}
+llSetup();
 document.getElementById('gmClose').onclick = () => { closeDetail(); document.getElementById('gridModal').classList.remove('show'); };
 document.getElementById('btnReset').onclick = () => {
   if (!confirm('重置全部：清除所有字的学会/复习标记？')) return;
@@ -1167,7 +1402,7 @@ function setLTitle(t, lg){
 }
 function headOpsReset(){
   const ops = document.getElementById('lheadops');
-  ['qList','qUnStar','qBackToQuiz'].forEach(id => { const el = ops.querySelector('#' + id); if (el) el.remove(); });
+  ['qList','qUnStar','qBackToQuiz','qSelAll','qSelNone','qSelGo'].forEach(id => { const el = ops.querySelector('#' + id); if (el) el.remove(); });
 }
 let quizLock = false;
 let quizSel = [];
@@ -1189,6 +1424,9 @@ function showQuizSelect(){
   quizLock = true;
   headOpsReset();
   document.getElementById('lheadops').insertAdjacentHTML('afterbegin', '<button class="btn" id="qList">📋 所有重点字</button>');
+  document.getElementById('lheadops').insertAdjacentHTML('afterbegin', '<button class="btn" id="qSelGo">开始抽查</button>');
+  document.getElementById('lheadops').insertAdjacentHTML('afterbegin', '<button class="btn" id="qSelNone">全部取消</button>');
+  document.getElementById('lheadops').insertAdjacentHTML('afterbegin', '<button class="btn" id="qSelAll">全部选取</button>');
   setLTitle('⭐重点字抽查　先选择要抽查的字', false);
   let sects = '';
   byBook.forEach(rec => {
@@ -1208,12 +1446,7 @@ function showQuizSelect(){
   document.getElementById('lbody').innerHTML =
     '<div class="hint">可点单个字选择/取消，也可按分册点「全选本册/取消本册」一次选取；被选上的字会盖上一个绿色大勾。选好后点「开始抽查」。</div>' +
     sects +
-    '<div class="dz-prog" id="qselCount">已选 ' + quizSel.length + ' / ' + list.length + '</div>' +
-    '<div class="mrow">' +
-      '<button class="btn" id="qSelAll">全部选取</button>' +
-      '<button class="btn" id="qSelNone">全部取消</button>' +
-      '<button class="btn" id="qSelGo">开始抽查</button>' +
-    '</div>';
+    '<div class="dz-prog" id="qselCount">已选 ' + quizSel.length + ' / ' + list.length + '</div>';
   const upd = () => {
     document.getElementById('qselCount').textContent = '已选 ' + quizSel.length + ' / ' + list.length;
   };
