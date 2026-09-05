@@ -29,7 +29,8 @@
   #tabs::-webkit-scrollbar{ height:6px; }
   .lvl{ display:flex; align-items:center; gap:10px; margin-top:14px; }
   .lvl:first-child{ margin-top:0; padding-top:4px; }
-  .lvl-tag{ flex:none; width:46px; font-size:16px; color:#fff; background:var(--accent); border-radius:12px; text-align:center; padding:4px 0; font-weight:700; }
+  .lvl-tag{ flex:none; min-width:46px; font-size:16px; color:#fff; background:var(--accent); border-radius:12px; text-align:center; padding:4px 10px; font-weight:700; line-height:1.25; }
+  .lvl-tag .n{ display:block; font-size:11px; font-weight:600; opacity:.9; }
   .lvl-btns{ display:flex; gap:8px; flex-wrap:wrap; }
   .tab{ border:1px solid var(--line); background:#fff; border-radius:999px; padding:9px 18px; font-size:13px; cursor:pointer;
         color:var(--ink); transition:.15s; font-family:inherit; }
@@ -183,6 +184,7 @@
                font-size:12px; cursor:pointer; font-family:inherit; line-height:1.5; }
   .ll-showall:hover{ border-color:var(--accent); color:var(--accent); }
   .ll-all-words{ display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-start; align-items:flex-start; }
+  .ll-all-head{ font-size:15px; font-weight:bold; color:var(--ink); margin-bottom:10px; }
   .ll-all-word{ display:inline-flex; align-items:center; justify-content:flex-start; background:#fff; border:2px solid #000;
                 border-radius:10px; padding:5px 11px; font-size:16px; line-height:1.4; }
   .ll-ch{ font-size:inherit; }
@@ -199,7 +201,7 @@
   .ll-col{ display:flex; flex-direction:column; gap:8px; width:auto; min-width:170px; align-items:flex-start; }
   .ll-item{ position:relative; display:inline-flex; align-items:center; justify-content:center; min-height:44px;
             background:#fff; border:2px solid #000; color:#000; border-radius:12px;
-            padding:6px 12px; font-size:22px; line-height:1.3; cursor:pointer; touch-action:none;
+            padding:6px 12px; font-size:26px; line-height:1.3; cursor:pointer; touch-action:none;
             width:max-content; max-width:100%; }
   .ll-item.hit{ background:#e6f6e6; border-color:#3f9d5a; }
   .ll-item.fail{ animation:llshake .25s; }
@@ -410,6 +412,9 @@
         <button class="btn" id="llResetSet">重置这组连线</button>
         <button class="btn" id="llReset1">重置1级所有进度</button>
         <button class="btn" id="llReset2" style="display:none">重置2级所有进度</button>
+        <button class="btn" id="llReset3" style="display:none">重置3级所有进度</button>
+        <button class="btn" id="llReset4" style="display:none">重置4级所有进度</button>
+        <button class="btn" id="llReset5" style="display:none">重置5级所有进度</button>
       </div>
     </div>
     <div class="ll-again-row">
@@ -687,13 +692,18 @@ function bookStats(bi){
   return { total: list.length, learned };
 }
 
+function lvlTotal(l){
+  let n = 0;
+  books.forEach((b, i) => { if (parseInt(b.split('-')[0], 10) === l) n += byBook[i].list.length; });
+  return n;
+}
 function renderTabs(){
   const el = document.getElementById('tabs');
   let html = '';
   let lvl = -1;
   books.forEach((b, i) => {
     const l = parseInt(b.split('-')[0]);
-    if (l !== lvl) { lvl = l; html += '<div class="lvl"><span class="lvl-tag">第' + l + '级</span><div class="lvl-btns">'; }
+    if (l !== lvl) { lvl = l; html += '<div class="lvl"><span class="lvl-tag">第' + l + '级<span class="n">共 ' + lvlTotal(l) + ' 字</span></span><div class="lvl-btns">'; }
     const st = bookStats(i);
     const done = st.learned === st.total ? 'done' : 'todo';
     html += '<button class="tab ' + (i === cur ? 'on ' : '') + done + '" data-i="' + i + '">' + b +
@@ -1150,23 +1160,33 @@ document.getElementById('drawReset').onclick = drawResetCurrent;
 document.getElementById('drawBack').onclick = backToGrid;
 document.getElementById('btnLianlian').onclick = () => { document.getElementById('lianlianModal').classList.add('show'); };
 document.getElementById('llClose').onclick = () => { document.getElementById('lianlianModal').classList.remove('show'); };
-const LL_WORDS = ["一个人","二十","三条鱼","四栋楼","六个","七个","十个","人们","大山","大海","大人","儿子","小人","多少","少数","上山","下山","对手","围着","蹦跳","肚子","手心","好的","头发","走路","国王","耳朵","好的哦","不好","好人","吃了","在森林里","起来","云朵","只有","有人","玉米","森林","他们","我们","看书","好呀","一片","尺子","用手","掉了","天上","不会","好了","东西","向南飞","向北跑","妈妈","追着","长大","上升","飞上天","向着","土豆","豆子","月亮","日月","书本","本来","心里","牙掉了","好啦","好啊","看见","手足","耳目","怪物","人物","广东","自我","一条鱼","小鱼","数目","忘了","两个","哈哈","太平","太平洋","自己","出发","头发","生日","生长","快乐","快跑","李子","岁数","老人","一栋楼","关心","村子","种子","五颗豆","盖楼","大楼","养狗","小狗","也来了","到了","国宝","吹泡泡","没有","气泡","大哭","抱着","摔倒","倒下来"];
-const LL_WORDS2 = ["爸爸","妹妹","姐姐","爷爷","奶奶","弟弟","哥哥","叔叔","来去","哪里","找到","和气","人丁","住下","一定","拿起","被子","定住神","蚊子","被蚊叮","盯着看","住在家里","订了一个鼎","钉子","山顶","回来","回家","八百","大风","下雨","石头","田地","再见","一百","好吧","听见","说好","听说","还有","在牛背上","小岛","一遍","大水","水牛","大火","车门","车子","门口","它们","围巾","正好","今天","是吧","下巴","大象","走路","花蛇","初一","戴上","新年","散步","送给","拉弓","所有","耍酷","读书","小猫","都是","酷爱","跳舞","甲虫","问题","喜欢","洗手","洗澡","放下","放屁","弹弓","弹珠","冰山","冰激凌","大地","地面","就是","高大","把手","得到","时间","真好","做好","举起","起床","站着","早上","早餐","干净","小鸡","鸡蛋","父亲","节日","又来了","大树","那边","从哪里来","到处","长短","伸手","捉鱼","中午","什么","声音","这里","踪迹","知道","遇到","小鹿","人群","小鸟","兔子","一匹马","小鸭","山羊","狮子","砰咚一声","白马","蚂蚁","打伞","灰狼","开心","开始","好坏","开口","爱好","进来","点火","水井","老师","怎么办","咕咚","青蛙","绿草","一些","许多","扔下","香气","动手","乱动","吓人","花园","禾苗","折断","当下","照相","最好","最美","选好","选用"];
+const LL_WORDS = ["在森林里","一个人","三条鱼","四栋楼","好的哦","向南飞","牙掉了","太平洋","五颗豆","倒下来","二十","大山","儿子","多少","对手","围着","蹦跳","头发","国王","耳朵","只有","玉米","他们","看书","天上","不会","东西","向北跑","月亮","怪物","自我","数目","生日","快乐","关心","养狗","吹泡泡","六个","七个","大海","小人","肚子","走路","吃了","起来","云朵","好呀","一片","尺子","用手","妈妈","追着","长大","上升","土豆","书本","好啦","好啊","看见","手足","广东","忘了","两个","哈哈","自己","出发","李子","岁数","老人","村子","种子","盖楼","也来了","到了","国宝","没有","气泡","大哭","抱着","摔倒","一栋楼","一条鱼","飞上天","订了一个鼎","冰激凌","从哪里来"];
+const LL_WORDS2 = ["定住神","被蚊叮","冰激凌","砰咚一声","怎么办","订了一个鼎","回家","八百","田地","听说","在牛背上","车门","是吧","花蛇","新年","散步","送给","拉弓","耍酷","甲虫","问题","喜欢","洗澡","放屁","弹珠","时间","早餐","干净","鸡蛋","父亲","那边","从哪里来","中午","踪迹","知道","一匹马","蚂蚁","打伞","灰狼","开始","点火","水井","青蛙","绿草","乱动","禾苗","折断","照相","最美","爸爸","妹妹","姐姐","爷爷","奶奶","弟弟","哥哥","叔叔","来去","找到","和气","人丁","拿起","盯着看","钉子","山顶","大风","下雨","石头","再见","还有","小岛","一遍","门口","它们","围巾","正好","今天","下巴","大象","走路","初一","戴上","所有","读书","小猫","都是","酷爱","跳舞","地面","就是","高大","把手","得到","真好","做好","举起","起床","站着","节日","又来了","大树","到处","长短","伸手","捉鱼","什么","声音","这里","遇到","小鹿","人群","小鸟","兔子","小鸭","山羊","狮子","白马","好坏","进来","老师","咕咚","一些","许多","扔下","香气","吓人","花园","当下","选好"];
+const LL_WORDS3 = ["半圆形","红色笔","荡秋千","急忙","方块","划船","变成","朋友","瓜分","毛皮","比如","玩闹","害怕","篮球","架空","操场","工作","字画","首先","诗词","学校","可以","运行","专业","各位","阳光","清明节","邻居","事情","苍蝇","蜻蜓","眼睛","结伴","想法","竹竿","失望","共同","降落","过河","借机","潮湿","闷热","滑滑梯","温柔","你呢","春天","黄色","车辆","发芽","提出","笔记","小刀","无数","抬手","对齐","右边","左边","碧绿","池水","成为","成功","原来","高兴","胆子","迟到","船厂","写字","我是谁","课间","几天","句子","说话","以前","叫声","不要","后面","更正","游乐","冬天","宝贝","停下来","请问","精神","晴天","吵闹","爬山","高墙","藏起来","往来","坐下","队友","总是","面试","扛起","不能","不该","木头","愿望","火箭","外面","火星","飘起","凉快","跟着","杯子","夏天","瓢虫","上网","是吗","挂起来","躺下","心怀天下","关闭","累人","一棵树","清静","一直"];
+const LL_WORDS4 = ["哎呦","安检","保护","臂膀","参加","茶叶","唱歌","沉思","城堡","臭脚","打雪仗","反转","非凡","甘露","告诉","公元","孤单","官员","规矩","果然","寒冷","黑影","葫芦","讲解","接力","紧张","控制","雷电","连线","脸盆","满意","名贵","男孩","女巫","旁观","偏离","钱包","桥洞","求医","趣味","让座","肉串","入睡","傻笑","盛宴","踢腿","吐舌头","文具","乌鸦","细微","信念","衣服","勇敢","院士","展览","招呼","治病","壮丽","准备","昨晚","安全","拔出","霸道","白糖","白纸","保卫","北京","被窝","鼻子","壁画","冰冻","拨动","脖子","擦干","彩色","查看","尝试","尘土","晨光","翅膀","出逃","穿着","次数","打铃","大炮","大厅","带过来","袋子","第一","独自","对阵","耳屎","发票","房间","甘甜","赶来","格子","狗熊","古老","故人","鬼怪","棍子","国旗","好像","喝茶","荷花","很多","猴头","候鸟","忽然","回收","火龙果","伙伴","夹着","江水","浇水","节拍","解决","镜面","九个","看戏","夸口","蓝色","老百姓","老虎","老婆","莲花","露台","买东西","眉毛","每年","门窗","魔法","泥巴","尿床","暖和","排队","捧场","屁股","奇怪","棋子","汽车","牵挂","铅笔","前端","轻柔","裙子","肉粽","闪光","上周","身高","绳子","失败","书册","书店","梳头","刷牙","双人","水晶","睡觉","死结","酸味","她们","挑明","偷听","透光","土堆","推开","娃娃","弯刀","违反","尾巴","夕阳","稀有","席位","现有","香皂","箱子","响声","杏树","修正","颜色","燕子","杨树","样子","摇动","咬牙","野果","一支笔","疑问","因果","阴天","萤火","越过","仔细","炸弹","摘下","长久","正义","钟声","主力","注明","抓人","桌面","嘴巴","饿了","哇哇大哭","噗通一声"];
+
+const LL_WORDS5 = ["挨近","摆脱","奔波","扁担","缠绕","冲击","答应","等于","而已","锋利","缝隙","浮萍","刚才","根据","继续","假扮","驾驶","坚固","建立","健康","奖金","搅拌","教育","介绍","经历","救命","烤熟","宽宏","困惑","练习","粮食","灵活","留恋","流汗","骆驼","冒险","梦境","迷宫","摩天轮","偶尔","苹果汁","蒲公英","穷苦","认错","洒泪","扫帚","沙漠","深刻","甚至","识别","实际","世界","适合","松柏","讨论","完整","武器","峡谷","消息","幸福","悬崖","烟雾","战斗","枝蔓","蜘蛛","按时","白鹤","白茫茫","班长","帮手","绑住","傍晚","报道","暴风","本领","逼近","笔尖","鞭子","波浪","不但","部队","彩虹","踩雷","草丛","层次","差不多","朝阳","趁机","吃药","此时","聪明","打碎","大量","大致","淡水","蛋糕","挡住","捣乱","到底","道德","地牢","灯光","低沉","敌方","电扇","毒打","堵车","肚脐眼","发胖","翻身","非洲","纷飞","枫林","蜂鸟","付出","感动","告状","刮风","滚动","红桃","呼吸","弧线","湖面","互相","慌张","晃动","挥动","获得","及格","几何","技能","季节","角落","金钩","尽力","惊人","竟然","巨大","绝对","军队","开朗","考生","科目","渴求","客房","口令","枯草","拦路","厉害","俩个人","连绵","羚羊","柳树","龙舟","炉火","慢动作","梦乡","蜜月","棉被","名称","名胜古迹","摩托车","能够","泥潭","娘家","鸟笼","您好","漂浮","破败","铺开","骑车","起伏","气压","千万","瞧见","清楚","情谊","泉水","群众","弱点","森严","沙丘","晒干","山坡","山腰","杉树","闪烁","伤口","舍身","射击","身体","使用","试探","手掌","兽王","暑假","甩手","水淹","虽然","烫手","讨厌","藤条","痛苦","突发","晚霞","忘却","危机","未来","舞蹈","希望","溪水","喜悦","系上","细腻","仙人","心性","辛苦","沿海","筵席","眼罩","央求","椰果","夜色","一旦","椅子","引起","迎接","由来","幼儿","羽毛","远大","栽树","造句","爪牙","之后","植被","终点","子孙","钻进","啃玉米","番薯","织网","善心","姓赵","通知"];
 const LL_SPLIT = {"在森林里":["在","森林里"],"牙掉了":["牙","掉了"],"也来了":["也","来了"],"一栋楼":["一栋","楼"],"一条鱼":["一条","鱼"],"太平洋":["太","平洋"],"吹泡泡":["吹","泡泡"],"倒下来":["倒","下来"],"一个人":["一个","人"],"冰激凌":["冰","激凌"],"向南飞":["向","南飞"],"向北跑":["向","北跑"],"飞上天":["飞","上天"],"五颗豆":["五","颗豆"],"订了一个鼎":["订了","一个鼎"],"从哪里来":["从哪里","来"]};
 let llCurWords = LL_WORDS;
 const L1CHARS = "一二三四五个人山海大子小多少上下对跑围着蹦跳肚手的头走儿七国王耳朵哦不好吃在里来云起只有玉米森林他们看呀片尺用掉天会了东南西北妈追长升飞向土豆月亮书本心牙啦啊见足目怪物广我条鱼数忘两哈太平洋自己出发生日快乐六李十岁老栋关村种颗盖楼养狗也到宝吹没气泡哭抱摔倒";
 const L2CHARS = "爸妹姐爷奶弟哥叔去哪找和丁住定拿被神蚊叮盯订钉顶鼎回家八风雨石田再百吧听说还背岛遍水牛火车门它巾正今是巴象路蛇初戴新年散步送给弓拉所耍读猫都酷舞甲虫问题喜欢洗澡放屁弹珠冰激凌地面就高把得时间真做举床站早餐干净鸡蛋父亲节又树那从处短伸捉中午什么声音这边踪迹知道遇鹿群鸟兔匹鸭羊狮砰白马蚂蚁打伞灰狼开始坏口爱进点办井师怎咕咚青蛙绿草些许扔香动乱吓花园禾苗折断当照相最美选";
-function llCharsOf(lv){ return lv === 2 ? L2CHARS : L1CHARS; }
+const L3CHARS = "画棵春黄圆辆芽提笔红色急忙方形刀毛无抬划船齐半分块右左碧池变成朋友瓜皮过原兴记胆比迟玩秋千害怕篮球架操场工厂字为词首谁课诗几句话写学校可以作业叫如要后先更游冬贝运专各位阳光行停请静精清晴邻居事情苍蝇吵闹蜻蜓眼睛结伴法前想爬墙藏往坐功队总试扛竹竿失望共同能空你该木愿降箭外星飘落呢河凉跟杯借机夏瓢潮湿闷热滑梯网直吗挂躺怀闭荡累明温柔";
+const L4CHARS = "元钱带丽张脚端买虎野支铅故夹席独熊燕夕参加肉粽喝茶她很奇尿屎鼻逃座女噗巫婆城堡魔镜公主稀泥现洞赶接越江台纸格棋尘弯包雷尾文具店莲叶闪电控制安全士像样身久咬敢嘴阵拔力男死霸龙棍串酸透甜医院招呼糖葫芦治病满排第伙笑脸寒冻哇晨推窗捧壁堆股修昨晚果然阴沉壮观雪仗勇每决偷离员义穿唱趣牵入票册晶汽厅裙疑思夸展览名贵京戏讲解准备告诉检查冷让旁收箱九钟暖窝歌娃饿傻孩睡觉衣服保护翅膀孤单线连古姓因求意摇响刷周官偏微铃荷摘杨皂擦卫拨非凡仔细规矩违反次念转黑候败盆味房尝甘颜脖拍臂杏桌梳注浇露挑眉踢腿乌鸦抓彩袋炮影绳双哎信盛宴蓝旗轻忽猴吐舌鬼萤桥臭炸紧呦";
+const L5CHARS = "夜习造按趁扮假椅巨之娘突漂角流惊慌武器战斗击碎付挥翻蒲英刚尽爪远层报低破晃松而由体啃尖利立刻救命番捣教使通练深于令够领军万坡泉及射滚才消息粮食已经乡众糕帮压迎您部厉挡差蹈弧虹拦吸互迷惑逼近朝霞活胖赵孙织腰别羽扇善建宫班轮锋棉挨据蜘蛛浮萍幸福困灵幼聪严暑绝苹桃熟汁感洒烁引灯鞭根枝钩系甩金未量认错痛苦宽宏终胜悦央留冒汗历此渴枯踩栽世危旦朗茫雾纷瞧毒底淹牢绑伤继续健康答应扁担实际界傍季植柏枫杉丛铺溪沿烟炉慢竟兽俩楚育论但却钻整堵舟冲探险藤蔓缠绕蜜蜂峡谷缝隙辛丘绵伏烤烫适称完等柳湖椰洲腻虽刮穷骑脐致弱暴晒摆脱沙漠波浪骆驼讨厌德性坚固摩托合客奔羚潭淡梦境何药敌技考科获希掌识筵恋舍泪谊甚至悬崖笼罩偶尔仙鹤介绍驾驶扫帚搅拌奖状";
+function llCharsOf(lv){ return lv === 5 ? L5CHARS : lv === 4 ? L4CHARS : lv === 3 ? L3CHARS : lv === 2 ? L2CHARS : L1CHARS; }
 function llColorize(str, lv){ const cs = llCharsOf(lv); return Array.from(str).map(c => '<span class="ll-ch ' + (cs.indexOf(c) >= 0 ? 'lv' : 'no') + '">' + c + '</span>').join(''); }
 let llState = {};
 let llCurLv = 1;
-function llInit(lv){ const pool = (lv === 2 ? LL_WORDS2 : LL_WORDS).slice(); for (let k = pool.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [pool[k], pool[j]] = [pool[j], pool[k]]; } llState[lv] = { order: pool, cursor: 0, show: -1 }; }
+function llInit(lv){ const pool = (lv === 5 ? LL_WORDS5 : lv === 4 ? LL_WORDS4 : lv === 3 ? LL_WORDS3 : lv === 2 ? LL_WORDS2 : LL_WORDS).slice(); for (let k = pool.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [pool[k], pool[j]] = [pool[j], pool[k]]; } llState[lv] = { order: pool, cursor: 0, show: -1 }; }
 function llRender(lv, start){
-  llCurLv = lv; llCurWords = (lv === 2 ? LL_WORDS2 : LL_WORDS);
+  llCurLv = lv; llCurWords = (lv === 5 ? LL_WORDS5 : lv === 4 ? LL_WORDS4 : lv === 3 ? LL_WORDS3 : lv === 2 ? LL_WORDS2 : LL_WORDS);
   document.getElementById('llReset1').style.display = (lv === 1 ? '' : 'none');
   document.getElementById('llReset2').style.display = (lv === 2 ? '' : 'none');
+  document.getElementById('llReset3').style.display = (lv === 3 ? '' : 'none');
+  document.getElementById('llReset4').style.display = (lv === 4 ? '' : 'none');
+  document.getElementById('llReset5').style.display = (lv === 5 ? '' : 'none');
   const st = llState[lv]; const total = llCurWords.length;
-  const pick = st.order.slice(start, start + 10);
+  const pick = st.order.slice(start, start + 5);
   if (pick.length === 0) { llPairs = []; llMatch = {}; llOrder = [];
     document.getElementById('llColL').innerHTML = ''; document.getElementById('llColR').innerHTML = ''; document.getElementById('llLineSvg').innerHTML = '';
     document.getElementById('llTip').textContent = '第' + lv + '级词表已全部抽完，点"重置' + lv + '级所有进度"重新开始';
@@ -1189,7 +1209,7 @@ function llRender(lv, start){
   document.getElementById('llProgText').textContent = '已抽 ' + st.cursor + ' / ' + total;
   document.getElementById('llProgBar').style.width = (st.cursor / total * 100) + '%';
 }
-function llDrawBatch(lv){ if (!llState[lv]) llInit(lv); const st = llState[lv]; const total = (lv===2?LL_WORDS2:LL_WORDS).length; if (st.cursor >= total) { document.getElementById('llTip').textContent = '第'+lv+'级词表已全部抽完，点"重置'+lv+'级所有进度"重新开始'; return; } llRender(lv, st.cursor); st.cursor += 10; }
+function llDrawBatch(lv){ if (!llState[lv]) llInit(lv); const st = llState[lv]; const total = (lv===5?LL_WORDS5:lv===4?LL_WORDS4:lv===3?LL_WORDS3:lv===2?LL_WORDS2:LL_WORDS).length; if (st.cursor >= total) { document.getElementById('llTip').textContent = '第'+lv+'级词表已全部抽完，点"重置'+lv+'级所有进度"重新开始'; return; } llRender(lv, st.cursor); st.cursor += 5; }
 function llShow(lv, start){ llRender(lv, start); }
 function splitLL(w){ if(LL_SPLIT[w]) return LL_SPLIT[w]; if(w.length===2) return [w[0], w[1]]; const m = Math.ceil(w.length/2); return [w.slice(0,m), w.slice(m)]; }
 let llPairs = []; let llMatch = {}; let llOrder = [];
@@ -1197,9 +1217,12 @@ function llDrawLine(x1,y1,x2,y2,el){ el.setAttribute('x1',x1); el.setAttribute('
 function llCenter(el){ const s = document.getElementById('llLineSvg').getBoundingClientRect(); const r = el.getBoundingClientRect(); return { x: r.left + r.width/2 - s.left, y: r.top + r.height/2 - s.top }; }
 function llEdge(el){ const s = document.getElementById('llLineSvg').getBoundingClientRect(); const r = el.getBoundingClientRect(); const y = r.top + r.height/2 - s.top; const x = (el.getAttribute('data-side') === 'R') ? (r.left - s.left) : (r.right - s.left); return { x: x, y: y }; }
 function buildLLGame(lv){
-  llCurLv = lv; llCurWords = (lv === 2 ? LL_WORDS2 : LL_WORDS);
+  llCurLv = lv; llCurWords = (lv === 5 ? LL_WORDS5 : lv === 4 ? LL_WORDS4 : lv === 3 ? LL_WORDS3 : lv === 2 ? LL_WORDS2 : LL_WORDS);
   document.getElementById('llReset1').style.display = (lv === 1 ? '' : 'none');
   document.getElementById('llReset2').style.display = (lv === 2 ? '' : 'none');
+  document.getElementById('llReset3').style.display = (lv === 3 ? '' : 'none');
+  document.getElementById('llReset4').style.display = (lv === 4 ? '' : 'none');
+  document.getElementById('llReset5').style.display = (lv === 5 ? '' : 'none');
   if (!llState[lv]) llInit(lv);
   const st = llState[lv];
   if (st.show === -1) {
@@ -1267,6 +1290,9 @@ function llSetup(){
   });
   document.getElementById('llReset1').onclick = () => { if (!confirm('确定要重置第1级的所有抽取进度吗？')) return; llInit(1); llState[1].show = -1; llDrawBatch(1); };
   document.getElementById('llReset2').onclick = () => { if (!confirm('确定要重置第2级的所有抽取进度吗？')) return; llInit(2); llState[2].show = -1; llDrawBatch(2); };
+  document.getElementById('llReset3').onclick = () => { if (!confirm('确定要重置第3级的所有抽取进度吗？')) return; llInit(3); llState[3].show = -1; llDrawBatch(3); };
+  document.getElementById('llReset4').onclick = () => { if (!confirm('确定要重置第4级的所有抽取进度吗？')) return; llInit(4); llState[4].show = -1; llDrawBatch(4); };
+  document.getElementById('llReset5').onclick = () => { if (!confirm('确定要重置第5级的所有抽取进度吗？')) return; llInit(5); llState[5].show = -1; llDrawBatch(5); };
   document.getElementById('llResetSet').onclick = () => { if (llState[llCurLv] && llState[llCurLv].show >= 0) llShow(llCurLv, llState[llCurLv].show); };
   document.getElementById('llUndo').onclick = () => {
     if (llOrder.length === 0) return;
@@ -1281,7 +1307,7 @@ function llSetup(){
     const st = llState[llCurLv];
     if (!st || st.show <= 0) { document.getElementById('llTip').textContent = '已经是第一组了，没有上一组了。'; return; }
     if (!confirm('确定要返回上一组连线吗？当前这组的连线会清空。')) return;
-    llShow(llCurLv, st.show - 10);
+    llShow(llCurLv, st.show - 5);
   };
   document.getElementById('llNext').onclick = () => { llDrawBatch(llCurLv); };
   document.getElementById('llAns').onclick = () => {
@@ -1295,13 +1321,17 @@ function llSetup(){
     document.getElementById('lclose').style.display = '';
     document.getElementById('lmodal').classList.add('show');
   };
-  const llWordsFor = function(lv){ return lv === 2 ? LL_WORDS2 : LL_WORDS; };
+  const llWordsFor = function(lv){ return lv === 5 ? LL_WORDS5 : lv === 4 ? LL_WORDS4 : lv === 3 ? LL_WORDS3 : lv === 2 ? LL_WORDS2 : LL_WORDS; };
   document.querySelectorAll('.ll-showall').forEach(bt => bt.onclick = () => {
     const lv = +bt.getAttribute('data-l');
     document.getElementById('ltitle').textContent = '第' + lv + '级所有字';
     const body = document.getElementById('lbody');
-    if (lv === 1 || lv === 2) {
-      body.innerHTML = '<div class="ll-all-words">' + llWordsFor(lv).map(w => '<span class="ll-all-word">' + llColorize(w, lv) + '</span>').join('') + '</div>';
+if (lv >= 1 && lv <= 5) {
+      const cs = llCharsOf(lv);
+      const set = {};
+      llWordsFor(lv).forEach(w => Array.from(w).forEach(c => { if (cs.indexOf(c) >= 0) set[c] = 1; }));
+      const cnt = Object.keys(set).length;
+      body.innerHTML = '<div class="ll-all-head">显示第' + lv + '级所有字，包含第' + lv + '级 <b>' + cnt + '</b> 个字</div><div class="ll-all-words">' + llWordsFor(lv).map(w => '<span class="ll-all-word">' + llColorize(w, lv) + '</span>').join('') + '</div>';
     } else {
       body.innerHTML = '<div class="dz-hint">第' + lv + '级词表建设中……</div>';
     }
@@ -1310,7 +1340,7 @@ function llSetup(){
   });
   document.querySelectorAll('.ll-level').forEach(bt => bt.onclick = () => {
     const lv = +bt.getAttribute('data-l');
-    if (lv >= 1 && lv <= 2) { buildLLGame(lv); }
+    if (lv >= 1 && lv <= 5) { buildLLGame(lv); }
     else {
       document.getElementById('llTip').textContent = '复习第' + lv + '级　（功能建设中……）';
       document.getElementById('llColL').innerHTML = '';
@@ -1321,6 +1351,9 @@ function llSetup(){
       document.getElementById('llProgBar').style.width = '0';
       document.getElementById('llReset1').style.display = 'none';
       document.getElementById('llReset2').style.display = 'none';
+document.getElementById('llReset3').style.display = 'none';
+      document.getElementById('llReset4').style.display = 'none';
+      document.getElementById('llReset5').style.display = 'none';
     }
   });
 }
