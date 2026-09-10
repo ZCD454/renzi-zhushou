@@ -286,6 +286,136 @@
   .empty{ color:var(--dim); text-align:center; padding:40px 0; font-size:15px; }
   .ll-entry{ text-align:center; margin:18px 0 6px; }
   .ll-entry .btn{ font-size:15px; padding:12px 26px; }
+  .xjin{ display:flex; flex-direction:column; gap:14px; }
+  .xjin-tabs{ display:flex; gap:8px; padding:12px 18px 0; flex-wrap:wrap; }
+  .xjin-tab{ font-family:inherit; font-size:14px; font-weight:700; padding:7px 16px; border:2px solid var(--line);
+             background:#fff; color:var(--ink); border-radius:999px; cursor:pointer; transition:.15s; }
+  .xjin-tab:hover{ border-color:var(--accent); }
+  .xjin-tab.on{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .xjin-tbl{ overflow-x:auto; text-align:center; }
+  .xjin-tbl table{ border-collapse:collapse; font-size:14px; table-layout:auto; margin:0 auto; }
+  .xjin-tbl th{ background:var(--accent); color:#fff; font-weight:700; padding:8px 10px;
+                border:1px solid #000; text-align:center; white-space:nowrap; }
+  .xjin-tbl td{ border:1px solid #000; padding:8px 10px; vertical-align:middle; background:#fff;
+                text-align:center; }
+  .xjin-tbl td.cc{ text-align:center; white-space:nowrap; min-width:310px; }
+  .xjin-tbl tr:nth-child(even) td{ background:#faf8f3; }
+  .xjin-tbl .gh{ font-weight:800; color:var(--accent); white-space:nowrap; text-align:center; }
+  .xjin-tbl .gt{ color:#8a6d3b; }
+  .xjin-tbl .or{ color:var(--dim); white-space:nowrap; }
+  .xjin .xch{ display:inline-block; line-height:1; }
+  .xjin .xch b{ font-size:72px; font-weight:900; color:var(--ink);
+                text-shadow:0 1px 1px rgba(0,0,0,.05); }
+  .xjin-tbl .gh-btn{ font-family:inherit; font-size:16px; font-weight:800; color:var(--accent);
+                     background:#fff; border:1.5px solid var(--accent); border-radius:10px;
+                     padding:6px 16px; cursor:pointer; transition:.15s; white-space:nowrap; }
+  .xjin-tbl .gh-btn:hover{ background:var(--accent); color:#fff; }
+  .xjin-tab.custom-tab{ border:2px dashed var(--accent); color:var(--accent); background:transparent; }
+  .xjin-tab.custom-tab.on{ background:var(--accent); color:#fff; border-style:solid; }
+  .custom-search{ padding:16px 18px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .custom-search input{ font-size:18px; width:1.2em; text-align:center; padding:6px 0;
+                        border:1px solid var(--line); border-radius:8px; font-weight:700; flex-shrink:0; }
+  .custom-search input:focus{ border-color:var(--accent); outline:none; }
+  .custom-result{ font-size:15px; color:var(--ink); }
+  .custom-result .lv-tag{ display:inline-block; background:var(--accent); color:#fff;
+                          font-size:12px; font-weight:700; padding:2px 8px; border-radius:4px;
+                          margin-left:6px; }
+  .custom-groups{ padding:12px 18px; }
+  .custom-groups .cg-hdr{ display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .custom-groups .cg-hdr h4{ font-size:14px; color:var(--dim); margin:0; }
+  .cg-add-btn-hdr{ font-family:inherit; font-size:12px; font-weight:700; padding:4px 12px;
+                   border:1.5px solid var(--accent); border-radius:6px; background:#fff;
+                   color:var(--accent); cursor:pointer; white-space:nowrap; }
+  .cg-add-btn-hdr:hover{ background:var(--accent); color:#fff; }
+  .cg-row{ display:flex; align-items:flex-start; gap:12px; padding:10px 18px;
+           border-bottom:1px solid var(--line); }
+  .cg-row:last-child{ border-bottom:none; }
+  .cg-name{ min-width:120px; font-weight:700; font-size:15px; color:var(--ink); flex-shrink:0;
+            display:flex; flex-direction:row; align-items:center; gap:4px; flex-wrap:wrap; }
+  .cg-rm-x{ cursor:pointer; color:#c55; font-size:16px; font-weight:700; line-height:1; }
+  .cg-rm-x:hover{ background:#c55; color:#fff; border-radius:4px; }
+  .cg-name-btn{ font-family:inherit; font-size:15px; font-weight:700; color:var(--accent);
+                background:none; border:none; padding:0; cursor:pointer; text-decoration:underline; }
+  .cg-name-btn:hover{ color:var(--accent-dark); }
+  .cg-name .cg-note{ font-size:12px; color:var(--dim); font-weight:400; max-width:140px; word-break:break-all; }
+  .cg-chars{ display:flex; flex-wrap:wrap; gap:6px; flex:1; align-items:center; }
+  .cg-ch{ display:inline-flex; align-items:center; gap:2px; background:#f5f5f0; padding:4px 8px;
+          border-radius:6px; font-size:14px; cursor:default; }
+  .cg-ch b{ font-size:26px; color:var(--ink); }
+  .cg-ch .rm{ cursor:pointer; color:#c55; font-size:12px; font-weight:700; padding:2px; }
+  .cg-ch .rm:hover{ background:#c55; color:#fff; border-radius:4px; }
+  .cg-add-btn{ font-family:inherit; font-size:12px; padding:4px 10px; border:1.5px solid var(--accent);
+               border-radius:6px; background:#fff; color:var(--accent); cursor:pointer; white-space:nowrap; }
+  .cg-add-btn:hover{ background:var(--accent); color:#fff; }
+  .cg-modal{ display:none; position:fixed; inset:0; z-index:2000; align-items:center; justify-content:center;
+             background:rgba(0,0,0,.35); }
+  .cg-modal.show{ display:flex; }
+  .cg-modal .box{ background:#fff; border:1px solid #000; border-radius:12px; padding:20px;
+                  max-width:90vw; max-height:80vh; overflow:auto; }
+  .cg-modal .box h3{ font-size:18px; font-weight:800; color:var(--ink); margin:0 0 12px; }
+  .cg-modal .box .chars{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+  .cg-modal .box .chars span{ font-size:120px; font-weight:900; color:#000; border:1px solid #000;
+                              border-radius:8px; padding:4px 18px; line-height:1.2; background:#fff; }
+  .cg-modal .box .note{ margin-top:12px; font-size:13px; color:var(--dim); text-align:center; }
+  .cg-modal .box .close{ display:block; margin:14px auto 0; font-family:inherit; font-size:14px;
+                         padding:6px 20px; border:1px solid var(--line); border-radius:6px;
+                         background:#fff; cursor:pointer; }
+  .cg-modal .box .close:hover{ background:#f0f0ea; }
+  .dyz-search{ position:fixed; z-index:50; background:transparent;
+             display:flex; justify-content:flex-end; align-items:center; gap:6px; }
+  .dyz-search input{ width:84px; flex:none; min-width:0; font-size:15px; padding:4px 6px;
+                     background:#e1f5dc; border:1px solid #bbb; border-radius:6px; box-sizing:border-box; }
+  .dyz-search-x{ font-size:18px; cursor:pointer; color:#888; padding:0 2px; line-height:1; flex:none; }
+  .dyz-list{ padding:0; }
+  .dyz-item{ table-layout:fixed; width:100%; border-collapse:separate; border-spacing:0;
+             margin-bottom:8px; }
+  .dyz-idx{ width:30px; font-size:14px; color:var(--dim); text-align:right;
+            padding:2px 8px 0 0; vertical-align:middle; }
+  .dyz-info{ width:50px; font-size:11px; color:var(--accent); line-height:1.4;
+             padding:0 8px 0 0; vertical-align:middle; }
+  .dyz-ch{ width:72px; font-size:48px; font-weight:900; color:var(--ink);
+           line-height:1; border:1px solid #000; border-radius:6px; padding:3px 0; cursor:pointer;
+           background:#fff; text-align:center; vertical-align:middle; }
+  .dyz-ch:hover{ background:#f0f0ea; }
+  .dyz-ch.glow{ box-shadow:0 0 10px 4px rgba(255,200,0,.8); border-color:#f90; }
+  .dyz-right{ padding:0 0 0 12px; vertical-align:top; }
+  .dyz-pys{ table-layout:auto; width:auto; border-collapse:separate; border-spacing:0; }
+  .dyz-py-col{ vertical-align:top; padding:0 14px 0 0; white-space:nowrap; min-width:64px; }
+  .dyz-wo-col{ vertical-align:top; white-space:nowrap; }
+  .dyz-py-cell{ display:block; font-size:15px; color:#555; padding:5px 0; border-bottom:1px solid #ccc;
+                min-height:22px; }
+  .dyz-py-cell:last-child{ border-bottom:none; }
+  .dyz-py-cell b{ color:var(--ink); font-size:16px; white-space:nowrap; }
+  .dyz-wo-cell{ display:block; font-size:15px; color:#555; padding:5px 0; border-bottom:1px solid #ccc;
+                white-space:nowrap; min-height:22px; }
+  .dyz-wo-cell:last-child{ border-bottom:none; }
+  .dyz-word{ margin-left:45px; }
+  .dyz-gap{ display:inline-block; width:30px; }
+  input.dyz-note{ width:5em; min-width:0; flex:none; font-size:15px; line-height:1.2; border:none; border-bottom:1px solid #ccc; border-radius:0; padding:0; outline:none; font-family:inherit; background:transparent; vertical-align:top; margin-top:-5px; }
+  .dyz-rng{ padding:2px 4px; border-radius:4px; }
+  .dyz-rng.on{ background:#d6ecf7; }
+  .dyz-sel{ display:inline-block; min-width:20px; height:20px; line-height:18px; text-align:center;
+            font-size:13px; border:1px solid #bbb; border-radius:4px; background:#f5f2ea;
+            color:#8a5a00; cursor:pointer; padding:0 3px; font-weight:700; box-sizing:border-box; }
+  .dyz-sel:hover{ background:#e8e2d4; }
+  .dyz-prefix{ font-size:13px; color:var(--dim); }
+  .dyz-py-popup{ position:fixed; inset:0; z-index:2100; display:none; align-items:center;
+                 justify-content:center; background:rgba(0,0,0,.35); }
+  .dyz-py-popup.show{ display:flex; }
+  .dyz-py-popup .box{ background:#fff; border:1px solid #000; border-radius:12px; padding:24px;
+                      text-align:center; }
+  .dyz-py-popup .big{ font-size:120px; font-weight:900; color:var(--ink); line-height:1.2; }
+  .dyz-py-popup .pys{ margin-top:12px; font-size:18px; color:#555; }
+  .dyz-py-popup .pys div{ padding:6px 0; border-bottom:1px solid #ddd; }
+  .dyz-py-popup .pys div:last-child{ border-bottom:none; }
+  .dyz-py-popup .pys b{ color:var(--ink); margin-right:8px; }
+  .dyz-py-popup .close{ margin-top:14px; font-family:inherit; font-size:14px; padding:6px 20px;
+                        border:1px solid var(--line); border-radius:6px; background:#fff; cursor:pointer; }
+  .grp-big{ display:flex; flex-wrap:wrap; gap:18px; justify-content:center; padding:16px 6px; }
+  .grp-big .gb{ font-size:120px; font-weight:900; color:var(--ink); line-height:1.2;
+                border:1px solid #000; border-radius:10px; padding:6px 22px; background:#fff; }
+  .grp-tip{ text-align:center; color:#8a6d3b; font-size:15px; margin-top:6px; }
+  .dz-hint{ padding:20px; text-align:center; color:var(--dim); font-size:14px; }
   footer{ text-align:center; color:var(--dim); font-size:12px; padding:6px 0 70px; }
 </style>
 </head>
@@ -314,7 +444,9 @@
     <button class="btn" id="btnQuiz">⭐ 重点字抽查</button>
     <button class="btn" id="btnLearned">📊 学习进度</button>
     <button class="btn" id="btnReset">重置全部</button>
-    <button class="btn" id="btnLianlian">🧩 词组连连看</button>
+<button class="btn" id="btnLianlian">🧩 词组连连看</button>
+    <button class="btn" id="btnXjin">🔍 形近字</button>
+    <button class="btn" id="btnDyz">🔊 多音字</button>
   </div>
   <div class="locline">
     <input type="text" id="locQ" placeholder="🔍 输字查位置…">
@@ -421,6 +553,54 @@
       <span id="llDone"></span>
     </div>
   </div>
+</div></div>
+
+<div class="lmodal" id="xjinModal"><div class="box">
+  <div class="head">
+    <b id="xjinTitle">形近字辨析</b>
+    <div class="ops">
+      <button class="btn" id="xjinClose">关闭</button>
+    </div>
+  </div>
+  <div class="xjin-tabs" id="xjinTabs"></div>
+  <div class="body" id="xjinBody"></div>
+  <div id="customBody" style="display:none"></div>
+</div></div>
+
+<div class="lmodal" id="grpModal"><div class="box">
+  <div class="head">
+    <b id="grpTitle">形近字组</b>
+    <div class="ops">
+      <button class="btn" id="grpClose">关闭</button>
+    </div>
+  </div>
+  <div class="body">
+    <div class="grp-big" id="grpBig"></div>
+    <div class="grp-tip" id="grpTip"></div>
+  </div>
+</div></div>
+
+<div class="cg-modal" id="cgModal"><div class="box">
+  <h3 id="cgModalTitle">组名</h3>
+  <div class="chars" id="cgModalChars"></div>
+  <div class="note" id="cgModalNote"></div>
+  <button class="close" id="cgModalClose">关闭</button>
+</div></div>
+
+<div class="lmodal" id="dyzModal"><div class="box">
+  <div class="head">
+    <b>多音字</b>
+    <div class="ops">
+      <button class="btn" id="dyzClose">关闭</button>
+    </div>
+  </div>
+  <div class="body" id="dyzBody"></div>
+</div></div>
+
+<div class="dyz-py-popup" id="dyzPyPopup"><div class="box">
+  <div class="big" id="dyzPyBig"></div>
+  <div class="pys" id="dyzPyPys"></div>
+  <button class="close" id="dyzPyClose">关闭</button>
 </div></div>
 
 <div class="lmodal" id="gridModal"><div class="box">
@@ -1158,6 +1338,459 @@ document.getElementById('gmBtnFace').onclick = () => { faceDraw(); document.getE
 document.getElementById('drawAgain').onclick = () => { if (drawMode === 'single') randomDraw(); };
 document.getElementById('drawReset').onclick = drawResetCurrent;
 document.getElementById('drawBack').onclick = backToGrid;
+const XJIN_RANGES = [
+  { label: '第1级',   to: 1 },
+  { label: '第1-2级', to: 2 },
+  { label: '第1-3级', to: 3 },
+  { label: '第1-4级', to: 4 },
+  { label: '第1-5级', to: 5 }
+];
+const XJIN_GROUPS = [
+  { lv: 1, h: '横画多少', ch: [['一','1','1'],['二','1','1'],['三','1','1']], t: '横越多，字越大' },
+  { lv: 1, h: '大字家族', ch: [['大','1','1'],['太','1','1'],['天','1','1'],['头','1','1']], t: '大+点=太，大+横=天' },
+  { lv: 1, h: '人字头', ch: [['人','1','1'],['个','1','1'],['会','1','1']], t: '上面都是"人"' },
+  { lv: 2, h: '口日目', ch: [['口','2','2'],['日','1','1'],['目','1','1']], t: '口空→日一横→目两横' },
+  { lv: 2, h: '四回田', ch: [['四','1','1'],['回','2','2'],['田','2','2']], t: '方框里结构不同' },
+  { lv: 2, h: '白百自', ch: [['白','2','2'],['百','2','2'],['自','1','1']], t: '上面都有"日"或"目"' },
+  { lv: 2, h: '木字一族', ch: [['本','1','1'],['来','1','1'],['米','1','1'],['禾','2','2']], t: '横竖撇捺位置不同' },
+  { lv: 2, h: '三个人家', ch: [['他','1','1'],['它','2','2']], t: '亻/宀+也，都念tā' },
+  { lv: 2, h: '也地', ch: [['也','1','1'],['地','2','2']], t: '也加土=地' },
+  { lv: 2, h: '门问们', ch: [['门','2','2'],['问','2','2'],['们','1','1']], t: '门+口=问，亻+门=们' },
+  { lv: 2, h: '女字旁一家', ch: [['妈','1','1'],['姐','2','2'],['妹','2','2'],['奶','2','2'],['好','1','1']], t: '都有"女"字旁' },
+  { lv: 2, h: '鸟马', ch: [['鸟','2','2'],['马','2','2']], t: '鸟头顶有一点，马有横折和四脚' },
+  { lv: 2, h: '牛生', ch: [['牛','2','2'],['生','1','1']], t: '上半部很像' },
+  { lv: 1, h: '心忘', ch: [['心','1','1'],['忘','1','1']], t: '忘是心字底' },
+  { lv: 1, h: '山出', ch: [['山','1','1'],['出','1','1']], t: '出像两座山' },
+  { lv: 2, h: '东车', ch: [['东','1','1'],['车','2','2']], t: '口与横竖不同' },
+  { lv: 1, h: '上下土', ch: [['上','1','1'],['下','1','1'],['土','1','1']], t: '一横一竖位置不同' },
+  { lv: 2, h: '午牛', ch: [['午','2','2'],['牛','2','2']], t: '午的竖不出头，牛的竖出头' },
+  { lv: 1, h: '王玉', ch: [['王','1','1'],['玉','1','1']], t: '玉=王+一点' },
+  { lv: 1, h: '小少', ch: [['小','1','1'],['少','1','1']], t: '少=小+一撇' },
+  { lv: 2, h: '云去', ch: [['云','1','1'],['去','2','2']], t: '上面不同，下面都有"厶"' },
+  { lv: 1, h: '见目', ch: [['见','1','1'],['目','1','1']], t: '见=目+儿两脚' },
+  { lv: 2, h: '己巴', ch: [['己','1','1'],['巴','2','2']], t: '己开口，巴有尾巴' },
+  { lv: 2, h: '羊美', ch: [['羊','2','2'],['美','2','2']], t: '美=羊+大' },
+  { lv: 2, h: '两雨', ch: [['两','1','1'],['雨','2','2']], t: '里面点点不同' },
+  { lv: 1, h: '四西', ch: [['四','1','1'],['西','1','1']], t: '四无帽，西有顶横' },
+  { lv: 1, h: '五王', ch: [['五','1','1'],['王','1','1']], t: '五有弯钩，王是直竖' },
+  { lv: 2, h: '升井开', ch: [['升','1','1'],['井','2','2'],['开','2','2']], t: '升撇出头，井两竖，开带撇捺' },
+  { lv: 2, h: '甲田中', ch: [['甲','2','2'],['田','2','2'],['中','2','2']], t: '甲下出头，田不出头，中上下出头' },
+  { lv: 2, h: '香禾', ch: [['香','2','2'],['禾','2','2']], t: '香=禾+日' },
+  { lv: 3, h: '儿几', ch: [['儿','1','1'],['几','3','3']], t: '儿最后一笔变折=几' },
+  { lv: 3, h: '手毛', ch: [['手','1','1'],['毛','3','3']], t: '手长出毛毛=毛' },
+  { lv: 3, h: '北比', ch: [['北','1','1'],['比','3','3']], t: '北和比都像人背对背' },
+  { lv: 3, h: '左右', ch: [['左','3','3'],['右','3','3']], t: '左工右口：左边是工，右边是口' },
+  { lv: 3, h: '见贝', ch: [['见','1','1'],['贝','3','3']], t: '贝下面多长角=见' },
+  { lv: 3, h: '日月明', ch: [['日','1','1'],['月','1','1'],['明','3','3']], t: '日+月=明' },
+  { lv: 3, h: '羊半', ch: [['羊','2','2'],['半','3','3']], t: '半像羊，中间少一横' },
+  { lv: 3, h: '原愿', ch: [['原','3','3'],['愿','3','3']], t: '愿=原+心' },
+  { lv: 3, h: '牙芽', ch: [['牙','1','1'],['芽','3','3']], t: '芽=牙+草字头' },
+  { lv: 3, h: '青字家族', ch: [['青','2','2'],['请','3','3'],['清','3','3'],['晴','3','3'],['情','3','3'],['睛','3','3']], t: '青加讠=请，青加氵=清，青加日=晴，青加忄=情，青加目=睛' },
+  { lv: 3, h: '目直', ch: [['目','1','1'],['直','3','3']], t: '直里面藏着目' },
+  { lv: 4, h: '人入', ch: [['人','1','1'],['入','4','4']], t: '人张口，入闭口' },
+  { lv: 4, h: '夕多', ch: [['多','1','1'],['夕','4','4']], t: '多=两个夕' },
+  { lv: 4, h: '土士', ch: [['土','1','1'],['士','4','4']], t: '土的横长，士的横短' },
+  { lv: 4, h: '门闪', ch: [['门','2','2'],['闪','4','4']], t: '闪=门里藏个人' },
+  { lv: 4, h: '又双', ch: [['又','2','2'],['双','4','4']], t: '两个又叠一起=双' },
+  { lv: 4, h: '鸟乌', ch: [['鸟','2','2'],['乌','4','4']], t: '乌少了鸟的一只眼睛' },
+  { lv: 4, h: '父文', ch: [['父','2','2'],['文','4','4']], t: '父比文多一点八' },
+  { lv: 4, h: '古故', ch: [['古','4','4'],['故','4','4']], t: '故=古+反文旁' },
+  { lv: 5, h: '爪瓜', ch: [['爪','5','5'],['瓜','3','3']], t: '瓜多一点=爪' },
+  { lv: 5, h: '未本', ch: [['未','5','5'],['本','1','1']], t: '本的长横在下，未的长横在上' },
+  { lv: 5, h: '辛幸', ch: [['辛','5','5'],['幸','5','5']], t: '幸比辛多两个点' },
+  { lv: 5, h: '因困', ch: [['因','4','4'],['困','5','5']], t: '因里是大，困里是木' },
+  { lv: 5, h: '由甲', ch: [['由','5','5'],['甲','2','2']], t: '甲下出头，由上出头' },
+  { lv: 5, h: '万方', ch: [['万','5','5'],['方','3','3']], t: '方去一点=万' },
+  { lv: 5, h: '用甩', ch: [['用','1','1'],['甩','5','5']], t: '用长出尾巴=甩' },
+  { lv: 3, h: '木本', ch: [['木','3','3'],['本','1','1']], t: '本=木底下加一横' },
+  { lv: 3, h: '白首', ch: [['白','2','2'],['首','3','3']], t: '首=白上面加两点' },
+  { lv: 3, h: '门窗闷', ch: [['门','2','2'],['闷','3','3']], t: '门里藏一颗心=闷' },
+  { lv: 3, h: '想心', ch: [['想','3','3'],['心','1','1']], t: '想=相+心，心字底' },
+  { lv: 3, h: '土工王', ch: [['土','1','1'],['工','3','3'],['王','1','1']], t: '土中间出头，工不出头，王加长竖' },
+  { lv: 3, h: '两辆', ch: [['两','1','1'],['辆','3','3']], t: '辆=车+两' },
+  { lv: 3, h: '池地', ch: [['池','3','3'],['地','2','2']], t: '也加氵=池，也加土=地' },
+  { lv: 3, h: '云运', ch: [['云','1','1'],['运','3','3']], t: '云加走之=运' },
+  { lv: 3, h: '先光', ch: [['先','3','3'],['光','3','3']], t: '先下面是儿，光下面是兀' },
+  { lv: 3, h: '往住', ch: [['往','3','3'],['住','2','2']], t: '往双人旁，住单人旁' },
+  { lv: 3, h: '忘望', ch: [['忘','1','1'],['望','3','3']], t: '忘下面是心，望下面是月+王' },
+  { lv: 3, h: '杯怀', ch: [['杯','3','3'],['怀','3','3']], t: '木+不=杯，忄+不=怀' },
+  { lv: 4, h: '能熊', ch: [['能','3','3'],['熊','4','4']], t: '熊=能加四点底' },
+  { lv: 4, h: '坐座', ch: [['坐','3','3'],['座','4','4']], t: '座=广+坐' },
+  { lv: 4, h: '话舌', ch: [['话','3','3'],['舌','4','4']], t: '话=讠+舌' },
+  { lv: 5, h: '飘漂', ch: [['飘','3','3'],['漂','5','5']], t: '飘有风，漂有水' },
+  { lv: 5, h: '潮朝', ch: [['潮','3','3'],['朝','5','5']], t: '潮加氵，朝不加' },
+  { lv: 5, h: '角用', ch: [['角','5','5'],['用','1','1']], t: '角=用多出两只角' },
+  { lv: 3, h: '刀分', ch: [['刀','3','3'],['分','3','3']], t: '分=八+刀' },
+  { lv: 3, h: '星生', ch: [['星','3','3'],['生','1','1']], t: '星=日+生' },
+  { lv: 4, h: '包句', ch: [['包','4','4'],['句','3','3']], t: '句=勹+口，包=勹+巳' },
+  { lv: 4, h: '凉京', ch: [['凉','3','3'],['京','4','4']], t: '凉=冫+京' },
+  { lv: 4, h: '学觉', ch: [['学','3','3'],['觉','4','4']], t: '觉=学下面加见' },
+  { lv: 5, h: '旦但', ch: [['旦','5','5'],['但','5','5']], t: '但=亻+旦' },
+  { lv: 5, h: '习羽', ch: [['习','5','5'],['羽','5','5']], t: '习=羽去掉两撇' },
+  { lv: 5, h: '爬爪', ch: [['爬','3','3'],['爪','5','5']], t: '爬=爪+巴' }
+];
+const XJIN_COLORS = ['#fde8d9','#e3f0fd','#e6f7e8','#fdf0d5','#f3e5fb'];
+const DYZ_DATA = [
+  { ch:'了', lv:1, book:1, pys:[{p:'le',ex:'好了'},{p:'li\u01ceo',ex:'了解'}] },
+  { ch:'的', lv:1, book:1, pys:[{p:'de',ex:'我的'},{p:'dí',ex:'的确'},{p:'dì',ex:'目的'}] },
+  { ch:'不', lv:1, book:1, pys:[{p:'bù',ex:'不行'},{p:'bú',ex:'不变'}] },
+  { ch:'大', lv:1, book:1, pys:[{p:'dà',ex:'大人'},{p:'dài',ex:'大夫'}] },
+  { ch:'长', lv:1, book:1, pys:[{p:'cháng',ex:'长短'},{p:'zh\u01ceng',ex:'成长'}] },
+  { ch:'乐', lv:1, book:1, pys:[{p:'l\u00e8',ex:'快乐'},{p:'yu\u00e8',ex:'音乐'}] },
+  { ch:'少', lv:1, book:1, pys:[{p:'sh\u01ceo',ex:'多少'},{p:'sh\u00e0o',ex:'少年'}] },
+  { ch:'只', lv:1, book:1, pys:[{p:'zh\u012b',ex:'一只'},{p:'zh\u01d0',ex:'只有'}] },
+  { ch:'发', lv:1, book:1, pys:[{p:'f\u0101',ex:'发现'},{p:'f\u00e0',ex:'头发'}] },
+  { ch:'会', lv:1, book:1, pys:[{p:'hu\u00ec',ex:'开会'},{p:'ku\u00e0i',ex:'会计'}] },
+  { ch:'种', lv:1, book:1, pys:[{p:'zh\u01d2ng',ex:'种子'},{p:'zh\u00f2ng',ex:'种地'}] },
+  { ch:'中', lv:1, book:1, pys:[{p:'zh\u014dng',ex:'中间'},{p:'zh\u00f2ng',ex:'中奖'}] },
+  { ch:'数', lv:1, book:1, pys:[{p:'sh\u01d4',ex:'数数'},{p:'sh\u00f9',ex:'数学'}] },
+  { ch:'没', lv:1, book:1, pys:[{p:'m\u00e9i',ex:'没有'},{p:'m\u00f2',ex:'淹没'}] },
+  { ch:'地', lv:1, book:1, pys:[{p:'de',ex:'快快地跑'},{p:'dì',ex:'土地'}] },
+  { ch:'还', lv:2, book:2, pys:[{p:'h\u00e1i',ex:'还有'},{p:'hu\u00e1n',ex:'还书'}] },
+  { ch:'都', lv:2, book:2, pys:[{p:'d\u014du',ex:'都是'},{p:'d\u016b',ex:'首都'}] },
+  { ch:'得', lv:2, book:2, pys:[{p:'de',ex:'跑得快'},{p:'d\u00e9',ex:'得到'},{p:'d\u011bi',ex:'得亏'}] },
+  { ch:'干', lv:2, book:2, pys:[{p:'g\u0101n',ex:'干净'},{p:'g\u00e0n',ex:'干活'}] },
+  { ch:'当', lv:2, book:2, pys:[{p:'d\u0101ng',ex:'当时'},{p:'d\u00e0ng',ex:'上当'}] },
+  { ch:'弹', lv:2, book:2, pys:[{p:'d\u00e0n',ex:'子弹'},{p:'t\u00e1n',ex:'弹琴'}] },
+  { ch:'钉', lv:2, book:2, pys:[{p:'d\u012bn',ex:'钉子'},{p:'d\u00ecng',ex:'钉住'}] },
+  { ch:'背', lv:2, book:2, pys:[{p:'b\u0113i',ex:'背书包'},{p:'b\u00e8i',ex:'背后'}] },
+  { ch:'处', lv:2, book:2, pys:[{p:'ch\u01d4',ex:'处理'},{p:'ch\u00f9',ex:'处所'}] },
+  { ch:'和', lv:2, book:2, pys:[{p:'h\u00e9',ex:'和平'},{p:'h\u00e8',ex:'曲高和寡'},{p:'hu\u00f3',ex:'和面'}] },
+  { ch:'正', lv:2, book:2, pys:[{p:'zh\u00e8ng',ex:'正确'},{p:'zh\u0113ng',ex:'正月'}] },
+  { ch:'读', lv:2, book:2, pys:[{p:'d\u00fa',ex:'读书'},{p:'d\u00f2u',ex:'句读'}] },
+  { ch:'分', lv:3, book:3, pys:[{p:'f\u0113n',ex:'分开'},{p:'f\u00e8n',ex:'水分'}] },
+  { ch:'为', lv:3, book:3, pys:[{p:'w\u00e9i',ex:'以为'},{p:'w\u00e8i',ex:'为了'}] },
+  { ch:'要', lv:3, book:3, pys:[{p:'y\u00e0o',ex:'只要'},{p:'y\u0101o',ex:'要求'}] },
+  { ch:'更', lv:3, book:3, pys:[{p:'g\u0113ng',ex:'更新'},{p:'g\u00e8ng',ex:'更好'}] },
+  { ch:'行', lv:3, book:3, pys:[{p:'x\u00edng',ex:'行走'},{p:'h\u00e1ng',ex:'银行'}] },
+  { ch:'兴', lv:3, book:3, pys:[{p:'x\u012bn',ex:'兴奋'},{p:'x\u00ecng',ex:'高兴'}] },
+  { ch:'降', lv:3, book:3, pys:[{p:'ji\u00e0ng',ex:'下降'},{p:'xi\u00e1ng',ex:'投降'}] },
+  { ch:'几', lv:3, book:3, pys:[{p:'j\u012b',ex:'几乎'},{p:'j\u01d0',ex:'几个'}] },
+  { ch:'藏', lv:3, book:3, pys:[{p:'c\u00e1ng',ex:'躲藏'},{p:'z\u00e0ng',ex:'宝藏'}] },
+  { ch:'累', lv:3, book:3, pys:[{p:'l\u00e8i',ex:'劳累'},{p:'l\u0113i',ex:'累积'}] },
+  { ch:'夹', lv:4, book:4, pys:[{p:'ji\u0101',ex:'夹住'},{p:'ji\u00e1',ex:'夹袄'}] },
+  { ch:'奇', lv:4, book:4, pys:[{p:'q\u00ed',ex:'奇怪'},{p:'j\u012b',ex:'奇数'}] },
+  { ch:'转', lv:4, book:4, pys:[{p:'zhu\u01cen',ex:'转身'},{p:'zhu\u00e0n',ex:'转动'}] },
+  { ch:'盛', lv:4, book:4, pys:[{p:'sh\u00e8ng',ex:'盛开'},{p:'ch\u00e9ng',ex:'盛饭'}] },
+  { ch:'臭', lv:4, book:4, pys:[{p:'ch\u00f2u',ex:'臭味'},{p:'xi\u00f9',ex:'嗅'}] },
+  { ch:'挑', lv:4, book:4, pys:[{p:'ti\u0100o',ex:'挑选'},{p:'ti\u01ceo',ex:'挑战'}] },
+  { ch:'漂', lv:5, book:5, pys:[{p:'pi\u0100o',ex:'漂流'},{p:'pi\u00e0o',ex:'漂亮'}] },
+  { ch:'角', lv:5, book:5, pys:[{p:'ji\u01ceo',ex:'角度'},{p:'ju\u00e9',ex:'角色'}] },
+  { ch:'尽', lv:5, book:5, pys:[{p:'j\u01d0n',ex:'尽管'},{p:'j\u00ecn',ex:'尽力'}] },
+  { ch:'量', lv:5, book:5, pys:[{p:'li\u00e1ng',ex:'测量'},{p:'li\u00e0ng',ex:'数量'}] },
+  { ch:'扁', lv:5, book:5, pys:[{p:'bi\u01cen',ex:'扁平'},{p:'pi\u0101n',ex:'扁舟'}] },
+  { ch:'钻', lv:5, book:5, pys:[{p:'zu\u0101n',ex:'钻研'},{p:'zu\u00e0n',ex:'钻石'}] },
+  { ch:'冲', lv:5, book:5, pys:[{p:'ch\u014dng',ex:'冲水'},{p:'ch\u00f2ng',ex:'冲劲'}] },
+  { ch:'称', lv:5, book:5, pys:[{p:'ch\u0113ng',ex:'称呼'},{p:'ch\u00e8n',ex:'称心'}] },
+  { ch:'舍', lv:5, book:5, pys:[{p:'sh\u011b',ex:'舍不得'},{p:'sh\u00e8',ex:'宿舍'}] },
+  { ch:'铺', lv:5, book:5, pys:[{p:'p\u016b',ex:'铺路'},{p:'p\u00f9',ex:'店铺'}] },
+  { ch:'磨', lv:5, book:5, pys:[{p:'m\u00f3',ex:'磨练'},{p:'m\u00f2',ex:'磨坊'}] },
+  { ch:'挨', lv:5, book:5, pys:[{p:'\u0101i',ex:'挨着'},{p:'\u00e1i',ex:'挨打'}] },
+];
+let xjinCur = 0;
+function renderXjinTabs(){
+  document.getElementById('xjinTabs').innerHTML = XJIN_RANGES.map(r =>
+    '<button class="xjin-tab' + (r.to === xjinCur ? ' on' : '') + '" data-to="' + r.to + '">' + r.label + '</button>'
+  ).join('') + '<button class="xjin-tab custom-tab' + (xjinCur === -1 ? ' on' : '') + '" data-to="-1">自己分组</button>';
+  document.querySelectorAll('.xjin-tab').forEach(b => b.onclick = () => { xjinCur = +b.dataset.to; renderXjinTabs(); renderXjin(); });
+}
+function loadCustomGroups(){ try { return JSON.parse(localStorage.getItem('xjin_custom') || '[]'); } catch(e){ return []; } }
+function saveCustomGroups(g){ localStorage.setItem('xjin_custom', JSON.stringify(g)); }
+function renderCustomBody(){
+  const body = document.getElementById('customBody');
+  const groups = loadCustomGroups();
+  const selChar = window._cgSelChar || '';
+  const selLv = window._cgSelLv || '';
+  const selBook = window._cgSelBook || '';
+  let html = '<div class="custom-search"><input id="cgInput" type="text" maxlength="4" placeholder="输入一个字" value="' + selChar + '">';
+  html += '<div class="custom-result" id="cgResult">';
+  if (selChar){ html += '<b style="font-size:28px">' + selChar + '</b>'; if (selLv) html += '　来自 <span class="lv-tag">第' + selLv + '级 · 第' + selBook + '册</span>'; else html += '　未在1-5级中找到'; }
+  html += '</div></div>';
+  html += '<div class="custom-groups"><div class="cg-hdr"><h4>我的分组</h4><button class="cg-add-btn-hdr" id="cgNewBtn">+ 增加新组名</button></div>';
+  groups.forEach((g, i) => {
+    html += '<div class="cg-row" data-gi="' + i + '">';
+    html += '<div class="cg-name"><span class="cg-rm-x" data-dgi="' + i + '">\u00d7</span><button class="cg-name-btn" data-pgi="' + i + '">' + g.name + '</button>';
+    html += '<span class="cg-note">' + (g.note || '') + '</span>';
+    html += '<button class="cg-add-btn" data-agi="' + i + '"' + (selChar && selLv ? '' : ' style="display:none"') + '>+ 点击进组</button>';
+    html += '</div>';
+    html += '<div class="cg-chars">';
+    g.chars.forEach((ch, ci) => {
+      html += '<span class="cg-ch"><b>' + ch[0] + '</b><span class="rm" data-dg="' + i + '" data-dc="' + ci + '">✕</span></span>';
+    });
+    html += '</div></div>';
+  });
+  if (!groups.length) html += '<div style="color:var(--dim);font-size:13px;padding:8px 0">还没有分组，点击"增加新组名"开始</div>';
+  html += '</div>';
+  body.innerHTML = html;
+  document.getElementById('cgInput').oninput = function(){
+    const v = this.value.trim();
+    window._cgSelChar = v;
+    window._cgSelLv = ''; window._cgSelBook = '';
+    if (v.length === 1){
+      for (let lv = 1; lv <= 5; lv++){
+        if (llCharsOf(lv).indexOf(v) >= 0){ window._cgSelLv = '' + lv; window._cgSelBook = '' + lv; break; }
+      }
+    }
+    var res = document.getElementById('cgResult');
+    if (res){
+      if (v.length === 1 && window._cgSelLv) res.innerHTML = '<b style="font-size:28px">' + v + '</b>\u3000来自 <span class="lv-tag">第' + window._cgSelLv + '级 · 第' + window._cgSelBook + '册</span>';
+      else if (v.length === 1) res.innerHTML = '<b style="font-size:28px">' + v + '</b>\u3000未在1-5级中找到';
+      else res.innerHTML = '';
+    }
+    document.querySelectorAll('.cg-add-btn[data-agi]').forEach(b => { b.style.display = (window._cgSelLv ? '' : 'none'); });
+  };
+  document.getElementById('cgNewBtn').onclick = function(){
+    const gs = loadCustomGroups();
+    let maxN = 0;
+    gs.forEach(g => { const m = g.name.match(/^\u7b2c(\d+)\u7ec4$/); if (m) maxN = Math.max(maxN, +m[1]); });
+    gs.push({ name: '\u7b2c' + (maxN + 1) + '\u7ec4', chars: [], note: '' });
+    saveCustomGroups(gs);
+    renderCustomBody();
+  };
+  document.querySelectorAll('.cg-name-btn[data-pgi]').forEach(b => b.onclick = function(){
+    const gs = loadCustomGroups();
+    const g = gs[+this.dataset.pgi];
+    if (!g) return;
+    document.getElementById('cgModalTitle').textContent = g.name;
+    var charsDiv = document.getElementById('cgModalChars');
+    charsDiv.innerHTML = g.chars.map(c => '<span>' + c[0] + '</span>').join('');
+    document.getElementById('cgModalNote').textContent = g.note || '';
+    document.getElementById('cgModal').classList.add('show');
+  });
+  document.querySelectorAll('.cg-add-btn[data-agi]').forEach(b => b.onclick = function(){
+    const gs = loadCustomGroups();
+    const g = gs[+this.dataset.agi];
+    if (!g || !window._cgSelChar || !window._cgSelLv) return;
+    if (g.chars.some(c => c[0] === window._cgSelChar)) return;
+    g.chars.push([window._cgSelChar, window._cgSelLv, window._cgSelBook]);
+    saveCustomGroups(gs);
+    renderCustomBody();
+  });
+  document.querySelectorAll('.cg-ch .rm').forEach(s => s.onclick = function(){
+    if (!confirm('\u786e\u8ba4\u5220\u9664\u5b57\u201c' + this.parentElement.querySelector('b').textContent + '\u201d\uff1f')) return;
+    const gs = loadCustomGroups();
+    const g = gs[+this.dataset.dg];
+    if (!g) return;
+    g.chars.splice(+this.dataset.dc, 1);
+    saveCustomGroups(gs);
+    renderCustomBody();
+  });
+  document.querySelectorAll('.cg-rm-x[data-dgi]').forEach(b => b.onclick = function(){
+    const gs = loadCustomGroups();
+    const g = gs[+this.dataset.dgi];
+    if (!confirm('\u786e\u8ba4\u5220\u9664\u5206\u7ec4\u201c' + (g ? g.name : '') + '\u201d\uff1f\u8be5\u7ec4\u5185' + (g ? g.chars.length : 0) + '\u4e2a\u5b57\u5c06\u4e00\u5e76\u5220\u9664')) return;
+    gs.splice(+this.dataset.dgi, 1);
+    saveCustomGroups(gs);
+    renderCustomBody();
+  });
+  document.getElementById('cgModalClose').onclick = function(){ document.getElementById('cgModal').classList.remove('show'); };
+  document.getElementById('cgModal').onclick = function(e){ if (e.target === this) this.classList.remove('show'); };
+}
+function renderXjin(){
+  const body = document.getElementById('xjinBody');
+  const custom = document.getElementById('customBody');
+  if (xjinCur === -1){ document.getElementById('xjinTitle').textContent = '自己分组'; body.style.display = 'none'; custom.style.display = ''; renderCustomBody(); return; }
+  body.style.display = ''; custom.style.display = 'none';
+  if (xjinCur === 0){
+    document.getElementById('xjinTitle').textContent = '形近字辨析';
+    body.innerHTML = '<div class="dz-hint">请先在上方选择一个范围（第X级 / 第X级–第X级），下方将显示该范围内的形近字。</div>';
+    return;
+  }
+  document.getElementById('xjinTitle').textContent = '形近字辨析（' + (xjinCur === 1 ? '第1级' : '第1-' + xjinCur + '级') + '）';
+  const groups = XJIN_GROUPS.filter(g => g.lv <= xjinCur);
+  if (!groups.length){ body.innerHTML = '<div class="dz-hint">这个范围内还没有形近字内容。</div>'; return; }
+  const rowsHtml = [];
+  groups.forEach((g, gi) => {
+    const groupNo = gi + 1;
+    g.ch.forEach((c, ci) => {
+      const first = ci === 0;
+      rowsHtml.push(
+        '<tr>' +
+          (first ? '<td class="gh" rowspan="' + g.ch.length + '"><button class="gh-btn" data-gi="' + gi + '">第' + groupNo + '组</button></td>' : '') +
+          '<td class="cc"><span class="xch"><b>' + c[0] + '</b></span></td>' +
+          '<td class="or">第' + c[1] + '级 · 第' + c[2] + '册</td>' +
+          (first ? '<td class="gt" rowspan="' + g.ch.length + '">' + (g.t || '') + '</td>' : '') +
+        '</tr>'
+      );
+    });
+  });
+  body.innerHTML = '<div class="xjin-tbl"><table>' +
+    '<thead><tr><th>组序</th><th>形近字</th><th>出处</th><th>记忆提示</th></tr></thead><tbody>' +
+    rowsHtml.join('') +
+    '</tbody></table></div>';
+  body.querySelectorAll('.gh-btn').forEach(btn => {
+    btn.onclick = () => {
+      const g = groups[+btn.dataset.gi];
+      document.getElementById('grpTitle').textContent = '第' + (gi + 1) + '组 · ' + g.h;
+      document.getElementById('grpBig').innerHTML = g.ch.map(c =>
+        '<div class="gb">' + c[0] + '</div>'
+      ).join('');
+      document.getElementById('grpTip').innerHTML = g.t
+        ? '💡 ' + g.t + '<br>出处：' + g.ch.map(c => c[0] + '（第' + c[1] + '级 · 第' + c[2] + '册）').join('　')
+        : '';
+      document.getElementById('grpModal').classList.add('show');
+    };
+  });
+}
+function showXjin(){
+  xjinCur = 0;
+  renderXjinTabs();
+  renderXjin();
+  document.getElementById('xjinModal').classList.add('show');
+}
+document.getElementById('btnXjin').onclick = showXjin;
+document.getElementById('xjinClose').onclick = () => { document.getElementById('xjinModal').classList.remove('show'); };
+document.getElementById('grpClose').onclick = () => { document.getElementById('grpModal').classList.remove('show'); };
+function showDyz(){
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('dyz_notes') || '{}'); } catch(e){}
+  var html = '<div class="dyz-search"><input id="dyzSearch" type="text" placeholder="\u641c\u7d22\u5b57.." size="5"><span class="dyz-search-x" id="dyzSearchX">\u00d7</span></div>';
+  html += '<div class="dyz-list">';
+  DYZ_DATA.forEach(function(d, i){
+    html += '<table class="dyz-item"><tbody><tr>';
+    html += '<td class="dyz-idx">' + (i+1) + '</td>';
+    html += '<td class="dyz-info"><span>第' + d.lv + '级</span><br><span>第' + d.book + '册</span></td>';
+    html += '<td class="dyz-ch" data-dci="' + i + '">' + d.ch + '</td>';
+    html += '<td class="dyz-right"><table class="dyz-pys"><tbody><tr>';
+    html += '<td class="dyz-py-col">';
+    d.pys.forEach(function(py, pi){
+      html += '<div class="dyz-py-cell"><b>' + py.p + '</b></div>';
+    });
+    html += '</td><td class="dyz-wo-col">';
+    d.pys.forEach(function(py, pi){
+      var key = i + '_' + pi;
+      var lvVal = '', bkVal = '';
+      if (saved[key]) { var parts = saved[key].split('_'); lvVal = parts[0]||''; bkVal = parts[1]||''; }
+      var lvDigit = /^\d+$/.test(lvVal);
+      var bkDigit = /^\d+$/.test(bkVal);
+      html += '<div class="dyz-wo-cell"><span class="dyz-rng' + (lvDigit || bkDigit ? ' on' : '') + '">';
+      html += '<span class="dyz-prefix">\u7b2c</span>';
+      html += '<span class="dyz-sel" data-nk="' + key + '" data-nf="lv">' + (lvVal||'X') + '</span>';
+      html += '<span class="dyz-prefix">\u7ea7\uff0c\u7b2c</span>';
+      html += '<span class="dyz-sel" data-nk="' + key + '" data-nf="bk">' + (bkVal||'X') + '</span>';
+      html += '<span class="dyz-prefix">\u518c</span></span><span class="dyz-word">' + py.ex + '</span><span class="dyz-gap"></span><input class="dyz-note" type="text" maxlength="6" size="6" placeholder="\u5907\u6ce8"></div>';
+    });
+    html += '</td></tr></tbody></table></td>';
+    html += '</tr></tbody></table>';
+  });
+  html += '</div>';
+  document.getElementById('dyzBody').innerHTML = html;
+  document.getElementById('dyzModal').classList.add('show');
+  positionDyzSearch();
+  window.removeEventListener('resize', positionDyzSearch);
+  window.addEventListener('resize', positionDyzSearch);
+  function positionDyzSearch(){
+    var sb = document.getElementById('dyzSearch').parentElement;
+    var box = document.getElementById('dyzModal').querySelector('.box');
+    var head = document.getElementById('dyzModal').querySelector('.head');
+    if (!sb || !box || !head) return;
+    var br = box.getBoundingClientRect();
+    var hr = head.getBoundingClientRect();
+    sb.style.top = Math.round(hr.bottom + 4) + 'px';
+    sb.style.right = Math.round(window.innerWidth - br.right + 14) + 'px';
+  }
+  document.getElementById('dyzSearch').oninput = function(){
+    var q = this.value.trim();
+    document.querySelectorAll('.dyz-ch.glow').forEach(function(el){ el.classList.remove('glow'); });
+    if (!q) return;
+    var items = document.querySelectorAll('.dyz-item');
+    for (var k = 0; k < items.length; k++){
+      var ch = items[k].querySelector('.dyz-ch');
+      if (ch && ch.textContent.trim() === q){
+        ch.scrollIntoView({block:'center',behavior:'smooth'});
+        ch.classList.add('glow');
+        break;
+      }
+    }
+  };
+  document.getElementById('dyzSearch').onclick = function(){
+    var q = this.value.trim();
+    if (!q) return;
+    var items = document.querySelectorAll('.dyz-item');
+    for (var k = 0; k < items.length; k++){
+      var ch = items[k].querySelector('.dyz-ch');
+      if (ch && ch.textContent.trim() === q){
+        ch.scrollIntoView({block:'center',behavior:'smooth'});
+        break;
+      }
+    }
+  };
+  document.getElementById('dyzSearchX').onclick = function(){
+    var input = document.getElementById('dyzSearch');
+    input.value = '';
+    input.focus();
+    document.querySelectorAll('.dyz-ch.glow').forEach(function(el){ el.classList.remove('glow'); });
+  };
+  document.querySelectorAll('.dyz-ch[data-dci]').forEach(function(el){
+    el.onclick = function(){
+      var d = DYZ_DATA[+this.dataset.dci];
+      document.getElementById('dyzPyBig').textContent = d.ch;
+      var pysHtml = '';
+      d.pys.forEach(function(py){
+        pysHtml += '<div><b>' + py.p + '</b>' + py.ex + '</div>';
+      });
+      document.getElementById('dyzPyPys').innerHTML = pysHtml;
+      document.getElementById('dyzPyPopup').classList.add('show');
+    };
+  });
+  document.getElementById('dyzPyClose').onclick = function(){ document.getElementById('dyzPyPopup').classList.remove('show'); };
+  document.getElementById('dyzPyPopup').onclick = function(e){ if (e.target === this) this.classList.remove('show'); };
+  document.querySelectorAll('.dyz-sel[data-nk]').forEach(function(el){
+    el.onclick = function(){
+      if (this.querySelector('select')) return;
+      var nk = this.dataset.nk;
+      var nf = this.dataset.nf;
+      var opts = '<option value="X">X</option>';
+      for (var n = 1; n <= 10; n++) opts += '<option value="' + n + '">' + n + '</option>';
+      var sel = document.createElement('select');
+      sel.innerHTML = opts;
+      sel.style.cssText = 'font-size:14px;padding:2px;border:1px solid var(--accent);border-radius:4px;';
+      var base = this.textContent.trim();
+      if (base !== 'X' && /^\d+$/.test(base)) sel.value = base;
+      var span = this;
+      span.textContent = '';
+      span.appendChild(sel);
+      sel.focus();
+      var self = this;
+      var done = false;
+      sel.onchange = function(){
+        if (done) return; done = true;
+        var val = this.value;
+        var saved2 = {};
+        try { saved2 = JSON.parse(localStorage.getItem('dyz_notes') || '{}'); } catch(e){}
+        var old = saved2[nk] || '';
+        var oldParts = old.split('_');
+        var newLv = (nf === 'lv' && val !== 'X') ? val : (oldParts[0]||'');
+        var newBk = (nf === 'bk' && val !== 'X') ? val : (oldParts[1]||'');
+        var displayVal = (val === 'X') ? 'X' : val;
+        if (confirm('\u786e\u8ba4\u4fdd\u5b58\u7b2c' + (newLv||'X') + '\u7ea7\u7b2c' + (newBk||'X') + '\u518c\uff1f')) {
+          if (newLv || newBk) {
+            saved2[nk] = newLv + '_' + newBk;
+            localStorage.setItem('dyz_notes', JSON.stringify(saved2));
+          } else {
+            delete saved2[nk];
+            localStorage.setItem('dyz_notes', JSON.stringify(saved2));
+          }
+          self.textContent = displayVal;
+          var rng = self.closest('.dyz-rng');
+          if (rng) rng.classList.toggle('on', /^\d+$/.test(displayVal));
+        } else {
+          self.textContent = base;
+          var rng = self.closest('.dyz-rng');
+          if (rng) rng.classList.toggle('on', /^\d+$/.test(base));
+        }
+      };
+      sel.onblur = function(){
+        if (done) return; done = true;
+        self.textContent = base;
+        var rng = self.closest('.dyz-rng');
+        if (rng) rng.classList.toggle('on', /^\d+$/.test(base));
+      };
+    };
+  });
+}
+document.getElementById('btnDyz').onclick = showDyz;
+document.getElementById('dyzClose').onclick = () => { document.getElementById('dyzModal').classList.remove('show'); };
 document.getElementById('btnLianlian').onclick = () => { document.getElementById('lianlianModal').classList.add('show'); };
 document.getElementById('llClose').onclick = () => { document.getElementById('lianlianModal').classList.remove('show'); };
 const LL_WORDS = ["在森林里","一个人","三条鱼","四栋楼","好的哦","向南飞","牙掉了","太平洋","五颗豆","倒下来","二十","大山","儿子","多少","对手","围着","蹦跳","头发","国王","耳朵","只有","玉米","他们","看书","天上","不会","东西","向北跑","月亮","怪物","自我","数目","生日","快乐","关心","养狗","吹泡泡","六个","七个","大海","小人","肚子","走路","吃了","起来","云朵","好呀","一片","尺子","用手","妈妈","追着","长大","上升","土豆","书本","好啦","好啊","看见","手足","广东","忘了","两个","哈哈","自己","出发","李子","岁数","老人","村子","种子","盖楼","也来了","到了","国宝","没有","气泡","大哭","抱着","摔倒","一栋楼","一条鱼","飞上天","订了一个鼎","冰激凌","从哪里来"];
