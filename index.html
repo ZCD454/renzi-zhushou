@@ -2251,16 +2251,26 @@ function exportCode(){
       pendParts.push(i + ':' + Math.round(left));
     }
   });
-  if (pendParts.length) c += ';P:' + pendParts.join(',');
+if (pendParts.length) c += ';P:' + pendParts.join(',');
   const starIdx = order.filter(i => stars[String(i)]).sort((a, b) => a - b);
-  if (starIdx.length) c += '|' + starIdx.join(',');
+  const extras = [];
+  if (starIdx.length) extras.push(starIdx.join(','));
+  try {
+    const xjArr = JSON.parse(localStorage.getItem('xjin_custom') || '[]');
+    if (Array.isArray(xjArr) && xjArr.length) extras.push('X:' + JSON.stringify(xjArr));
+  } catch(e){}
+  try {
+    const dzObj = JSON.parse(localStorage.getItem('dyz_notes') || '{}');
+    if (dzObj && typeof dzObj === 'object' && Object.keys(dzObj).length) extras.push('D:' + JSON.stringify(dzObj));
+  } catch(e){}
+  if (extras.length) c += '|' + extras.join(';');
   return c;
 }
 function parseCode(code){
   const all = String(code || '').trim();
   const pipe = all.indexOf('|');
   let s0 = pipe >= 0 ? all.slice(0, pipe) : all;
-  const starPart = pipe >= 0 ? all.slice(pipe + 1) : '';
+  let extraPart = pipe >= 0 ? all.slice(pipe + 1) : '';
   let pendPart = '';
   const pm = s0.indexOf(';P:');
   if (pm >= 0){ pendPart = s0.slice(pm + 3); s0 = s0.slice(0, pm); }
@@ -2270,7 +2280,21 @@ function parseCode(code){
   for (let k = 0; k < body.length; k++){
     if (SYMB.indexOf(body[k]) < 0) return { ok:false, msg:'编码里出现无法识别的字符「' + body[k] + '」，请重新完整复制。' };
   }
-  const starList = [];
+const starList = [];
+  let xjin = null, dyz = null;
+  let starPart = extraPart;
+  const dIdx = starPart.lastIndexOf(';D:');
+  if (dIdx >= 0){
+    const raw = starPart.slice(dIdx + 3).trim();
+    starPart = starPart.slice(0, dIdx);
+    try { const obj = JSON.parse(raw); if (obj && typeof obj === 'object' && !Array.isArray(obj)) dyz = obj; } catch(e){}
+  }
+  const xIdx = starPart.lastIndexOf(';X:');
+  if (xIdx >= 0){
+    const raw = starPart.slice(xIdx + 3).trim();
+    starPart = starPart.slice(0, xIdx);
+    try { const arr = JSON.parse(raw); if (Array.isArray(arr)) xjin = arr; } catch(e){}
+  }
   if (starPart){
     const arr = starPart.split(',');
     for (let x = 0; x < arr.length; x++){
@@ -2291,9 +2315,9 @@ function parseCode(code){
       pendList.push({ i: n, ms: ms });
     }
   }
-  return { ok:true, body:body, starList:starList, pendList:pendList };
+return { ok:true, body:body, starList:starList, pendList:pendList, xjin:xjin, dyz:dyz };
 }
-function applyCode(body, starList, pendList){
+function applyCode(body, starList, pendList, xjin, dyz){
   order.forEach((i, k) => {
     const v = SYMB.indexOf(body[k]);
     delete pending[i];
@@ -2313,15 +2337,17 @@ function applyCode(body, starList, pendList){
     if (!seq) return;
     pending[p.i] = { until: Date.now() + p.ms, seq: seq };
   });
-  Object.keys(stars).forEach(k => delete stars[k]);
+Object.keys(stars).forEach(k => delete stars[k]);
   (starList || []).forEach(i => stars[String(i)] = true);
+  if (xjin) { try { localStorage.setItem('xjin_custom', JSON.stringify(xjin)); } catch(e){} }
+  if (dyz) { try { localStorage.setItem('dyz_notes', JSON.stringify(dyz)); } catch(e){} }
   save(); saveReps(); savePend(); saveStars(); render(); renderStat(); renderTabs();
 }
 function openExport(){
   const code = exportCode();
   setLTitle('导出进度', false);
   document.getElementById('lbody').innerHTML =
-    '<div class="hint">1. 点「复制编码」；2. 用微信把编码发给另一台设备；3. 到那边打开「导入进度」粘贴即可。该编码包含全部 ' + order.length + ' 个字的状态、复习进度与重点字标记。</div>' +
+    '<div class="hint">1. 点「复制编码」；2. 用微信把编码发给另一台设备；3. 到那边打开「导入进度」粘贴即可。该编码包含全部 ' + order.length + ' 个字的状态、复习进度、重点字标记，以及形近字「自己分组」与多音字的填写记录。</div>' +
     '<input class="codebox" id="codeOut" readonly value="' + code + '">' +
     '<div class="mrow"><button class="btn" id="expCopy">复制编码</button></div>';
   document.getElementById('expCopy').onclick = () => {
@@ -2342,7 +2368,7 @@ function openImport(){
     const p = parseCode(document.getElementById('impIn').value);
     if (!p.ok){ alert(p.msg); return; }
     if (!confirm('导入将覆盖本机当前全部 ' + order.length + ' 个字的学习进度，确定继续？')) return;
-    applyCode(p.body, p.starList, p.pendList);
+    applyCode(p.body, p.starList, p.pendList, p.xjin, p.dyz);
     document.getElementById('lmodal').classList.remove('show');
     alert('导入成功 ✓');
   };
