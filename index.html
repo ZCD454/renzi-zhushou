@@ -1580,6 +1580,7 @@ function renderCustomBody(){
     const g = gs[+this.dataset.dgi];
     if (!confirm('\u786e\u8ba4\u5220\u9664\u5206\u7ec4\u201c' + (g ? g.name : '') + '\u201d\uff1f\u8be5\u7ec4\u5185' + (g ? g.chars.length : 0) + '\u4e2a\u5b57\u5c06\u4e00\u5e76\u5220\u9664')) return;
     gs.splice(+this.dataset.dgi, 1);
+    gs.forEach((gg, gi) => { if (/^\u7b2c(\d+)\u7ec4$/.test(gg.name)) gg.name = '\u7b2c' + (gi + 1) + '\u7ec4'; });
     saveCustomGroups(gs);
     renderCustomBody();
   });
