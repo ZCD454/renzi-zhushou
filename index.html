@@ -2237,6 +2237,7 @@ document.getElementById('qBackToQuiz').onclick = () => { quizIdx = -1; showQuizS
 }
 document.getElementById('btnQuiz').onclick = () => { quizIdx = -1; showQuiz(); };
 const SYMB = '0123456789ABCDE';
+function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function exportCode(){
   let c = 'RZ1:';
   order.forEach(i => {
@@ -2348,7 +2349,7 @@ function openExport(){
   setLTitle('导出进度', false);
   document.getElementById('lbody').innerHTML =
     '<div class="hint">1. 点「复制编码」；2. 用微信把编码发给另一台设备；3. 到那边打开「导入进度」粘贴即可。该编码包含全部 ' + order.length + ' 个字的状态、复习进度、重点字标记，以及形近字「自己分组」与多音字的填写记录。</div>' +
-    '<input class="codebox" id="codeOut" readonly value="' + code + '">' +
+    '<input class="codebox" id="codeOut" readonly value="' + escAttr(code) + '">' +
     '<div class="mrow"><button class="btn" id="expCopy">复制编码</button></div>';
   document.getElementById('expCopy').onclick = () => {
     const b = document.getElementById('expCopy');
