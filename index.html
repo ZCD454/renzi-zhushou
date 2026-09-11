@@ -312,10 +312,16 @@
   .xjin-tbl .gh-btn:hover{ background:var(--accent); color:#fff; }
   .xjin-tab.custom-tab{ border:2px dashed var(--accent); color:var(--accent); background:transparent; }
   .xjin-tab.custom-tab.on{ background:var(--accent); color:#fff; border-style:solid; }
-  .custom-search{ padding:16px 18px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
-  .custom-search input{ font-size:18px; width:1.2em; text-align:center; padding:6px 0;
-                        border:1px solid var(--line); border-radius:8px; font-weight:700; flex-shrink:0; }
-  .custom-search input:focus{ border-color:var(--accent); outline:none; }
+  .custom-search{ padding:16px 18px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; justify-content:center; }
+  .custom-search .cg-inwrap{ position:relative; display:inline-flex; align-items:center; flex:none; }
+  .custom-search .cg-inwrap input{ font-size:18px; width:5em; min-width:0; max-width:5em; flex:none; text-align:center; padding:6px 24px 6px 8px;
+                        border:1px solid #bbb; border-radius:8px; background:#e1f5dc; font-weight:700; box-sizing:border-box;
+                        box-shadow:inset 0 1px 3px rgba(0,0,0,.08); }
+  .custom-search .cg-inwrap input::placeholder{ color:#6b9a58; font-weight:400; }
+  .custom-search .cg-inwrap input:focus{ border-color:var(--accent); outline:none; background:#ecf9e3; }
+  .custom-search .cg-inwrap input:focus{ border-color:var(--accent); outline:none; }
+  .custom-search .cg-inwrap .cg-clear-x{ position:absolute; right:6px; top:50%; transform:translateY(-50%);
+                        font-size:18px; cursor:pointer; color:#888; padding:0 2px; line-height:1; flex:none; }
   .custom-result{ font-size:15px; color:var(--ink); }
   .custom-result .lv-tag{ display:inline-block; background:var(--accent); color:#fff;
                           font-size:12px; font-weight:700; padding:2px 8px; border-radius:4px;
@@ -1502,10 +1508,10 @@ function renderCustomBody(){
   const selChar = window._cgSelChar || '';
   const selLv = window._cgSelLv || '';
   const selBook = window._cgSelBook || '';
-  let html = '<div class="custom-search"><input id="cgInput" type="text" maxlength="4" placeholder="输入一个字" value="' + selChar + '">';
+  let html = '<div class="custom-search"><div class="cg-inwrap"><input id="cgInput" type="text" maxlength="1" placeholder="输入字" value="' + selChar + '"><span class="cg-clear-x" id="cgClearX">\u00d7</span></div>';
   html += '<div class="custom-result" id="cgResult">';
   if (selChar){ html += '<b style="font-size:28px">' + selChar + '</b>'; if (selLv) html += '　来自 <span class="lv-tag">第' + selLv + '级 · 第' + selBook + '册</span>'; else html += '　未在1-5级中找到'; }
-  html += '</div></div>';
+  html += '</div></div></div>';
   html += '<div class="custom-groups"><div class="cg-hdr"><h4>我的分组</h4><button class="cg-add-btn-hdr" id="cgNewBtn">+ 增加新组名</button></div>';
   groups.forEach((g, i) => {
     html += '<div class="cg-row" data-gi="' + i + '">';
@@ -1538,6 +1544,15 @@ function renderCustomBody(){
       else res.innerHTML = '';
     }
     document.querySelectorAll('.cg-add-btn[data-agi]').forEach(b => { b.style.display = (window._cgSelLv ? '' : 'none'); });
+  };
+  document.getElementById('cgClearX').onclick = function(){
+    var input = document.getElementById('cgInput');
+    input.value = '';
+    window._cgSelChar = ''; window._cgSelLv = ''; window._cgSelBook = '';
+    var res = document.getElementById('cgResult');
+    if (res) res.innerHTML = '';
+    document.querySelectorAll('.cg-add-btn[data-agi]').forEach(b => { b.style.display = 'none'; });
+    input.focus();
   };
   document.getElementById('cgNewBtn').onclick = function(){
     const gs = loadCustomGroups();
@@ -1645,6 +1660,18 @@ document.getElementById('grpClose').onclick = () => { document.getElementById('g
 function showDyz(){
   var saved = {};
   try { saved = JSON.parse(localStorage.getItem('dyz_notes') || '{}'); } catch(e){}
+  if (!localStorage.getItem('dyz_clean_v1')){
+    var purged = false;
+    DYZ_DATA.forEach(function(d, i){
+      (d.pys || []).forEach(function(py, pi){
+        var key = i + '_' + pi;
+        var v = saved[key] || '';
+        if (/^\d+_\d+$/.test(v)){ delete saved[key]; purged = true; }
+      });
+    });
+    if (purged){ try { localStorage.setItem('dyz_notes', JSON.stringify(saved)); } catch(e){} }
+    try { localStorage.setItem('dyz_clean_v1', '1'); } catch(e){}
+  }
   var html = '<div class="dyz-search"><input id="dyzSearch" type="text" placeholder="\u641c\u7d22\u5b57.." size="5"><span class="dyz-search-x" id="dyzSearchX">\u00d7</span></div>';
   html += '<div class="dyz-list">';
   DYZ_DATA.forEach(function(d, i){
@@ -1660,8 +1687,8 @@ function showDyz(){
     html += '</td><td class="dyz-wo-col">';
     d.pys.forEach(function(py, pi){
       var key = i + '_' + pi;
-      var lvVal = '', bkVal = '';
-      if (saved[key]) { var parts = saved[key].split('_'); lvVal = parts[0]||''; bkVal = parts[1]||''; }
+      var lvVal = '', bkVal = '', noteVal = '';
+      if (saved[key]) { var parts = saved[key].split('_'); lvVal = parts[0]||''; bkVal = parts[1]||''; noteVal = parts.slice(2).join('_'); }
       var lvDigit = /^\d+$/.test(lvVal);
       var bkDigit = /^\d+$/.test(bkVal);
       html += '<div class="dyz-wo-cell"><span class="dyz-rng' + (lvDigit || bkDigit ? ' on' : '') + '">';
@@ -1669,7 +1696,7 @@ function showDyz(){
       html += '<span class="dyz-sel" data-nk="' + key + '" data-nf="lv">' + (lvVal||'X') + '</span>';
       html += '<span class="dyz-prefix">\u7ea7\uff0c\u7b2c</span>';
       html += '<span class="dyz-sel" data-nk="' + key + '" data-nf="bk">' + (bkVal||'X') + '</span>';
-      html += '<span class="dyz-prefix">\u518c</span></span><span class="dyz-word">' + py.ex + '</span><span class="dyz-gap"></span><input class="dyz-note" type="text" maxlength="6" size="6" placeholder="\u5907\u6ce8"></div>';
+      html += '<span class="dyz-prefix">\u518c</span></span><span class="dyz-word">' + py.ex + '</span><span class="dyz-gap"></span><input class="dyz-note" type="text" maxlength="6" size="6" placeholder="\u5907\u6ce8" value="' + escAttr(noteVal) + '"></div>';
     });
     html += '</td></tr></tbody></table></td>';
     html += '</tr></tbody></table>';
@@ -1761,25 +1788,20 @@ function showDyz(){
         try { saved2 = JSON.parse(localStorage.getItem('dyz_notes') || '{}'); } catch(e){}
         var old = saved2[nk] || '';
         var oldParts = old.split('_');
-        var newLv = (nf === 'lv' && val !== 'X') ? val : (oldParts[0]||'');
-        var newBk = (nf === 'bk' && val !== 'X') ? val : (oldParts[1]||'');
+        var newLv = (nf === 'lv') ? (val === 'X' ? '' : val) : (oldParts[0]||'');
+        var newBk = (nf === 'bk') ? (val === 'X' ? '' : val) : (oldParts[1]||'');
+        var noteTxt = oldParts.slice(2).join('_');
         var displayVal = (val === 'X') ? 'X' : val;
-        if (confirm('\u786e\u8ba4\u4fdd\u5b58\u7b2c' + (newLv||'X') + '\u7ea7\u7b2c' + (newBk||'X') + '\u518c\uff1f')) {
-          if (newLv || newBk) {
-            saved2[nk] = newLv + '_' + newBk;
-            localStorage.setItem('dyz_notes', JSON.stringify(saved2));
-          } else {
-            delete saved2[nk];
-            localStorage.setItem('dyz_notes', JSON.stringify(saved2));
-          }
-          self.textContent = displayVal;
-          var rng = self.closest('.dyz-rng');
-          if (rng) rng.classList.toggle('on', /^\d+$/.test(displayVal));
+        if (newLv || newBk || noteTxt) {
+          saved2[nk] = newLv + '_' + newBk + (noteTxt ? '_' + noteTxt : '');
+          localStorage.setItem('dyz_notes', JSON.stringify(saved2));
         } else {
-          self.textContent = base;
-          var rng = self.closest('.dyz-rng');
-          if (rng) rng.classList.toggle('on', /^\d+$/.test(base));
+          delete saved2[nk];
+          localStorage.setItem('dyz_notes', JSON.stringify(saved2));
         }
+        self.textContent = displayVal;
+        var rng = self.closest('.dyz-rng');
+        if (rng) rng.classList.toggle('on', /^\d+$/.test(displayVal));
       };
       sel.onblur = function(){
         if (done) return; done = true;
@@ -1787,6 +1809,26 @@ function showDyz(){
         var rng = self.closest('.dyz-rng');
         if (rng) rng.classList.toggle('on', /^\d+$/.test(base));
       };
+    };
+  });
+  document.querySelectorAll('.dyz-note').forEach(function(inp){
+    var cell = inp.closest('.dyz-wo-cell');
+    var nk = cell.querySelector('.dyz-sel').dataset.nk;
+    inp.oninput = function(){
+      var v = inp.value;
+      var saved3 = {};
+      try { saved3 = JSON.parse(localStorage.getItem('dyz_notes') || '{}'); } catch(e){}
+      var old = saved3[nk] || '';
+      var parts = old.split('_');
+      var lv = parts[0] || '';
+      var bk = parts[1] || '';
+      if (v || lv || bk) {
+        saved3[nk] = lv + '_' + bk + (v ? '_' + v : '');
+        localStorage.setItem('dyz_notes', JSON.stringify(saved3));
+      } else {
+        delete saved3[nk];
+        localStorage.setItem('dyz_notes', JSON.stringify(saved3));
+      }
     };
   });
 }
@@ -2255,8 +2297,7 @@ function exportCode(){
   });
 if (pendParts.length) c += ';P:' + pendParts.join(',');
   const starIdx = order.filter(i => stars[String(i)]).sort((a, b) => a - b);
-  const extras = [];
-  if (starIdx.length) extras.push(starIdx.join(','));
+  const extras = [starIdx.join(',')];
   try {
     const xjArr = JSON.parse(localStorage.getItem('xjin_custom') || '[]');
     if (Array.isArray(xjArr) && xjArr.length) extras.push('X:' + JSON.stringify(xjArr));
@@ -2266,6 +2307,7 @@ if (pendParts.length) c += ';P:' + pendParts.join(',');
     if (dzObj && typeof dzObj === 'object' && Object.keys(dzObj).length) extras.push('D:' + JSON.stringify(dzObj));
   } catch(e){}
   if (extras.length) c += '|' + extras.join(';');
+  if (extras.length === 1 && !extras[0]) c = c.slice(0, -1);
   return c;
 }
 function parseCode(code){
@@ -2285,15 +2327,19 @@ function parseCode(code){
 const starList = [];
   let xjin = null, dyz = null;
   let starPart = extraPart;
-  const dIdx = starPart.lastIndexOf(';D:');
+  let dIdx = starPart.lastIndexOf(';D:');
+  if (dIdx < 0 && starPart.indexOf('D:') === 0) dIdx = 0;
   if (dIdx >= 0){
-    const raw = starPart.slice(dIdx + 3).trim();
+    const off = (dIdx === 0 && starPart.charAt(0) !== ';') ? 2 : 3;
+    const raw = starPart.slice(dIdx + off).trim();
     starPart = starPart.slice(0, dIdx);
     try { const obj = JSON.parse(raw); if (obj && typeof obj === 'object' && !Array.isArray(obj)) dyz = obj; } catch(e){}
   }
-  const xIdx = starPart.lastIndexOf(';X:');
+  let xIdx = starPart.lastIndexOf(';X:');
+  if (xIdx < 0 && starPart.indexOf('X:') === 0) xIdx = 0;
   if (xIdx >= 0){
-    const raw = starPart.slice(xIdx + 3).trim();
+    const off = (xIdx === 0 && starPart.charAt(0) !== ';') ? 2 : 3;
+    const raw = starPart.slice(xIdx + off).trim();
     starPart = starPart.slice(0, xIdx);
     try { const arr = JSON.parse(raw); if (Array.isArray(arr)) xjin = arr; } catch(e){}
   }
