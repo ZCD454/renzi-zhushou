@@ -9,7 +9,9 @@
          --learned:#e8f6ec; --learned-bd:#9ed8ad; --unlearned:#ffe7e0; --unlearned-bd:#f5a487;
          --accent:#e0683e; --line:#ece6dc; --chip:#fff3e8; }
   *{ box-sizing:border-box; margin:0; padding:0; }
-  body{ font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); min-height:100vh; }
+  @font-face{ font-family:'KFont'; src:local('KaiTi'),local('\u6977\u4f53'),local('STKaiti'),local('Kaiti SC'),local('\u534e\u6587\u6977\u4f53');
+                      unicode-range:U+4E00-9FFF,U+3400-4DBF,U+F900-FAFF,U+3000-303F,U+FF00-FFEF,U+2018-201F; }
+  body{ font-family:'KFont',"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--ink); min-height:100vh; }
   header{ background:linear-gradient(135deg,#f7b26a,#e0683e); color:#fff; padding:14px 22px; position:sticky; top:0; z-index:20;
           box-shadow:0 2px 10px rgba(0,0,0,.15); }
   header h1{ font-size:20px; font-weight:700; letter-spacing:1px; text-align:center; }
